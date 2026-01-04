@@ -8,6 +8,7 @@ enum
 	MENU_Game,
 	MENU_HallOfFame,
 	MENU_HowToPlay,
+	MENU_Sound,
 	MENU_Quit,
 
 };
@@ -30,6 +31,8 @@ void MenuGetName_Init(void);
 u32 MenuGetName_Main(void);
 void MenuGameOver_Init(void);
 u32 MenuGameOver_Main(void);
+void MenuSound_Init(void);
+u32 MenuSound_Main(void);
 
 void Credits_NextSel(void);
 void Credits_Display(s32 nCreditsNb);

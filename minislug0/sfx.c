@@ -16,6 +16,9 @@ SDL_AudioDeviceID nDevId;
 };
 struct SSfxGene	gSfx;
 
+s32	gnGlobalSoundVol = 100;
+
+
 #define SFX_MAX_SOUNDS	4//3
 struct SSample
 {
@@ -107,7 +110,8 @@ void Sfx_MixAudio(void *unused, u8 *stream, int len)
 				gpSounds[k].nDPos += 2;
 			}
 		}
-		nOutput /= 2;
+		nOutput = (nOutput * gnGlobalSoundVol) / 200;
+
 
 		if (nOutput > 32767) nOutput = 32767;		// Clip the result.
 		if (nOutput < -32768) nOutput = -32768;
@@ -523,6 +527,20 @@ u32 Sfx_IsPlaying(u32 nSfxNo)
 	}
 	return (0);
 }
+
+
+// Volume [0;100].
+void Sfx_SetVolume(s32 nVol)
+{
+	if (nVol < 0) nVol = 0;
+	if (nVol > 100) nVol = 100;
+	gnGlobalSoundVol = nVol;
+}
+s32 Sfx_GetVolume(void)
+{
+	return (gnGlobalSoundVol);
+}
+
 
 
 // Exemples là :

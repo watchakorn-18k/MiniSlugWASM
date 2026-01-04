@@ -1373,6 +1373,11 @@ _JoyOff:
 			nMenuVal = MENU_Main;
 			break;
 
+		case MENU_Sound:	// Sound Settings.
+			Menu(MenuSound_Init, MenuSound_Main);
+			nMenuVal = MENU_Main;
+			break;
+
 		case MENU_HowToPlay:	// How to play.
 			GameLoop(MISSIONOFFS_HOWTOPLAY);
 			for (i = 0; i < e_CfgKey_LAST; i++) gVar.pKeys[gMSCfg.pKeys[i]] = 0;	// RAZ Kb (utile slt avec Esc).

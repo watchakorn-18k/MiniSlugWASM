@@ -20,6 +20,9 @@ void Music_Start(s32 nMusicNo, u32 nForceRestart);
 s32 Music_GetMusicNo(void);
 u32 Music_IsOver(void);
 
+void Sfx_SetVolume(s32 nVol);
+s32 Sfx_GetVolume(void);
+
 
 // Enum YM.
 enum

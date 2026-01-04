@@ -327,6 +327,7 @@ struct SMenuItm gpMenuItems_Main[] =
 {
 	{ MENU_Game, 0, "START Mini Slug | WK18K" },
 	{ MENU_HallOfFame, 0, "HALL OF FAME" },
+	{ MENU_Sound, 0, "SOUND SETTINGS" },
 	{ MENU_Quit, 0, "QUIT" },
 };
 
@@ -1221,5 +1222,84 @@ _CfgLoad_def:
 	memcpy(&gMSCfg, &sCfgDefault, sizeof(struct SMSCfg));
 	return (1);
 }
+
+//=============================================================================
+
+// Menu Sound : Init.
+void MenuSound_Init(void)
+{
+	MenuInitFade();
+	gVar.pBackground = gVar.pBkg[0];
+    Transit2D_InitOpening(e_Transit_Menu);
+}
+
+// Menu Sound : Main.
+u32 MenuSound_Main(void)
+{
+	u32	nRetVal = MENU_Null;
+	s32	nVol;
+    char pStr[64];
+
+	switch (gMenu.nState)
+	{
+	case MENU_State_FadeIn:
+		if (Transit2D_CheckEnd()) gMenu.nState = MENU_State_Input;
+		break;
+
+	case MENU_State_FadeOut:
+		if (Transit2D_CheckEnd()) nRetVal = MENU_Main;
+		break;
+
+	case MENU_State_Input:
+		{
+            nVol = Sfx_GetVolume();
+			if (gVar.pKeys[gMSCfg.pKeys[e_CfgKey_Left]])
+			{
+				nVol -= 5;
+                if (nVol < 0) nVol = 0;
+                Sfx_SetVolume(nVol);
+                Sfx_PlaySfx(FX_Menu_Move, e_SfxPrio_10);
+				gVar.pKeys[gMSCfg.pKeys[e_CfgKey_Left]] = 0;
+			}
+			if (gVar.pKeys[gMSCfg.pKeys[e_CfgKey_Right]])
+			{
+				nVol += 5;
+                if (nVol > 100) nVol = 100;
+                Sfx_SetVolume(nVol);
+                Sfx_PlaySfx(FX_Menu_Move, e_SfxPrio_10);
+				gVar.pKeys[gMSCfg.pKeys[e_CfgKey_Right]] = 0;
+			}
+
+			// Validation / Back.
+			if (gVar.pKeys[SDL_SCANCODE_RETURN] || gVar.pKeys[SDL_SCANCODE_SPACE] ||
+				gVar.pKeys[gMSCfg.pKeys[e_CfgKey_ButtonA]] || gVar.pKeys[gMSCfg.pKeys[e_CfgKey_ButtonB]] || gVar.pKeys[gMSCfg.pKeys[e_CfgKey_ButtonC]] ||
+				gVar.pKeys[SDL_SCANCODE_ESCAPE])
+			{
+				gMenu.nState = MENU_State_FadeOut;
+				Transit2D_InitClosing(e_Transit_Menu);
+				Sfx_PlaySfx(FX_Menu_Clic, e_SfxPrio_10);
+			}
+		}
+		break;
+	}
+
+    // Display
+    // MenuMain uses Bkg1Scroll.
+	Bkg1Scroll(-gnFrame >> 1, -gnFrame >> 1);
+
+    // Title
+    Font_Print((SCR_Width / 2) - (Font_Print(0,0,"SOUND SETTINGS",FONT_NoDisp)/2), 60, "SOUND SETTINGS", 0);
+
+    // Volume
+    nVol = Sfx_GetVolume();
+    sprintf(pStr, "< VOLUME : %d%% >", (int)nVol);
+    Font_Print((SCR_Width / 2) - (Font_Print(0,0,pStr,FONT_NoDisp)/2), 120, pStr, FONT_Highlight);
+    
+    // Help
+    Font_Print((SCR_Width / 2) - (Font_Print(0,0,"PRESS BUTTON TO EXIT",FONT_NoDisp)/2), 180, "PRESS BUTTON TO EXIT", 0);
+
+	return (nRetVal);
+}
+
 
 
