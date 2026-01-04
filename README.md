@@ -61,6 +61,22 @@ This will generate the web files in `wasm/build/`.
 - `wasm/`: WASM build scripts and Dockerfile
 - `i18n/`: Documentation in other languages
 
+## 🧹 Code Quality & Linting
+
+We maintain code quality using **Clang-Tidy** running in a containerized environment. This ensures that legacy code issues, such as undefined behaviors (e.g., shifting negative values), are identified and fixed.
+
+### Run Lint Check
+To run the linter and check for errors:
+
+```bash
+./lint.sh
+```
+
+This script will:
+1. Build a dedicated linting image.
+2. Run `clang-tidy` on all source files.
+3. Automatically clean up old reports before running.
+
 ## 📜 Credits
 
 - **Original Game**: 17o2
