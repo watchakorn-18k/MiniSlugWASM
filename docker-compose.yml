@@ -1,11 +1,13 @@
 version: "3.8"
 services:
-  minislug:
-    build: .
-    image: minislug-wasm-nginx
-    container_name: minislug-game
+  web:
+    build:
+      context: ./wasm
+      dockerfile: Dockerfile.web
+    image: minislug-web
+    container_name: minislug-web
     ports:
-      - "8082:80"
+      - "8081:80"
     restart: always
     deploy:
       resources:

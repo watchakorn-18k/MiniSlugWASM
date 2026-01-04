@@ -325,7 +325,7 @@ void Bkg1Scroll(u32 nOffsetX, u32 nOffsetY)
 
 struct SMenuItm gpMenuItems_Main[] =
 {
-	{ MENU_Game, 0, "START" },
+	{ MENU_Game, 0, "START Mini Slug | WK18K" },
 	{ MENU_HallOfFame, 0, "HALL OF FAME" },
 	{ MENU_Quit, 0, "QUIT" },
 };
