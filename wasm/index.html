@@ -6,7 +6,13 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0, user-scalable=no"
     />
-    <title>MiniSlug</title>
+    <title>Mini Slug - HTML Port</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Black+Ops+One&family=Roboto+Mono:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
     <style>
       body,
       html {
@@ -17,111 +23,188 @@
         background-color: black;
         overflow: hidden;
       }
-
-      canvas {
-        display: block;
-        width: 100%;
-        height: 100%;
-        object-fit: contain;
-        image-rendering: pixelated;
-        image-rendering: crisp-edges;
-        /* Center the canvas if object-fit leaves space */
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        margin: auto;
+      #landing-page {
+        z-index: 50;
       }
-
-      .loading {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        color: #e94560;
-        font-family: sans-serif;
-        font-size: 1.2rem;
-        pointer-events: none;
-        text-align: center;
-        z-index: 10;
+      .clip-path-polygon {
+        clip-path: polygon(10% 0, 100% 0, 100% 70%, 90% 100%, 0 100%, 0 30%);
       }
-
-      .loading-spinner {
-        width: 40px;
-        height: 40px;
-        border: 4px solid rgba(233, 69, 96, 0.2);
-        border-top-color: #e94560;
-        border-radius: 50%;
-        animation: spin 1s linear infinite;
-        margin: 0 auto 1rem;
-      }
-
-      @keyframes spin {
-        to {
-          transform: rotate(360deg);
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translate3d(0, 20px, 0);
         }
+        to {
+          opacity: 1;
+          transform: translate3d(0, 0, 0);
+        }
+      }
+      .animate-fade-in-up {
+        animation: fadeInUp 0.5s ease-out forwards;
       }
     </style>
   </head>
   <body>
-    <div id="loading" class="loading">
-      <div class="loading-spinner"></div>
-      <p>Loading...</p>
+    <!-- Landing Page -->
+    <div
+      id="landing-page"
+      class="fixed inset-0 flex flex-col items-center justify-center bg-gray-900 text-white"
+      style="
+        background-image: linear-gradient(
+            rgba(0, 0, 0, 0.85),
+            rgba(0, 0, 0, 0.85)
+          ),
+          radial-gradient(circle at center, #2a2a2a 0%, #000 100%);
+      "
+    >
+      <div
+        id="game-menu"
+        class="max-w-4xl w-full p-4 md:p-8 text-center animate-fade-in-up"
+      >
+        <h1
+          class="text-6xl md:text-8xl font-black text-transparent bg-clip-text bg-gradient-to-b from-red-500 to-red-900 mb-8 uppercase tracking-widest drop-shadow-[0_5px_5px_rgba(0,0,0,0.5)] transform -skew-x-6"
+          style="
+            font-family: 'Black Ops One', cursive;
+            -webkit-text-stroke: 1px rgba(255, 255, 255, 0.3);
+          "
+        >
+          MINI SLUG
+        </h1>
+
+        <div
+          class="bg-black/60 border border-gray-700 p-6 md:p-8 rounded-xl max-w-3xl mx-auto shadow-2xl backdrop-blur-md relative overflow-hidden"
+        >
+          <div
+            class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-red-600 to-transparent"
+          ></div>
+
+          <div
+            class="grid grid-cols-1 md:grid-cols-2 gap-8 text-left font-mono"
+          >
+            <div>
+              <h3
+                class="text-red-500 font-bold mb-4 border-b border-gray-700 pb-2 flex items-center tracking-wider"
+              >
+                <svg
+                  class="w-5 h-5 mr-2"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M11 19l-9-9 9-9m8 11a4 4 0 00-4-4l-4-4"
+                  ></path>
+                </svg>
+                CONTROLS
+              </h3>
+              <ul class="space-y-3 text-sm text-gray-300">
+                <li
+                  class="flex justify-between items-center bg-gray-800/50 p-2 rounded border border-gray-700"
+                >
+                  <span class="text-gray-400">MOVE</span>
+                  <span class="font-bold text-white bg-gray-700 px-2 rounded"
+                    >ARROWS</span
+                  >
+                </li>
+                <li
+                  class="flex justify-between items-center bg-gray-800/50 p-2 rounded border border-gray-700"
+                >
+                  <span class="text-gray-400">SHOOT</span>
+                  <span class="font-bold text-white bg-gray-700 px-2 rounded"
+                    >Z</span
+                  >
+                </li>
+                <li
+                  class="flex justify-between items-center bg-gray-800/50 p-2 rounded border border-gray-700"
+                >
+                  <span class="text-gray-400">JUMP</span>
+                  <span class="font-bold text-white bg-gray-700 px-2 rounded"
+                    >X</span
+                  >
+                </li>
+                <li
+                  class="flex justify-between items-center bg-gray-800/50 p-2 rounded border border-gray-700"
+                >
+                  <span class="text-gray-400">GRENADE</span>
+                  <span class="font-bold text-white bg-gray-700 px-2 rounded"
+                    >C</span
+                  >
+                </li>
+              </ul>
+            </div>
+            <div>
+              <h3
+                class="text-green-500 font-bold mb-4 border-b border-gray-700 pb-2 flex items-center tracking-wider"
+              >
+                <svg
+                  class="w-5 h-5 mr-2"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                  ></path>
+                </svg>
+                MISSION
+              </h3>
+              <p class="text-sm text-gray-400 leading-relaxed mb-4">
+                Infiltrate the enemy stronghold. Neutralize all hostile targets.
+              </p>
+              <div class="bg-yellow-900/20 border-l-4 border-yellow-600 p-3">
+                <p class="text-xs text-yellow-500 font-bold">WARNING</p>
+                <p class="text-xs text-yellow-200">
+                  Heavy resistance expected in Sector 7.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <a
+          href="minislug.html"
+          id="start-btn"
+          class="mt-10 group relative inline-flex items-center justify-center px-16 py-6 font-bold text-white transition-all duration-300 bg-red-700 font-mono text-2xl uppercase tracking-widest hover:bg-red-600 hover:shadow-[0_0_30px_rgba(220,38,38,0.6)] focus:outline-none ring-offset-4 ring-offset-black focus:ring-2 ring-red-500 clip-path-polygon transform hover:-translate-y-1"
+        >
+          <span class="relative flex items-center z-10">
+            START MISSION
+            <svg
+              class="w-8 h-8 ml-3 transform group-hover:translate-x-2 transition-transform"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M13 5l7 7-7 7M5 5l7 7-7 7"
+              ></path>
+            </svg>
+          </span>
+          <div
+            class="absolute inset-0 bg-gradient-to-r from-red-800 to-red-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+          ></div>
+        </a>
+        <div class="mt-8 text-[10px] text-gray-600 font-mono tracking-widest">
+          SYSTEM READY // INSERT COIN
+        </div>
+        <div class="mt-2 text-[10px] text-gray-700 font-mono tracking-widest">
+          HTML Port by
+          <a
+            href="https://github.com/watchakorn-18k/"
+            target="_blank"
+            class="text-red-800 hover:text-red-500 transition-colors"
+            >watchakorn-18k</a
+          >
+        </div>
+      </div>
     </div>
-
-    <canvas
-      id="canvas"
-      oncontextmenu="event.preventDefault()"
-      tabindex="-1"
-    ></canvas>
-
-    <script>
-      var Module = {
-        canvas: (function () {
-          var canvas = document.getElementById("canvas");
-
-          canvas.addEventListener(
-            "webglcontextlost",
-            function (e) {
-              console.error("WebGL context lost");
-              e.preventDefault();
-            },
-            false
-          );
-
-          // Ensure canvas gets focus for keyboard input
-          canvas.addEventListener("click", function () {
-            canvas.focus();
-          });
-
-          return canvas;
-        })(),
-        onRuntimeInitialized: function () {
-          var loadingDiv = document.getElementById("loading");
-          if (loadingDiv) loadingDiv.style.display = "none";
-          document.getElementById("canvas").focus();
-        },
-        setStatus: function (text) {
-          var loadingP = document.querySelector("#loading p");
-          if (loadingP) loadingP.textContent = text;
-          console.log("Status:", text);
-        },
-        totalDependencies: 0,
-        monitorRunDependencies: function (left) {
-          this.totalDependencies = Math.max(this.totalDependencies, left);
-          this.setStatus(
-            left
-              ? "Loading... (" +
-                  (this.totalDependencies - left) +
-                  "/" +
-                  this.totalDependencies +
-                  ")"
-              : "Ready!"
-          );
-        },
-      };
-    </script>
-    {{{ SCRIPT }}}
   </body>
 </html>

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=no"
+    />
+    <title>Mini Slug - HTML Port</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Black+Ops+One&family=Roboto+Mono:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body,
+      html {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        background-color: black;
+        overflow: hidden;
+      }
+      canvas {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        image-rendering: pixelated;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        margin: auto;
+        z-index: 1;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Canvas -->
+    <canvas
+      id="canvas"
+      oncontextmenu="event.preventDefault()"
+      tabindex="-1"
+    ></canvas>
+
+    <script>
+      var Module = {
+        canvas: (function () {
+          var canvas = document.getElementById("canvas");
+          canvas.addEventListener(
+            "webglcontextlost",
+            function (e) {
+              console.error("WebGL context lost");
+              e.preventDefault();
+            },
+            false
+          );
+          // Initial click listener to ensure focus
+          canvas.addEventListener("click", function () {
+            canvas.focus();
+          });
+          return canvas;
+        })(),
+        onRuntimeInitialized: function () {
+          console.log("WASM Runtime Initialized");
+          var canvas = document.getElementById("canvas");
+          if (canvas) {
+            canvas.focus();
+            // Dispatch a click explicitly to help with AudioContext if needed
+            canvas.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+          }
+        },
+        setStatus: function (text) {
+          if (!Module.setStatus.last)
+            Module.setStatus.last = { time: Date.now(), text: "" };
+          if (text === Module.setStatus.last.text) return;
+
+          var m = text.match(/([^(]+)\((\d+(\.\d+)?)\/(\d+)\)/);
+          var now = Date.now();
+          if (m && now - Module.setStatus.last.time < 30) return;
+          Module.setStatus.last.time = now;
+          Module.setStatus.last.text = text;
+
+          console.log("Status:", text);
+        },
+        totalDependencies: 0,
+        monitorRunDependencies: function (left) {
+          this.totalDependencies = Math.max(this.totalDependencies, left);
+        },
+      };
+    </script>
+    {{{ SCRIPT }}}
+  </body>
+</html>

@@ -1,51 +1,48 @@
-# MiniSlug SDL2 Build Environment
-# Multi-stage build for compiling the game
+# MiniSlug WASM Production Dockerfile
+# Multi-stage build: Emscripten (build) → Nginx (serve)
 
-FROM debian:bullseye-slim AS builder
+# ============================================================
+# Stage 1: Build WASM using Emscripten
+# ============================================================
+FROM emscripten/emsdk:latest AS builder
 
-# Install build dependencies
+# Install additional tools
 RUN apt-get update && apt-get install -y \
-    build-essential \
-    gcc \
-    g++ \
-    make \
-    libsdl2-dev \
-    libsdl2-mixer-dev \
-    pkg-config \
+    python3 \
     && rm -rf /var/lib/apt/lists/*
 
 # Set working directory
 WORKDIR /app
 
 # Copy source code
-COPY . .
+COPY . /app/
 
-# Build the game
+# Copy WASM Makefile to minislug0
+COPY wasm/Makefile.wasm /app/minislug0/
+
+# Build WASM
 WORKDIR /app/minislug0
+RUN make -f Makefile.wasm
 
-# Default command: build the game
-CMD ["make", "clean", "&&", "make"]
+# ============================================================
+# Stage 2: Serve with Nginx
+# ============================================================
+FROM nginx:alpine AS production
 
-# -----------------------------------------------------------
-# Runtime stage (for testing with X11 forwarding)
-# -----------------------------------------------------------
-FROM debian:bullseye-slim AS runtime
+# Copy nginx configuration
+COPY wasm/nginx.conf /etc/nginx/conf.d/default.conf
 
-# Install runtime dependencies
-RUN apt-get update && apt-get install -y \
-    libsdl2-2.0-0 \
-    libsdl2-mixer-2.0-0 \
-    && rm -rf /var/lib/apt/lists/*
+# Copy built WASM files from builder stage
+COPY --from=builder /app/wasm/build/ /usr/share/nginx/html/
 
-WORKDIR /app
+# Copy Landing Page
+COPY wasm/index.html /usr/share/nginx/html/
 
-# Copy built binary from builder stage
-COPY --from=builder /app/minislug0/minislug /app/
-COPY --from=builder /app/minislug0/gfx /app/gfx
-COPY --from=builder /app/minislug0/sfx /app/sfx
-COPY --from=builder /app/minislug0/lev* /app/
-COPY --from=builder /app/minislug0/*.cfg /app/
-COPY --from=builder /app/minislug0/*.scr /app/
+# Copy favicon
+COPY wasm/favicon.svg /usr/share/nginx/html/
 
-# Run the game
-CMD ["./minislug"]
+# Expose port 80
+EXPOSE 80
+
+# Start Nginx
+CMD ["nginx", "-g", "daemon off;"]

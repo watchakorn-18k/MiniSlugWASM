@@ -1,0 +1,6 @@
+wasm/build
+minislug0/*.o
+minislug0/minislug
+.git
+.gitignore
+.DS_Store

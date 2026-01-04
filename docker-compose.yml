@@ -1,0 +1,13 @@
+version: "3.8"
+services:
+  minislug:
+    build: .
+    image: minislug-wasm-nginx
+    container_name: minislug-game
+    ports:
+      - "8082:80"
+    restart: always
+    deploy:
+      resources:
+        limits:
+          memory: 50M

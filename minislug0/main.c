@@ -314,7 +314,7 @@ SDL_Surface * VideoModeSet(u32 nScrWidth, u32 nScrHeight, u32 nSDL_Flags)
 	// Create or recreate window if needed
 	if (gVar.pWindow == NULL)
 	{
-		gVar.pWindow = SDL_CreateWindow("Mini Slug Project by 17o2!!",
+		gVar.pWindow = SDL_CreateWindow("Mini Slug | wk18k",
 			SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
 			nScrWidth, nScrHeight, nSDL_Flags);
 		if (gVar.pWindow == NULL)

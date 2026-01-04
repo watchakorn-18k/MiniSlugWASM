@@ -63,7 +63,7 @@ MiniSlug_src_000/
 - [x] สร้าง `build.sh` (root) - พร้อมใช้งานหลังแก้โค้ด SDL2
 
 ### 1.2 WASM Build Environment
-- [x] สร้าง `wasm/Dockerfile` - Emscripten build environment
+- [x] สร้าง `wasm/Dockerfile.build` - Emscripten build environment
 - [x] สร้าง `wasm/build.sh` - Build script พร้อมใช้งาน
 - [x] สร้าง `wasm/Makefile.wasm` - Makefile สำหรับ WASM build
 - [x] สร้าง `wasm/index.html` - HTML wrapper สำหรับ browser

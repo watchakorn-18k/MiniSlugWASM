@@ -14,11 +14,12 @@ echo ""
 
 # Build Podman image
 echo "[1/4] Building Emscripten Podman image..."
-podman build -t ${IMAGE_NAME} -f "$SCRIPT_DIR/Dockerfile" "$PROJECT_ROOT"
+podman build -t ${IMAGE_NAME} -f "$SCRIPT_DIR/Dockerfile.build" "$PROJECT_ROOT"
 
 # Copy Makefile.wasm to minislug0
 echo "[2/4] Preparing build files..."
 cp "$SCRIPT_DIR/Makefile.wasm" "$PROJECT_ROOT/minislug0/"
+cp "$SCRIPT_DIR/favicon.svg" "$SCRIPT_DIR/build/"
 
 # Run WASM build inside container
 echo "[3/4] Compiling to WebAssembly..."
@@ -37,4 +38,4 @@ ls -la "$SCRIPT_DIR/build/" 2>/dev/null || echo "(build directory will be create
 echo ""
 echo "To test locally:"
 echo "  cd wasm/build && python3 -m http.server 8080"
-echo "  Open: http://localhost:8080/minislug.html"
+echo "  Open: http://localhost:8080/index.html"
