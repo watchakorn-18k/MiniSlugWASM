@@ -51,9 +51,9 @@ This will generate the web files in `wasm/build/`.
 ## 🎮 Controls
 
 - **Arrow Keys**: Move
-- **C**: Jump
-- **V**: Shoot
-- **X**: Grenade
+- **Space**: Jump
+- **X**: Shoot
+- **Z**: Grenade
 
 ## 📂 Project Structure
 

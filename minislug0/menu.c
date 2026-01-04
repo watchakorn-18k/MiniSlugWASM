@@ -688,6 +688,7 @@ void Scr_RazTable(void)
 	{
 //c		{ "Clement 17o2!!", 65050 },
 //c		{ "Pouet !", 59050 },
+		{ "wk18k", 99999 },
 		{ "Colonel", 50000 },
 		{ "Lt-Colonel", 45000 },
 		{ "Major", 40000 },
@@ -1192,7 +1193,7 @@ u32 CfgLoad(void)
 	FILE	*fPt;
 	u32	nSz;
 
-	static struct SMSCfg	sCfgDefault = { { SDL_SCANCODE_UP, SDL_SCANCODE_DOWN, SDL_SCANCODE_LEFT, SDL_SCANCODE_RIGHT, SDL_SCANCODE_V, SDL_SCANCODE_C, SDL_SCANCODE_X, 0, 1, 2 }, 0, 0 };	// Cfg par d�faut.
+	static struct SMSCfg	sCfgDefault = { { SDL_SCANCODE_UP, SDL_SCANCODE_DOWN, SDL_SCANCODE_LEFT, SDL_SCANCODE_RIGHT, SDL_SCANCODE_X, SDL_SCANCODE_SPACE, SDL_SCANCODE_Z, 0, 1, 2 }, 0, 0 };	// Cfg par dfaut.
 
 	fPt = fopen(CFG_FILENAME, "rb");
 	if (fPt == NULL)

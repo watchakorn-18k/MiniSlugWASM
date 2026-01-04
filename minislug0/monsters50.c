@@ -210,7 +210,7 @@ struct SHTPRecord	gpHTPScript[] =
 	{ 32, e_KbDir_Right, 0, { NULL, NULL } },
 	{ 32, 0, 0, { NULL, NULL } },
 
-	{ 1, e_KbDir_ButtonA, 128, { "Press Button A to fire", "the current weapon." } },
+	{ 1, e_KbDir_ButtonA, 128, { "Press X to fire", "the current weapon." } },
 	{ 30, 0, 0, { NULL, NULL } },
 	{ 1, e_KbDir_ButtonA, 0, { NULL, NULL } },
 	{ 30, 0, 0, { NULL, NULL } },
@@ -223,13 +223,13 @@ struct SHTPRecord	gpHTPScript[] =
 	{ 32, 0, 0, { NULL, NULL } },
 
 	{ 1, 0x80, 0, { NULL, NULL } },
-	{ 4, e_KbDir_Right, 128, { "Press Button B to jump.", NULL } },
+	{ 4, e_KbDir_Right, 128, { "Press Space to jump.", NULL } },
 	{ 1, e_KbDir_Right | e_KbDir_ButtonB, 0, { NULL, NULL } },
 	{ 17, e_KbDir_Right, 0, { NULL, NULL } },
 	{ 32, 0, 0, { NULL, NULL } },
 
 	{ 1, e_KbDir_Left, 0, { NULL, NULL } },
-	{ 1, e_KbDir_ButtonC, 128, { "Press Button C to throw a grenade.", NULL } },
+	{ 1, e_KbDir_ButtonC, 128, { "Press Z to throw a grenade.", NULL } },
 	{ 63, 0, 0, { NULL, NULL } },
 	{ 1, e_KbDir_Right, 0, { NULL, NULL } },
 	{ 1, e_KbDir_ButtonC, 0, { NULL, NULL } },
@@ -242,21 +242,21 @@ struct SHTPRecord	gpHTPScript[] =
 	{ 64, 0, 0, { NULL, NULL } },
 	{ 32, 0, 0, { NULL, NULL } },
 
-	{ 32, e_KbDir_ButtonA, 128, { "Press Button A to fire the vulcan", "cannon, use the stick to aim." } },
+	{ 32, e_KbDir_ButtonA, 128, { "Press X to fire the vulcan", "cannon, use the stick to aim." } },
 	{ 32, e_KbDir_Up | e_KbDir_ButtonA, 0, { NULL, NULL } },
 	{ 16, e_KbDir_Left | e_KbDir_ButtonA, 0, { NULL, NULL } },
 	{ 48, e_KbDir_Right | e_KbDir_Up | e_KbDir_ButtonA, 0, { NULL, NULL } },
 	{ 4, e_KbDir_Right | e_KbDir_Up, 0, { NULL, NULL } },
 
 	{ 48, e_KbDir_Right, 0, { NULL, NULL } },
-	{ 16, 0, 128, { "Press Button C to fire", "the vehicle's main cannon." } },
+	{ 16, 0, 128, { "Press Z to fire", "the vehicle's main cannon." } },
 	{ 1, e_KbDir_ButtonC, 0, { NULL, NULL } },
 	{ 15, 0, 0, { NULL, NULL } },
 	{ 15, e_KbDir_Right, 0, { NULL, NULL } },
 	{ 1, e_KbDir_Right | e_KbDir_ButtonC, 0, { NULL, NULL } },
 
 	{ 1, 0x80, 0, { NULL, NULL } },
-	{ 32, 0, 128, { "Press Down and Button B to get out.", NULL } },
+	{ 32, 0, 128, { "Press Down + Space to get out.", NULL } },
 	{ 1, e_KbDir_Down | e_KbDir_ButtonB, 0, { NULL, NULL } },
 	{ 96, 0, 0, { NULL, NULL } },
 
