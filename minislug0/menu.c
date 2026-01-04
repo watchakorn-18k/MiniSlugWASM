@@ -399,7 +399,7 @@ u32 MenuMain_Main(void)
 
 	case MENU_State_Input:
 		{
-			u32	nLastChoix = gMenu.nChoix | (gCCodes.nLevel << 8);
+			u32	nLastChoix = gMenu.nChoix | (gCCodes.nLevel * 256);
 
 			// Selecteur de level ?
 			if (gCCodes.nCheat & e_Cheat_LevelSelect)
@@ -430,7 +430,7 @@ u32 MenuMain_Main(void)
 			}
 
 //			if (nLastChoix != gMenu.nChoix)
-			nLastChoix ^= (gMenu.nChoix | (gCCodes.nLevel << 8));
+			nLastChoix ^= (gMenu.nChoix | (gCCodes.nLevel * 256));
 			if (nLastChoix)
 			{
 				if (nLastChoix & 0xFF) CursorInit();	// Slt parce que c'est plus joli. Et uniquement sur haut/bas.
@@ -547,8 +547,8 @@ void Pixelizer(SDL_Surface *pSurf8, u32 nPixSz)
 
 	nZoom = 0x1000 / nPixSz;
 
-	nResetPosX = (((SCR_Width / 2) << 12) - (nZoom * (SCR_Width / 2))) & 0xFFF;
-	nPosY = (((SCR_Height / 2) << 12) - (nZoom * (SCR_Height / 2))) & 0xFFF;
+	nResetPosX = (((SCR_Width / 2) * 4096) - (nZoom * (SCR_Width / 2))) & 0xFFF;
+	nPosY = (((SCR_Height / 2) * 4096) - (nZoom * (SCR_Height / 2))) & 0xFFF;
 	nOffsY = (nPixSz / 2);
 	for (iy = 0; iy < SCR_Height; iy++)
 	{

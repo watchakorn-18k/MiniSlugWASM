@@ -43,7 +43,7 @@ void PSD_Unprotect(u8 *pBuf)
 u32	ReadBigEndianU16(u8 *pPtr)
 {
 	u32	nVar;
-	nVar = (pPtr[0] << 8) | pPtr[1];
+	nVar = (pPtr[0] * 256) | pPtr[1];
 	return (nVar);
 }
 
@@ -51,7 +51,7 @@ u32	ReadBigEndianU16(u8 *pPtr)
 u32	ReadBigEndianU32(u8 *pPtr)
 {
 	u32	nVar;
-	nVar = (pPtr[0] << 24) | (pPtr[1] << 16) | (pPtr[2] << 8) | pPtr[3];
+	nVar = (pPtr[0] << 24) | (pPtr[1] * 65536) | (pPtr[2] * 256) | pPtr[3];
 	return (nVar);
 }
 

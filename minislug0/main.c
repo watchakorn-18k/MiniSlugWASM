@@ -56,7 +56,7 @@ void Render_Scale2x(SDL_Surface *pSDL_Src, SDL_Surface *pSDL_Dst)
 		for (x = 0; x < SCR_Width; x++)
 		{
 			nClr = *pSrc2++;
-			nClr |= (nClr << 16);
+			nClr |= (nClr * 65536);
 			*pDst2a++ = nClr;
 			*pDst2b++ = nClr;
 		}
@@ -110,8 +110,8 @@ void Render_TV2x(SDL_Surface *pSDL_Src, SDL_Surface *pSDL_Dst)
 		{
 			nClra = *pSrc2++;
 			nClrb = gpTV2xCLUT[nClra];
-			nClra |= (nClra << 16);
-			nClrb |= (nClrb << 16);
+			nClra |= (nClra * 65536);
+			nClrb |= (nClrb * 65536);
 			*pDst2a++ = nClra;
 			*pDst2b++ = nClrb;
 		}

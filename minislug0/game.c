@@ -663,8 +663,8 @@ void GameInitLevel(void)
 	HardSpr_Init();
 
 	// Position du joueur (relue � la lecture du niveau).
-	nPosX = (gMap.nPlayerStartPosX << 12) + (8 << 8);
-	nPosY = (gMap.nPlayerStartPosY << 12) + (16 << 8);
+	nPosX = (gMap.nPlayerStartPosX * 4096) + (8 * 256);
+	nPosY = (gMap.nPlayerStartPosY * 4096) + (16 * 256);
 
 	// Solution de facilit� un peu crade, car �a ne sert que dans un niveau. Sinon on pourrait faire un monstre qui initialise la variable, voire avec un niveau c�t� droit et un niveau c�t� gauche et en fct de la pos du joueur.
 	static s16 gnSplashTb[LEVEL_MAX] = { -1, -1, -1, -1,  -1, -1, -1, -1,  -1, -1, -1, -1,  -1, (20*16)-8, -1, (13*16), -1, -1 };
@@ -852,9 +852,9 @@ u32 PlyrMove_Spd(s32 *pSpd, s32 nSpdMax, s32 nAcc, const u32 nKeyMinus, const u3
 // Emp�che de sortir de la map par le haut.
 void PlayerMove_LimitY(s32 nHeight)
 {
-	if (gShoot.nPlayerPosY - (nHeight << 8) <= 0)
+	if (gShoot.nPlayerPosY - (nHeight * 256) <= 0)
 	{
-		gShoot.nPlayerPosY = nHeight << 8;
+		gShoot.nPlayerPosY = nHeight * 256;
 		if (gShoot.nPlayerSpdY < 0) gShoot.nPlayerSpdY = 0;
 	}
 }
@@ -862,9 +862,9 @@ void PlayerMove_LimitY(s32 nHeight)
 // Emp�che de sortir de la map par le bas (peut arriver dans le niveau sous-marin).
 void PlayerMove_LimitY_Bottom(s32 nHeight)
 {
-	if (gShoot.nPlayerPosY + (nHeight << 8) >= (gMap.pPlanesHt[gMap.nHeroPlane] << 12) - 0x100)
+	if (gShoot.nPlayerPosY + (nHeight * 256) >= (gMap.pPlanesHt[gMap.nHeroPlane] * 4096) - 0x100)
 	{
-		gShoot.nPlayerPosY = (gMap.pPlanesHt[gMap.nHeroPlane] << 12) - 0x100 - (nHeight << 8);
+		gShoot.nPlayerPosY = (gMap.pPlanesHt[gMap.nHeroPlane] * 4096) - 0x100 - (nHeight * 256);
 		if (gShoot.nPlayerSpdY > 0) gShoot.nPlayerSpdY = 0;
 	}
 }
@@ -875,7 +875,7 @@ void PlayerMove_LimitX(s32 nOffsetX)
 	s32	nLimitMinX, nLimitMaxX;
 
 	nLimitMinX = gScrollPos.nPosX;
-	nLimitMaxX = gScrollPos.nPosX + (SCR_Width << 8) - 0x100;
+	nLimitMaxX = gScrollPos.nPosX + (SCR_Width * 256) - 0x100;
 
 	if (gShoot.nPlayerPosX + gShoot.nPlayerSpdX - nOffsetX <= nLimitMinX) gShoot.nPlayerSpdX = 0;
 	if (gShoot.nPlayerPosX - nOffsetX <= nLimitMinX) gShoot.nPlayerPosX = nLimitMinX + nOffsetX;	// S�curit�, mais ne devrait pas arriver.
@@ -958,7 +958,7 @@ void VulcanCannon_Manage(u32 nSlugSpr)
 			nCannonOffsX = nCannonOffsY = 0;
 		}
 		// Tir. (Note : On cleare les 3 derniers bits pour avoir un affichage qui est nickel du tir par rapport au canon).
-		FireAdd(e_Shot_Player_VulcanCannon, gShoot.nPlayerPosX + ((nOffsX + nCannonOffsX) << 8), gShoot.nPlayerPosY + ((nOffsY + nCannonOffsY) << 8), gShoot.nVulcanAngle & ~7);
+		FireAdd(e_Shot_Player_VulcanCannon, gShoot.nPlayerPosX + ((nOffsX + nCannonOffsX) * 256), gShoot.nPlayerPosY + ((nOffsY + nCannonOffsY) * 256), gShoot.nVulcanAngle & ~7);
 		// Anim de tir.
 		AnmSet(gAnm_VulcanCannon_Shot, gShoot.nVulcanAnm);
 		nCntS = 6;//8;
@@ -1033,7 +1033,7 @@ void Slug_GenerateMst(u32 nVehicleType, s32 nPosX, s32 nPosY, u32 nSlugBombsSave
 
 	u8	pData[5];
 	pData[0] = nVehicleType - e_HeroVehicle_SlugBase;
-	pData[0] |= (gShoot.nVehicleEnergy > SLUG_ENERGY_ALERT ? 0 : 1) << 4;
+	pData[0] |= (gShoot.nVehicleEnergy > SLUG_ENERGY_ALERT ? 0 : 1) * 16;
 	pData[1] = gShoot.nVehicleEnergy;
 	pData[2] = gShoot.nVulcanAngle;
 	pData[3] = nSlugBombsSave;
@@ -1098,7 +1098,7 @@ void Slug_GetOut(u32 nSlugType, u32 nNakedType, u64 *pExitAnm, s32 nPlyrSpdY)
 	}
 
 	nPosX = gShoot.nPlayerPosX;		// Sauvegarde des pos du h�ros AVANT le VehicleSet.
-	nPosY = gShoot.nPlayerPosY + (gShoot.nVehicleOffsY << 8);
+	nPosY = gShoot.nPlayerPosY + (gShoot.nVehicleOffsY * 256);
 	MstSlug_EntrancePtGet(nSlugType - e_HeroVehicle_SlugBase, &nOffsX, &nOffsY);
 	// Slugs en rotation, d�calage du point de ref.
 	if (gShoot.nVehicleType == e_HeroVehicle_Tank)
@@ -1108,7 +1108,7 @@ void Slug_GetOut(u32 nSlugType, u32 nNakedType, u64 *pExitAnm, s32 nPlyrSpdY)
 
 	// Passe en naked.
 	if (nNakedType == e_HeroVehicle_None_Swim) nOffsY -= 8;		// D�calage pour le slug out sous-marin.
-	Player_VehicleSet(nNakedType, nPosX + (nOffsX << 8), nPosY + (nOffsY << 8), SLUG_ENERGY_MAX, 0, 0);
+	Player_VehicleSet(nNakedType, nPosX + (nOffsX * 256), nPosY + (nOffsY * 256), SLUG_ENERGY_MAX, 0, 0);
 	AnmSet(pExitAnm, gShoot.nPlayerAnm);	// Force l'anim de slug out.
 	gShoot.nPlayerSpdY = -nPlyrSpdY;
 	gShoot.nPlayerGnd = gShoot.nPlayerLastGnd = 0;
@@ -1259,7 +1259,7 @@ if (gVar.pKeys[SDL_SCANCODE_R])
 	// Sol dte/gche.
 	Gen_SideCheck(SLUG_SUBMARINE_REF_OFFSETX, SLUG_SUBMARINE_SPDX_MAX);	// Mettra la vitesse � 0 si mouvement pas possible.
 	// Plafond dte/gche.
-	Gen_CeilingSideCheck(SLUG_SUBMARINE_REF_OFFSETX, (SLUG_SUBMARINE_HEIGHT - 4) << 8, SLUG_SUBMARINE_SPDX_MAX);
+	Gen_CeilingSideCheck(SLUG_SUBMARINE_REF_OFFSETX, (SLUG_SUBMARINE_HEIGHT - 4) * 256, SLUG_SUBMARINE_SPDX_MAX);
 	// Add.
 	gShoot.nPlayerPosX += gShoot.nPlayerSpdX;
 	gShoot.nPlayerPosY += gShoot.nPlayerSpdY;
@@ -1269,8 +1269,8 @@ if (gVar.pKeys[SDL_SCANCODE_R])
 	Gen_GroundCheck(gShoot.nPlayerPosX + SLUG_SUBMARINE_REF_OFFSETX);
 	Gen_GroundCheck(gShoot.nPlayerPosX - SLUG_SUBMARINE_REF_OFFSETX);
 	// Test du plafond.
-	Gen_CeilingCheck(gShoot.nPlayerPosX + SLUG_SUBMARINE_REF_OFFSETX, (SLUG_SUBMARINE_HEIGHT - 4) << 8);
-	Gen_CeilingCheck(gShoot.nPlayerPosX - SLUG_SUBMARINE_REF_OFFSETX, (SLUG_SUBMARINE_HEIGHT - 4) << 8);
+	Gen_CeilingCheck(gShoot.nPlayerPosX + SLUG_SUBMARINE_REF_OFFSETX, (SLUG_SUBMARINE_HEIGHT - 4) * 256);
+	Gen_CeilingCheck(gShoot.nPlayerPosX - SLUG_SUBMARINE_REF_OFFSETX, (SLUG_SUBMARINE_HEIGHT - 4) * 256);
 
 	// Inclinaison.
 	gShoot.nVehicleReqAdd = SLUG_SUBMARINE_DEFAULTSPRADD;
@@ -1344,7 +1344,7 @@ void SlugDisplay_Submarine(void)
 		if ((gnFrame & 15) == 0)
 		if (gShoot.nPlayerSpdX > SLUG_SUBMARINE_ACC)
 			DustSet(gAnm_SubmarineBubble_Dust,
-				gShoot.nPlayerPosX - (24 << 8), gShoot.nPlayerPosY - (8 << 8) + ((gShoot.nVehicleCurAdd - SLUG_SUBMARINE_DEFAULTSPRADD) << 7), e_Prio_DustUnder, 0);
+				gShoot.nPlayerPosX - (24 * 256), gShoot.nPlayerPosY - (8 * 256) + ((gShoot.nVehicleCurAdd - SLUG_SUBMARINE_DEFAULTSPRADD) << 7), e_Prio_DustUnder, 0);
 
 		break;
 	}
@@ -1358,8 +1358,8 @@ void SlugDisplay_Submarine(void)
 		if (sSlugRect.nType == e_SprRect_Rect)
 		{
 			// Origine du tir : Point sup�rieur droit (+16).
-//			FireAdd(e_Shot_Player_SlugSubmarine_Rocket_Launch, gShoot.nPlayerPosX + (sSlugRect.nX2 << 8), gShoot.nPlayerPosY  + ((sSlugRect.nY1 + 16) << 8), 0);	// Tout droit.
-			FireAdd(e_Shot_Player_SlugSubmarine_Rocket_Launch, gShoot.nPlayerPosX + (sSlugRect.nX2 << 8), gShoot.nPlayerPosY  + ((sSlugRect.nY1 + 16) << 8), gShoot.nVehicleCurAdd - 15);	// Avec angle su slug.
+//			FireAdd(e_Shot_Player_SlugSubmarine_Rocket_Launch, gShoot.nPlayerPosX + (sSlugRect.nX2 * 256), gShoot.nPlayerPosY  + ((sSlugRect.nY1 + 16) * 256), 0);	// Tout droit.
+			FireAdd(e_Shot_Player_SlugSubmarine_Rocket_Launch, gShoot.nPlayerPosX + (sSlugRect.nX2 * 256), gShoot.nPlayerPosY  + ((sSlugRect.nY1 + 16) * 256), gShoot.nVehicleCurAdd - 15);	// Avec angle su slug.
 			Sfx_PlaySfx(e_Sfx_Shot_MiniRocket, e_SfxPrio_Hero_Shot);	// !!changer!!
 //			gVar.pKeys[KB_BUTTONC] = 0;
 			gVar.pKeys[gMSCfg.pKeys[e_CfgKey_ButtonC]] = 0;
@@ -1390,19 +1390,19 @@ u32 Rocket_EnemyCheckScreenOut(void)
 		gShoot.nPlayerPosX = gScrollPos.nPosX + SLUG_ROCKET_REF_OFFSETX;
 		nRetVal++;
 	}
-	else if (gShoot.nPlayerPosX + SLUG_ROCKET_REF_OFFSETX > gScrollPos.nPosX + (SCR_Width << 8) - 0x100)
+	else if (gShoot.nPlayerPosX + SLUG_ROCKET_REF_OFFSETX > gScrollPos.nPosX + (SCR_Width * 256) - 0x100)
 	{
-		gShoot.nPlayerPosX = gScrollPos.nPosX + (SCR_Width << 8) - 0x100 - SLUG_ROCKET_REF_OFFSETX;
+		gShoot.nPlayerPosX = gScrollPos.nPosX + (SCR_Width * 256) - 0x100 - SLUG_ROCKET_REF_OFFSETX;
 		nRetVal++;
 	}
-	if (gShoot.nPlayerPosY < gScrollPos.nPosY + (SLUG_ROCKET_HEIGHT << 8))
+	if (gShoot.nPlayerPosY < gScrollPos.nPosY + (SLUG_ROCKET_HEIGHT * 256))
 	{
-		gShoot.nPlayerPosY = gScrollPos.nPosY + (SLUG_ROCKET_HEIGHT << 8);
+		gShoot.nPlayerPosY = gScrollPos.nPosY + (SLUG_ROCKET_HEIGHT * 256);
 		nRetVal++;
 	}
-	else if (gShoot.nPlayerPosY > gScrollPos.nPosY + (SCR_Height << 8))
+	else if (gShoot.nPlayerPosY > gScrollPos.nPosY + (SCR_Height * 256))
 	{
-		gShoot.nPlayerPosY = gScrollPos.nPosY + (SCR_Height << 8);
+		gShoot.nPlayerPosY = gScrollPos.nPosY + (SCR_Height * 256);
 		nRetVal++;
 	}
 	return (nRetVal);
@@ -1457,8 +1457,8 @@ if (gVar.pKeys[SDL_SCANCODE_R])
 		PlayerMove_LimitX(SLUG_ROCKET_REF_OFFSETX);
 		// En Y, cas sp�cifique au niveau de la roquette.
 		s32	nLimitMinY, nLimitMaxY;
-		nLimitMinY = gScrollPos.nPosY + (SLUG_ROCKET_HEIGHT << 8);
-		nLimitMaxY = gScrollPos.nPosY + (SCR_Height << 8);
+		nLimitMinY = gScrollPos.nPosY + (SLUG_ROCKET_HEIGHT * 256);
+		nLimitMaxY = gScrollPos.nPosY + (SCR_Height * 256);
 		if (gShoot.nPlayerPosY + gShoot.nPlayerSpdY <= nLimitMinY)
 		{
 			gShoot.nPlayerPosY = nLimitMinY;
@@ -1492,7 +1492,7 @@ void SlugRocket_sub_Shot(u32 nShotNo, u32 nSpr, s32 nPosX, s32 nPosY, s32 nSpark
 	{	// Si on a trouv� un point, tir.
 		nShotOffsX = sShotRect.nX1;
 		nShotOffsY = sShotRect.nY1;
-		FireAdd(nShotNo, nPosX + (nShotOffsX << 8), nPosY + ((nShotOffsY - 16) << 8), 64);
+		FireAdd(nShotNo, nPosX + (nShotOffsX * 256), nPosY + ((nShotOffsY - 16) * 256), 64);
 		// Anim de tir.
 		AnmSet(pSparkAnm, nSparkAnmSlot);
 		// Dec.
@@ -1602,7 +1602,7 @@ void SlugDisplay_Rocket(void)
 		SprDisplay(nSpr | nFlagHit, gShoot.nPlayerPosX >> 8, gShoot.nPlayerPosY >> 8, e_Prio_Joueur-2);
 		// Trail dust (un peu de la bidouille mais bon...).
 		if ((gnFrame & 15) == 0)
-			DustSetMvt(gAnm_SlugRocket_MainThruster_Dust, gShoot.nPlayerPosX - (gShoot.nPlayerSpdX * 2), gShoot.nPlayerPosY + (16 << 8), gShoot.nPlayerSpdX / 2, gShoot.nPlayerSpdY + 0x200, e_Prio_Joueur - 1, 0);
+			DustSetMvt(gAnm_SlugRocket_MainThruster_Dust, gShoot.nPlayerPosX - (gShoot.nPlayerSpdX * 2), gShoot.nPlayerPosY + (16 * 256), gShoot.nPlayerSpdX / 2, gShoot.nPlayerSpdY + 0x200, e_Prio_Joueur - 1, 0);
 
 		// Small thrusters.
 		for (i = 0; i < 4; i++)
@@ -1651,7 +1651,7 @@ void SlugDisplay_Rocket(void)
 		if (SprGetRect(e_Spr_SlugRocket_Idle, e_SprRectZone_ShotOrg, &sSlugRect))
 		if (sSlugRect.nType == e_SprRect_Point)
 		{
-			FireAdd(e_Shot_Player_SlugRocket_Rocket_Launch, gShoot.nPlayerPosX + (sSlugRect.nX1 << 8), gShoot.nPlayerPosY  + (sSlugRect.nY1 << 8), 64);
+			FireAdd(e_Shot_Player_SlugRocket_Rocket_Launch, gShoot.nPlayerPosX + (sSlugRect.nX1 * 256), gShoot.nPlayerPosY  + (sSlugRect.nY1 * 256), 64);
 			Sfx_PlaySfx(e_Sfx_Shot_MiniRocket, e_SfxPrio_Hero_Shot);	// !!changer!!
 //			gVar.pKeys[KB_BUTTONC] = 0;
 			gVar.pKeys[gMSCfg.pKeys[e_CfgKey_ButtonC]] = 0;
@@ -1674,7 +1674,7 @@ void SlugDisplay_Rocket(void)
 		if (gShoot.pnRocketSideWeaponsAnmLR[i] != -1)
 		{
 			nSpr = AnmGetLastImage(gShoot.pnRocketSideWeaponsAnmLR[i]);
-			SlugRocket_sub_Shot(e_Shot_Player_SlugRocket_MachinegunV, nSpr, gShoot.nPlayerPosX, gShoot.nPlayerPosY - (20 << 8), gShoot.pnRocketSideWeaponsSparkAnmLR[i], (i == 0 ? gAnm_SlugRocket_ShotSparkSideL : gAnm_SlugRocket_ShotSparkSideR));
+			SlugRocket_sub_Shot(e_Shot_Player_SlugRocket_MachinegunV, nSpr, gShoot.nPlayerPosX, gShoot.nPlayerPosY - (20 * 256), gShoot.pnRocketSideWeaponsSparkAnmLR[i], (i == 0 ? gAnm_SlugRocket_ShotSparkSideL : gAnm_SlugRocket_ShotSparkSideR));
 		}
 		nCntS = 8;
 		// Plus de balles ? => Repasse en Gun.
@@ -1874,19 +1874,19 @@ void SlugDisplay_Helicopter(void)
 		if (sSlugRect.nType == e_SprRect_Rect)
 		{
 			// Origine du tir : Point sup�rieur droit (+16).
-//			FireAdd(e_Shot_Player_SlugCopter_Bomb_Drop, gShoot.nPlayerPosX + (sSlugRect.nX2 << 8), gShoot.nPlayerPosY  + ((sSlugRect.nY1 + 16) << 8), 0);
+//			FireAdd(e_Shot_Player_SlugCopter_Bomb_Drop, gShoot.nPlayerPosX + (sSlugRect.nX2 * 256), gShoot.nPlayerPosY  + ((sSlugRect.nY1 + 16) * 256), 0);
 
 			if (gShoot.nVehicleType == e_HeroVehicle_HelicopterNoExit)
 			{	// H�lico no exit : Missile.
-//				FireAdd(e_Shot_Player_RocketSmall_Launch, gShoot.nPlayerPosX + (sSlugRect.nX2 << 8), gShoot.nPlayerPosY  + ((sSlugRect.nY1 + 16) << 8), -gShoot.nPlayerSpdY >> 7);
-				FireAdd(e_Shot_Player_RocketSmall_Launch, gShoot.nPlayerPosX + (sSlugRect.nX2 << 8) + (8<<8), gShoot.nPlayerPosY  + ((sSlugRect.nY1 + 16) << 8) - (8<<8) + (gShoot.nPlayerSpdY * 4), 0);
+//				FireAdd(e_Shot_Player_RocketSmall_Launch, gShoot.nPlayerPosX + (sSlugRect.nX2 * 256), gShoot.nPlayerPosY  + ((sSlugRect.nY1 + 16) * 256), -gShoot.nPlayerSpdY >> 7);
+				FireAdd(e_Shot_Player_RocketSmall_Launch, gShoot.nPlayerPosX + (sSlugRect.nX2 * 256) + (8<<8), gShoot.nPlayerPosY  + ((sSlugRect.nY1 + 16) * 256) - (8<<8) + (gShoot.nPlayerSpdY * 4), 0);
 				Sfx_PlaySfx(e_Sfx_Shot_MiniRocket, e_SfxPrio_Hero_Shot);	// !!changer!!
 			}
 			else
 			{	// H�lico normal : Bombe.
 				// Tir + Modification de la vitesse X du tir.
 				s32	nFireSlot;
-				nFireSlot = FireAdd(e_Shot_Player_SlugCopter_Bomb_Drop, gShoot.nPlayerPosX + (sSlugRect.nX2 << 8), gShoot.nPlayerPosY  + ((sSlugRect.nY1 + 16) << 8), 0);
+				nFireSlot = FireAdd(e_Shot_Player_SlugCopter_Bomb_Drop, gShoot.nPlayerPosX + (sSlugRect.nX2 * 256), gShoot.nPlayerPosY  + ((sSlugRect.nY1 + 16) * 256), 0);
 				Sfx_PlaySfx(e_Sfx_Shot_Gun, e_SfxPrio_Hero_Shot);	// !!changer!!
 				if (nFireSlot != -1)
 				{
@@ -2101,16 +2101,16 @@ if (gVar.pKeys[SDL_SCANCODE_R])
 	if (gShoot.nPlayerGnd)
 	{
 		// Au sol.
-//m		gShoot.nVehicleCurAdd = fatan2((nHtL - nHtR) << 8, SLUG_TANK_REF_OFFSETX * 2);
-		gShoot.nVehicleCurAdd = fatan2((nHtL - nHtR) << 8, nDiffX);
+//m		gShoot.nVehicleCurAdd = fatan2((nHtL - nHtR) * 256, SLUG_TANK_REF_OFFSETX * 2);
+		gShoot.nVehicleCurAdd = fatan2((nHtL - nHtR) * 256, nDiffX);
 	}
 	else if (gShoot.nPlayerSpdY > 0)
 	{
 		// En l'air, on tourne un peu juste avant de retoucher le sol pour �viter un gros accoup.
 		if (BlockGetGroundLevel(gShoot.nPlayerPosX >> 8, (gShoot.nPlayerPosY >> 8) + gShoot.nVehicleOffsY) <= 16)
 		{
-//m			s32 nAng = fatan2((nHtL - nHtR) << 8, SLUG_TANK_REF_OFFSETX * 2);
-			s32 nAng = fatan2((nHtL - nHtR) << 8, nDiffX);
+//m			s32 nAng = fatan2((nHtL - nHtR) * 256, SLUG_TANK_REF_OFFSETX * 2);
+			s32 nAng = fatan2((nHtL - nHtR) * 256, nDiffX);
 			gShoot.nVehicleCurAdd += (nAng - (s32)gShoot.nVehicleCurAdd) / 4;
 		}
 	}
@@ -2161,7 +2161,7 @@ void SlugDisplay_Tank(void)
 	nFlagHit = (gShoot.nVehicleHitCnt ? SPR_Flag_HitPal : 0);		// Palette hit.
 
 	// Le d�calage - Add.
-	gShoot.nPlayerPosY += gShoot.nVehicleOffsY << 8;
+	gShoot.nPlayerPosY += gShoot.nVehicleOffsY * 256;
 
 	switch (gShoot.nVehiclePhase)
 	{
@@ -2213,7 +2213,7 @@ void SlugDisplay_Tank(void)
 		gShoot.nPlayerAnmTop = AnmSet(gAnm_SlugTank_Shot, gShoot.nPlayerAnmTop);
 
 		// Tir.
-		FireAdd(e_Shot_Player_RocketSmall_Launch, gShoot.nPlayerPosX + (nOffsX << 8), gShoot.nPlayerPosY + (nOffsY << 8), gShoot.nVehicleCurAdd);
+		FireAdd(e_Shot_Player_RocketSmall_Launch, gShoot.nPlayerPosX + (nOffsX * 256), gShoot.nPlayerPosY + (nOffsY * 256), gShoot.nVehicleCurAdd);
 		Sfx_PlaySfx(e_Sfx_Shot_Mortar, e_SfxPrio_Hero_Shot);
 
 //		gVar.pKeys[KB_BUTTONC] = 0;
@@ -2257,7 +2257,7 @@ void SlugDisplay_Tank(void)
 //	Slug_StepDust(gShoot.nPlayerGnd, SLUG_TANK_REF_OFFSETX, gShoot.nPlayerPosX, gShoot.nPlayerPosY);
 
 	// Le d�calage - Sub.
-	gShoot.nPlayerPosY -= gShoot.nVehicleOffsY << 8;
+	gShoot.nPlayerPosY -= gShoot.nVehicleOffsY * 256;
 
 }
 
@@ -2399,9 +2399,9 @@ void Player_ShotCheck(u32 nSpr, u32 nUp)
 			}
 
 			if (nUp)
-			FireAdd(gpPlyrShotV[gShoot.nWeapon], gShoot.nPlayerPosX + (sRect1.nX1 << 8), gShoot.nPlayerPosY + (sRect1.nY1 << 8), (nUp == 1 ? 64 : 192) + nAddAng);
+			FireAdd(gpPlyrShotV[gShoot.nWeapon], gShoot.nPlayerPosX + (sRect1.nX1 * 256), gShoot.nPlayerPosY + (sRect1.nY1 * 256), (nUp == 1 ? 64 : 192) + nAddAng);
 			else
-			FireAdd(gpPlyrShotH[gShoot.nWeapon], gShoot.nPlayerPosX + (sRect1.nX1 << 8), gShoot.nPlayerPosY + (sRect1.nY1 << 8), (gShoot.nPlayerDir ? 128 : 0) + nAddAng);
+			FireAdd(gpPlyrShotH[gShoot.nWeapon], gShoot.nPlayerPosX + (sRect1.nX1 * 256), gShoot.nPlayerPosY + (sRect1.nY1 * 256), (gShoot.nPlayerDir ? 128 : 0) + nAddAng);
 
 			// D�cr�mentation du nombre de balles, sauf si n�gatif (pistolet => munitions infinies).
 			if (gShoot.nAmmo > 0) gShoot.nAmmo--;
@@ -2484,15 +2484,15 @@ u32 RectColCheck(struct SSprRect *pRect1, s32 nPosX1, s32 nPosY1, struct SSprRec
 	s32	nXMin2, nXMax2, nYMin2, nYMax2;
 
 	// Rect 1.
-	nXMin1 = nPosX1 + (pRect1->nX1 << 8);
-	nXMax1 = nPosX1 + (pRect1->nX2 << 8);
-	nYMin1 = nPosY1 + (pRect1->nY1 << 8);
-	nYMax1 = nPosY1 + (pRect1->nY2 << 8);
+	nXMin1 = nPosX1 + (pRect1->nX1 * 256);
+	nXMax1 = nPosX1 + (pRect1->nX2 * 256);
+	nYMin1 = nPosY1 + (pRect1->nY1 * 256);
+	nYMax1 = nPosY1 + (pRect1->nY2 * 256);
 	// Rect 2.
-	nXMin2 = nPosX2 + (pRect2->nX1 << 8);
-	nXMax2 = nPosX2 + (pRect2->nX2 << 8);
-	nYMin2 = nPosY2 + (pRect2->nY1 << 8);
-	nYMax2 = nPosY2 + (pRect2->nY2 << 8);
+	nXMin2 = nPosX2 + (pRect2->nX1 * 256);
+	nXMax2 = nPosX2 + (pRect2->nX2 * 256);
+	nYMin2 = nPosY2 + (pRect2->nY1 * 256);
+	nYMax2 = nPosY2 + (pRect2->nY2 * 256);
 
 /*
 //>> tst / affichage du sprite de col
@@ -2528,10 +2528,10 @@ u32 Enemy_sub_RocketBlowRect(struct SSprRect *pRect1, s32 nPosX1, s32 nPosY1)
 		if (gShoot.pnRocketSideWeaponsAnmLR[i] != -1)
 		if (SprGetRect(AnmGetLastImage(gShoot.pnRocketSideWeaponsAnmLR[i]), e_SprRectZone_RectCol, &sRect2))
 		if (sRect2.nType == e_SprRect_Rect)
-		if (RectColCheck(pRect1, nPosX1, nPosY1, &sRect2, gShoot.nPlayerPosX, gShoot.nPlayerPosY - (20 << 8)))
+		if (RectColCheck(pRect1, nPosX1, nPosY1, &sRect2, gShoot.nPlayerPosX, gShoot.nPlayerPosY - (20 * 256)))
 		{
 			// Explosion du canon.
-			DustSet(gAnm_Explosion0_Medium_Dust, gShoot.nPlayerPosX + ((i & 1 ? 32 : -32) << 8), gShoot.nPlayerPosY - (20 << 8), e_Prio_Joueur + 3, 0);	//e_Prio_DustOver
+			DustSet(gAnm_Explosion0_Medium_Dust, gShoot.nPlayerPosX + ((i & 1 ? 32 : -32) * 256), gShoot.nPlayerPosY - (20 * 256), e_Prio_Joueur + 3, 0);	//e_Prio_DustOver
 			// Lib�re le slot d'anim.
 			AnmReleaseSlot(gShoot.pnRocketSideWeaponsAnmLR[i]);
 			gShoot.pnRocketSideWeaponsAnmLR[i] = -1;
@@ -2567,15 +2567,15 @@ u32 Enemy_PlayerBlowRect(struct SSprRect *pRect1, s32 nPosX, s32 nPosY, u32 nDam
 	if (SprGetRect(gShoot.nPlayerSprCol, e_SprRectZone_RectCol, &sRect2) == 0) return (0);
 	if (sRect2.nType != e_SprRect_Rect) return (0);
 	// Ok.
-	nXMin2 = gShoot.nPlayerPosX + (sRect2.nX1 << 8);
-	nXMax2 = gShoot.nPlayerPosX + (sRect2.nX2 << 8);
-	nYMin2 = gShoot.nPlayerPosY + (sRect2.nY1 << 8);
-	nYMax2 = gShoot.nPlayerPosY + (sRect2.nY2 << 8);
+	nXMin2 = gShoot.nPlayerPosX + (sRect2.nX1 * 256);
+	nXMax2 = gShoot.nPlayerPosX + (sRect2.nX2 * 256);
+	nYMin2 = gShoot.nPlayerPosY + (sRect2.nY1 * 256);
+	nYMax2 = gShoot.nPlayerPosY + (sRect2.nY2 * 256);
 	// Rectangle de col de l'ennemi.
-	nXMin1 = nPosX + (pRect1->nX1 << 8);
-	nXMax1 = nPosX + (pRect1->nX2 << 8);
-	nYMin1 = nPosY + (pRect1->nY1 << 8);
-	nYMax1 = nPosY + (pRect1->nY2 << 8);
+	nXMin1 = nPosX + (pRect1->nX1 * 256);
+	nXMax1 = nPosX + (pRect1->nX2 * 256);
+	nYMin1 = nPosY + (pRect1->nY1 * 256);
+	nYMax1 = nPosY + (pRect1->nY2 * 256);
 
 /*
 //>> tst / affichage du sprite de col
@@ -2648,7 +2648,7 @@ u32 Gen_CeilingCheck(u32 nPosX, s32 nHeroHt)
 			// Plafond touch�.
 			gShoot.nPlayerSpdY = 0;
 			gShoot.nPlayerPosY &= ~0xFFF;	// FFF => On cleane la virgule avec.
-			gShoot.nPlayerPosY += nHt2 << 8;
+			gShoot.nPlayerPosY += nHt2 * 256;
 
 //SprDisplay(e_Spr_Tstrct_Cross, nPosX>>8, gShoot.nPlayerPosY>>8, 250);
 
@@ -2722,7 +2722,7 @@ void PlayerControl_Swim(void)
 	// Sol dte/gche.
 	Gen_SideCheck(PLYR_SWIM_REF_OFFSETX, PLYR_SWIM_SPDX_MAX);	// Mettra la vitesse � 0 si mouvement pas possible.
 	// Plafond dte/gche.
-	Gen_CeilingSideCheck(PLYR_SWIM_REF_OFFSETX, (PLYR_SWIM_HEIGHT - 4) << 8, PLYR_SWIM_SPDX_MAX);
+	Gen_CeilingSideCheck(PLYR_SWIM_REF_OFFSETX, (PLYR_SWIM_HEIGHT - 4) * 256, PLYR_SWIM_SPDX_MAX);
 	// Add.
 	gShoot.nPlayerPosX += gShoot.nPlayerSpdX;
 	gShoot.nPlayerPosY += gShoot.nPlayerSpdY;
@@ -2744,8 +2744,8 @@ void PlayerControl_Swim(void)
 	Gen_GroundCheck(gShoot.nPlayerPosX + PLYR_SWIM_REF_OFFSETX);
 	Gen_GroundCheck(gShoot.nPlayerPosX - PLYR_SWIM_REF_OFFSETX);
 	// Test du plafond.
-	Gen_CeilingCheck(gShoot.nPlayerPosX + PLYR_SWIM_REF_OFFSETX, (PLYR_SWIM_HEIGHT - 4) << 8);
-	Gen_CeilingCheck(gShoot.nPlayerPosX - PLYR_SWIM_REF_OFFSETX, (PLYR_SWIM_HEIGHT - 4) << 8);
+	Gen_CeilingCheck(gShoot.nPlayerPosX + PLYR_SWIM_REF_OFFSETX, (PLYR_SWIM_HEIGHT - 4) * 256);
+	Gen_CeilingCheck(gShoot.nPlayerPosX - PLYR_SWIM_REF_OFFSETX, (PLYR_SWIM_HEIGHT - 4) * 256);
 
 	// Anim.
 	AnmSetIfNew(gpHeroAnm[nAnmNo], gShoot.nPlayerAnm);
@@ -2777,7 +2777,7 @@ void PlayerDisplay_Swim(void)
 		s32	nShotAng = (s32)gShoot.nVehicleCurAdd - PLYR_SWIM_DEFAULTSPRADD;
 		nShotAng <<= 3;
 		// Tir.
-		FireAdd(e_Shot_Player_SwimGrenade_Throw, gShoot.nPlayerPosX + ((gShoot.nPlayerDir ? -16 : 16) << 8), gShoot.nPlayerPosY - (6 << 8) + (nShotAng << 7), (gShoot.nPlayerDir ? 128 + nShotAng : 0 - nShotAng));
+		FireAdd(e_Shot_Player_SwimGrenade_Throw, gShoot.nPlayerPosX + ((gShoot.nPlayerDir ? -16 : 16) * 256), gShoot.nPlayerPosY - (6 * 256) + (nShotAng << 7), (gShoot.nPlayerDir ? 128 + nShotAng : 0 - nShotAng));
 		Sfx_PlaySfx(e_Sfx_Shot_MiniRocket, e_SfxPrio_Hero_Shot);	// !!changer!!
 		gVar.pKeys[gMSCfg.pKeys[e_CfgKey_ButtonC]] = 0;
 		gShoot.nBombAmmo--;
@@ -2816,7 +2816,7 @@ void PlayerDisplay_Swim(void)
 //		if (((++nBubbles) & 63) == 0)
 		if ((gnFrame & 63) == 0)
 			DustSet(gAnm_SubmarineBubble_Dust,
-				gShoot.nPlayerPosX + ((gShoot.nPlayerDir ? -8 : 8) << 8), gShoot.nPlayerPosY - (12 << 8), e_Prio_DustUnder, 0);
+				gShoot.nPlayerPosX + ((gShoot.nPlayerDir ? -8 : 8) * 256), gShoot.nPlayerPosY - (12 * 256), e_Prio_DustUnder, 0);
 	}
 
 	// *** 2) Ensuite, y-a-t'il une anim sp�ciale en haut ? Si oui, on met le sprite qui va bien. Si n�cessaire, �crase celui du bas (accroupi...).
@@ -2891,9 +2891,9 @@ void PlayerControl_SlugNoExit_Temp(void)
 	{
 		s32	nOffsX, nOffsY;
 //		MstSlug_EntrancePtGet(e_HeroVehicle_Rocket - e_HeroVehicle_SlugBase, &nOffsX, &nOffsY);		// Pour compenser le d�calage de la sortie.
-//		Player_VehicleSet(e_HeroVehicle_Rocket, gShoot.nPlayerPosX - (nOffsX << 8), gShoot.nPlayerPosY - (nOffsY << 8), SLUG_ENERGY_MAX, 0, SLUG_BOMBS_DEFAULT);
+//		Player_VehicleSet(e_HeroVehicle_Rocket, gShoot.nPlayerPosX - (nOffsX * 256), gShoot.nPlayerPosY - (nOffsY * 256), SLUG_ENERGY_MAX, 0, SLUG_BOMBS_DEFAULT);
 		MstSlug_EntrancePtGet(gShoot.nVehicleNoExitTypeToReset - e_HeroVehicle_SlugBase, &nOffsX, &nOffsY);		// Pour compenser le d�calage de la sortie.
-		Player_VehicleSet(gShoot.nVehicleNoExitTypeToReset, gShoot.nPlayerPosX - (nOffsX << 8), gShoot.nPlayerPosY - (nOffsY << 8), SLUG_ENERGY_MAX, 0, SLUG_BOMBS_DEFAULT);
+		Player_VehicleSet(gShoot.nVehicleNoExitTypeToReset, gShoot.nPlayerPosX - (nOffsX * 256), gShoot.nPlayerPosY - (nOffsY * 256), SLUG_ENERGY_MAX, 0, SLUG_BOMBS_DEFAULT);
 
 		gShoot.nInvulnerability = PLYR_INVULNERABILTY_CNT;	// Petit temps d'invuln�rabilit�. (Cas sp�cial espace + h�lico no exit).
 		gShoot.nVehiclePhase = e_SlugPhase_Normal;			// On force la phase "normale" pour ne pas voir le 'get in'.
@@ -3070,7 +3070,7 @@ u32 Gen_GroundCheck(u32 nPosX)
 			// On doit monter sur une plateforme transparente ? (Pentes d�conseill�es, recalage merdique avec le double point).
 			if (gShoot.nPlayerLastGnd == 0 && (nCol & 0x0F) == e_BlockCode_Soft)
 			{
-				nCmpY = (gShoot.nPlayerPosY & ~0xF00) + (nHt2 << 8);
+				nCmpY = (gShoot.nPlayerPosY & ~0xF00) + (nHt2 * 256);
 				if (gShoot.nPlayerPosY - nCmpY > PLYR_NAKED_SPDY_MAX) return (0);	// On est trop bas, on ne monte pas.
 			}
 
@@ -3078,7 +3078,7 @@ u32 Gen_GroundCheck(u32 nPosX)
 			gShoot.nPlayerGnd = nCol;//1;
 			gShoot.nPlayerSpdY = 0;
 			gShoot.nPlayerPosY &= ~0xFFF;//~0xF00;	// FFF => On cleane la virgule avec.
-			gShoot.nPlayerPosY += (nHt2) << 8;
+			gShoot.nPlayerPosY += (nHt2) * 256;
 			gShoot.nPlayerLastGndPosY = gShoot.nPlayerPosY;
 
 //>
@@ -3088,7 +3088,7 @@ u32 Gen_GroundCheck(u32 nPosX)
 			{
 				nCol = e_BlockCode_Hard;
 				gShoot.nPlayerGnd = nCol;
-				gShoot.nPlayerPosY += nHt << 8;
+				gShoot.nPlayerPosY += nHt * 256;
 				gShoot.nPlayerLastGndPosY = gShoot.nPlayerPosY;
 			}
 //<
@@ -3106,7 +3106,7 @@ u32 Gen_GroundCheck(u32 nPosX)
 		gShoot.nPlayerGnd = nCol;
 		gShoot.nPlayerSpdY = 0;
 		gShoot.nPlayerPosY &= ~0xFF;
-		gShoot.nPlayerPosY += nHt << 8;
+		gShoot.nPlayerPosY += nHt * 256;
 		gShoot.nPlayerLastGndPosY = gShoot.nPlayerPosY;
 		return (nCol);
 	}
@@ -3137,7 +3137,7 @@ void GroundCheck(u32 nPosX)
 			gShoot.nPlayerGnd = 1;
 			gShoot.nPlayerSpdY = 0;
 			gShoot.nPlayerPosY &= ~0xF00;
-			gShoot.nPlayerPosY += (nHt) << 8;
+			gShoot.nPlayerPosY += (nHt) * 256;
 
 			// Si on pose sur la ligne sup�rieure, on regarde aussi le bloc du dessus.
 			if (nHt == 0)
@@ -3149,7 +3149,7 @@ void GroundCheck(u32 nPosX)
 					nHt = 16 - nHt;
 					gShoot.nPlayerPosY -= 0x100;
 					gShoot.nPlayerPosY &= ~0xF00;
-					gShoot.nPlayerPosY += (nHt) << 8;
+					gShoot.nPlayerPosY += (nHt) * 256;
 				}
 			}
 
@@ -3274,7 +3274,7 @@ void Gen_SideCheck(s32 nTestOffsX, s32 nSpdMaxX)
 		gShoot.nVehicleType == e_HeroVehicle_None_Swim) return;
 
 	// Au niveau du torse.
-	nPosY -= 1 << 12;
+	nPosY -= 1 * 4096;
 //SprDisplay(e_Spr_Tstrct_Cross, nPosX>>8, nPosY>>8, 250);
 	nBlockNo = *(pBlocks + ((nPosY >> 12) * gMap.nMapLg) + (nPosX >> 12) );
 	if (((gMap.ppColCodes[gMap.nHeroPlane] + nBlockNo)->nCol & 0x0F) == e_BlockCode_Hard)	// On ne teste que sur du dur.
@@ -3298,7 +3298,7 @@ void Gen_SideCheck(s32 nTestOffsX, s32 nSpdMaxX)
 
 
 	// Et enfin au niveau de la t�te.
-	nPosY -= 10 << 8;
+	nPosY -= 10 * 256;
 //SprDisplay(e_Spr_Tstrct_Cross, nPosX>>8, nPosY>>8, 250);
 //SprDisplay(e_Spr_Tstrct_CornerUL, (nPosX>>12)<<4, (nPosY>>12)<<4, 250);
 	nBlockNo = *(pBlocks + ((nPosY >> 12) * gMap.nMapLg) + (nPosX >> 12) );
@@ -3354,7 +3354,7 @@ void SideCheck(void)
 		AnmGetKey(gShoot.nPlayerAnm) == e_AnmKey_Hero_CrouchWalk) return;
 
 	// Au niveau du torse.
-	nPosY -= 1 << 12;
+	nPosY -= 1 * 4096;
 //SprDisplay(e_Spr_Ball, nPosX>>8, nPosY>>8, 250);
 	nBlockNo = *(pBlocks + ((nPosY >> 12) * gMap.nMapLg) + (nPosX >> 12) );
 	if (((gMap.ppColCodes[gMap.nHeroPlane] + nBlockNo)->nCol & 0x0F) == e_BlockCode_Hard)	// On ne teste que sur du dur.
@@ -3372,7 +3372,7 @@ void SideCheck(void)
 	}
 
 	// Et enfin au niveau de la t�te.
-	nPosY -= 10 << 8;
+	nPosY -= 10 * 256;
 //SprDisplay(e_Spr_Ball, nPosX>>8, nPosY>>8, 250);
 	nBlockNo = *(pBlocks + ((nPosY >> 12) * gMap.nMapLg) + (nPosX >> 12) );
 	if (((gMap.ppColCodes[gMap.nHeroPlane] + nBlockNo)->nCol & 0x0F) == e_BlockCode_Hard)	// On ne teste que sur du dur.
@@ -3406,9 +3406,9 @@ void HeadCheck(u32 nPosX)
 
 	nPosY = gShoot.nPlayerPosY + gShoot.nPlayerSpdY;
 
-////	nPosY -= 24 << 8;
-//	nPosY -= (PLYR_NAKED_SPDX_MAX * 2) + (1 << 12);
-	nPosY -= (PLYR_NAKED_SPDX_MAX * 2) + (1 << 12) + (10 << 8);		// = M�me calcul que dans SideCheck, mais vitesse en dur car fct utlis�e seulement dans 'naked'.
+////	nPosY -= 24 * 256;
+//	nPosY -= (PLYR_NAKED_SPDX_MAX * 2) + (1 * 4096);
+	nPosY -= (PLYR_NAKED_SPDX_MAX * 2) + (1 * 4096) + (10 * 256);		// = M�me calcul que dans SideCheck, mais vitesse en dur car fct utlis�e seulement dans 'naked'.
 //SprDisplay(e_Spr_Tstrct_Cross, nPosX>>8, nPosY>>8, 250);
 //SprDisplay(e_Spr_Tstrct_CornerUL, (nPosX>>12)<<4, (nPosY>>12)<<4, 250);
 	nBlockNo = *(pBlocks + ((nPosY >> 12) * gMap.nMapLg) + (nPosX >> 12) );
@@ -3437,7 +3437,7 @@ u32 CrouchCheck(u32 nPosX)
 	pBlocks = gMap.ppPlanesBlocks[gMap.nHeroPlane];	// Blocs.
 
 	nPosY = gShoot.nPlayerPosY;
-	nPosY -= (PLYR_NAKED_SPDX_MAX * 2) + (1 << 12);// + (10 << 8);
+	nPosY -= (PLYR_NAKED_SPDX_MAX * 2) + (1 * 4096);// + (10 * 256);
 	nBlockNo = *(pBlocks + ((nPosY >> 12) * gMap.nMapLg) + (nPosX >> 12) );
 
 	if (((gMap.ppColCodes[gMap.nHeroPlane] + nBlockNo)->nCol & 0x0F) == e_BlockCode_Hard)	// On ne teste que sur du dur.
@@ -3473,11 +3473,11 @@ void Player_DeathSet_Naked(void)
 	static u64 *pHeroWeaponDust[e_Player_Weapon_Max] =
 		{ gAnm_Weapon_Gun_Dust, gAnm_Weapon_Shotgun_Dust, gAnm_Weapon_Machinegun_Dust, gAnm_Weapon_Shotgun_Dust, gAnm_Weapon_Shotgun_Dust };
 	gDustExg.nRotInc = 1;
-	DustSetMvt(pHeroWeaponDust[gShoot.nWeapon], gShoot.nPlayerPosX + ((gShoot.nPlayerDir ? -4 : 4) << 8), gShoot.nPlayerPosY - (16 << 8), (gShoot.nPlayerDir ? -0x100 : 0x100), gShoot.nPlayerSpdY / 2, e_Prio_Joueur + 2, (gShoot.nPlayerDir ? e_DustFlag_FlipX : 0) | e_DustFlag_Gravity | e_DustFlag_Rotation);
+	DustSetMvt(pHeroWeaponDust[gShoot.nWeapon], gShoot.nPlayerPosX + ((gShoot.nPlayerDir ? -4 : 4) * 256), gShoot.nPlayerPosY - (16 * 256), (gShoot.nPlayerDir ? -0x100 : 0x100), gShoot.nPlayerSpdY / 2, e_Prio_Joueur + 2, (gShoot.nPlayerDir ? e_DustFlag_FlipX : 0) | e_DustFlag_Gravity | e_DustFlag_Rotation);
 	if (gShoot.nWeapon == e_Player_Weapon_Machinegun)
 	{
 		gDustExg.nRotInc = -1;
-		DustSetMvt(pHeroWeaponDust[gShoot.nWeapon], gShoot.nPlayerPosX + ((gShoot.nPlayerDir ? -4 : 4) << 8), gShoot.nPlayerPosY - (16 << 8), (gShoot.nPlayerDir ? 0x100 : -0x100), gShoot.nPlayerSpdY / 2, e_Prio_Joueur - 2, (gShoot.nPlayerDir ? e_DustFlag_FlipX : 0) | e_DustFlag_Gravity | e_DustFlag_Rotation);
+		DustSetMvt(pHeroWeaponDust[gShoot.nWeapon], gShoot.nPlayerPosX + ((gShoot.nPlayerDir ? -4 : 4) * 256), gShoot.nPlayerPosY - (16 * 256), (gShoot.nPlayerDir ? 0x100 : -0x100), gShoot.nPlayerSpdY / 2, e_Prio_Joueur - 2, (gShoot.nPlayerDir ? e_DustFlag_FlipX : 0) | e_DustFlag_Gravity | e_DustFlag_Rotation);
 	}
 
 }
@@ -3496,7 +3496,7 @@ void Player_DeathSet_Swim(void)
 	s32	nOffsX, nOffsY;
 	nOffsX = (gShoot.nPlayerDir ? -15 : 15);
 	nOffsY = -9;
-	DustSetMvt(gAnm_HeroSub_HelmetDeath_Dust, gShoot.nPlayerPosX + (nOffsX << 8), gShoot.nPlayerPosY + (nOffsY << 8), (gShoot.nPlayerDir ? -0x28 : 0x28), -0x20, e_Prio_Joueur + 2, (gShoot.nPlayerDir ? e_DustFlag_FlipX : 0));
+	DustSetMvt(gAnm_HeroSub_HelmetDeath_Dust, gShoot.nPlayerPosX + (nOffsX * 256), gShoot.nPlayerPosY + (nOffsY * 256), (gShoot.nPlayerDir ? -0x28 : 0x28), -0x20, e_Prio_Joueur + 2, (gShoot.nPlayerDir ? e_DustFlag_FlipX : 0));
 
 }
 
@@ -3741,7 +3741,7 @@ void PlayerControl_Naked(void)
 		if (nHt <= PLYR_NAKED_REF_OFFSETX >> 8)
 		{
 			// Ok, le point qui touche et le point au centre sont sur une pente.
-			gShoot.nPlayerGndAng = fatan2((nTouch & 1 ? nHt : -nHt) << 8, PLYR_NAKED_REF_OFFSETX);
+			gShoot.nPlayerGndAng = fatan2((nTouch & 1 ? nHt : -nHt) * 256, PLYR_NAKED_REF_OFFSETX);
 		}
 	}
 
@@ -3820,7 +3820,7 @@ void PlayerDisplay_Naked(void)
 		nAnmKey = AnmGetKey(gShoot.nPlayerAnm);
 		i = (nAnmKey == e_AnmKey_Hero_CrouchStance || nAnmKey == e_AnmKey_Hero_CrouchWalk ? 16 : 30);
 		// Tir.
-		FireAdd(e_Shot_Player_HandGrenade_Throw, gShoot.nPlayerPosX + (0 << 8), gShoot.nPlayerPosY - (i << 8), (gShoot.nPlayerDir ? 128 : 0));
+		FireAdd(e_Shot_Player_HandGrenade_Throw, gShoot.nPlayerPosX + (0 * 256), gShoot.nPlayerPosY - (i * 256), (gShoot.nPlayerDir ? 128 : 0));
 //		gVar.pKeys[KB_BUTTONC] = 0;
 		gVar.pKeys[gMSCfg.pKeys[e_CfgKey_ButtonC]] = 0;
 		gShoot.nBombAmmo--;
@@ -4027,7 +4027,7 @@ void Gen_StepDust(u32 nVehicle, u32 nGndCol, s32 nOffset, u32 nStepFlag, u32 nPo
 		if (nOffset)	// Si offset, on met un second splash.
 		SprDisplay(e_Spr_Steps_WaterL13 + (((gnFrame >> 3) + 1) & 3), (nPosX - nOffset) >> 8, (gShoot.nSplashLevel == -1 ? nPosY >> 8 : gShoot.nSplashLevel), 0x100 + 2);
 
-		if (gShoot.nSplashLevel != -1) nPosY = (gShoot.nSplashLevel - 8) << 8;	// On profite du if pour d�caler le Y pour le step dans l'eau.
+		if (gShoot.nSplashLevel != -1) nPosY = (gShoot.nSplashLevel - 8) * 256;	// On profite du if pour d�caler le Y pour le step dans l'eau.
 	}
 
 	// Traces de pas. (Seulement naked, sinon faire une table comme dans Gen_LandDust()).
@@ -4056,7 +4056,7 @@ void Gen_LandDust(u32 nVehicle, u32 nGndCol, u32 nPosX, u32 nPosY)
 	if ((pCurTb = gpLandAnmTb[nVehicle]) != NULL)
 	if (pCurTb[(nGndCol >> 4) & 0x0F] != NULL)
 	{
-		if ((nGndCol & 0xF0) == 0x20 && gShoot.nSplashLevel != -1) nPosY = (gShoot.nSplashLevel - 8) << 8;
+		if ((nGndCol & 0xF0) == 0x20 && gShoot.nSplashLevel != -1) nPosY = (gShoot.nSplashLevel - 8) * 256;
 		DustSet(pCurTb[(nGndCol >> 4) & 0x0F], nPosX, nPosY, e_Prio_Joueur + 10, 0);
 	}
 

@@ -214,7 +214,7 @@ void Mst20_CannonUp_Manage(struct SMstCommon *pMst, u16 nPrio)
 	// Tirs.
 	if (AnmCheckStepFlag(pCannonUp->nAnm))
 	{
-		FireAdd(e_Shot_Enemy_Boss1_ParachuteBomb, pMst->nPosX - (10 << 12) - (((14<<4) - ((s32)pCannonUp->nShotNo * 0x28) - (pCannonUp->nShotHole <= pCannonUp->nShotNo ? 0x28 : 0)) << 8), gScrollPos.nPosY - (2 << 12), -1);
+		FireAdd(e_Shot_Enemy_Boss1_ParachuteBomb, pMst->nPosX - (10 * 4096) - (((14<<4) - ((s32)pCannonUp->nShotNo * 0x28) - (pCannonUp->nShotHole <= pCannonUp->nShotNo ? 0x28 : 0)) * 256), gScrollPos.nPosY - (2 * 4096), -1);
 		pCannonUp->nShotNo++;
 	}
 
@@ -261,8 +261,8 @@ void Mst20_CannonFront_Manage(struct SMstCommon *pMst, u16 nPrio)
 			pCannonFront->nPhase = e_MstB1_CannonFront_Wait;
 			// Dusts d'explosion.
 			s32	nDustPosX, nDustPosY;
-			nDustPosX = pMst->nPosX + (BOSS1_CANNONFRONT_OFFSX << 8) - (10 << 8);
-			nDustPosY = pMst->nPosY + ((s32)pCannonFront->nOffsY << 8) + (8 << 8);
+			nDustPosX = pMst->nPosX + (BOSS1_CANNONFRONT_OFFSX * 256) - (10 * 256);
+			nDustPosY = pMst->nPosY + ((s32)pCannonFront->nOffsY * 256) + (8 * 256);
 			DustSet(gAnm_Explosion0_Big_Dust, nDustPosX, nDustPosY, e_Prio_DustOver, 0);
 			DustSetMvt(gAnm_Debris_Metal0_Dust, nDustPosX, nDustPosY, -0x080, -0x480, e_Prio_DustUnder, e_DustFlag_Gravity);
 			DustSetMvt(gAnm_Debris_Metal0_Dust, nDustPosX, nDustPosY, -0x180, -0x380, e_Prio_DustUnder, e_DustFlag_Gravity);
@@ -315,7 +315,7 @@ void Mst20_CannonFront_Manage(struct SMstCommon *pMst, u16 nPrio)
 
 	// Tir.
 	if (AnmCheckStepFlag(pCannonFront->nAnm))
-		FireAdd(e_Shot_Enemy_Boss1_BulletFront, pMst->nPosX + (BOSS1_CANNONFRONT_OFFSX << 8) - (44 << 8), pMst->nPosY + ((s32)pCannonFront->nOffsY << 8) - (8 << 8), -1);
+		FireAdd(e_Shot_Enemy_Boss1_BulletFront, pMst->nPosX + (BOSS1_CANNONFRONT_OFFSX * 256) - (44 * 256), pMst->nPosY + ((s32)pCannonFront->nOffsY * 256) - (8 * 256), -1);
 
 	// Affichage.
 	u32	nFlagHit = (pSpe->nHitCnt ? SPR_Flag_HitPal : 0);
@@ -330,7 +330,7 @@ void Mst20_Init_Boss1(struct SMstCommon *pMst, u8 *pData)
 	struct SMst20_Boss1	*pSpe = (struct SMst20_Boss1 *)pMst->pData;
 	u32	nVal;
 
-	pMst->nPosX = (gMap.pPlanesLg[gMap.nHeroPlane] - 0) << 12;		// Replace le monstre compl�tement � droite.
+	pMst->nPosX = (gMap.pPlanesLg[gMap.nHeroPlane] - 0) * 4096;		// Replace le monstre compl�tement � droite.
 	nVal = GetBits(8, 15, pData, 0);
 	pSpe->nWaitItm = nVal;
 
@@ -427,7 +427,7 @@ s32 Mst20_Main_Boss1(struct SMstCommon *pMst)
 	u8	nTouch = 0;		// Pas de gestion du touch�.
 
 	// Bloque le joueur au niveau de l'avion.
-	Mst_PlayerBlock(pMst->nPosX - (8 << 12) - (12 << 8), 0);
+	Mst_PlayerBlock(pMst->nPosX - (8 * 4096) - (12 * 256), 0);
 
 	switch (pMst->nPhase)
 	{
@@ -442,13 +442,13 @@ s32 Mst20_Main_Boss1(struct SMstCommon *pMst)
 		if ((u32)gnScrollLimitYMin >> 8 > 0)
 		{
 			gnScrollLimitYMin = gScrollPos.nPosY - 0x100;
-			gnScrollLimitYMax = gnScrollLimitYMin + (SCR_Height << 8);
+			gnScrollLimitYMax = gnScrollLimitYMin + (SCR_Height * 256);
 		}
 		else
 		{
 			pMst->nPhase = e_MstB1_Fight;
 			// Dust b�che qui d�gage vers la droite.
-			DustSetMvt(gAnm_Boss1_Tarp_Dust, pMst->nPosX + (BOSS1_TARP_OFFSX << 8), pMst->nPosY + (BOSS1_TARP_OFFSY << 8), 0x200, 0, e_Prio_DustOver, 0);
+			DustSetMvt(gAnm_Boss1_Tarp_Dust, pMst->nPosX + (BOSS1_TARP_OFFSX * 256), pMst->nPosY + (BOSS1_TARP_OFFSY * 256), 0x200, 0, e_Prio_DustOver, 0);
 			break;
 		}
 		// Affichage de la b�che.
@@ -477,7 +477,7 @@ Special Init = 23:26: None - Truck Jump - SuspSub Jump - Hero Height -	; Inits s
 RESERVED2 = 27:31:
 */
 			static u8 pM14[] = { 3, 3, 0, 1 };	// Pour g�n�rer des soldats, sauf LRAC.
-			u32	nPrm = ((u32)pM14[rand() & 3]) | (1 << 12) | (2 << 15);	// 0 = Rifle - 1 = Mortar / 1 << 12 = Move / 2 << 15 = Jump always.
+			u32	nPrm = ((u32)pM14[rand() & 3]) | (1 * 4096) | (2 << 15);	// 0 = Rifle - 1 = Mortar / 1 * 4096 = Move / 2 << 15 = Jump always.
 			if (((++nSide) & 1) == 0)
 			{
 				// Arriv�e par la porte � droite.
@@ -498,7 +498,7 @@ RESERVED2 = 27:31:
 				// Parachutiste.
 				nPrm &= ~0xFF;
 				nPrm |= 2;	// Type = LRAC.
-				nPrm |= 8 << 8;		// Offset, pour que le parachute arrive au bon endroit. (Pour le parachutiste, on se sert de ce d�calagae comme offset dans l'�cran, voir init).
+				nPrm |= 8 * 256;		// Offset, pour que le parachute arrive au bon endroit. (Pour le parachutiste, on se sert de ce d�calagae comme offset dans l'�cran, voir init).
 				nPrm |= 1 << 14;	// Parachute.
 				MstAdd(e_Mst14_RebelSoldier0, ((224 + (rand() & 7))*16), (0*16), (u8 *)&nPrm, -1);
 			}
@@ -518,7 +518,7 @@ From = 0:0: Front - Back	; Attaque par devant ou derri�re.
 ZoneMax = 1:7:			; Zone de d�placement max, 0 = pas de limite.
 * /
 					u8	pData[4];
-					s32	nGiridaPixPosX = (gScrollPos.nPosX >> 8) - (2 << 4);	// !!! Attention au d�calage, sinon le tank n'appara�t pas !
+					s32	nGiridaPixPosX = (gScrollPos.nPosX >> 8) - (2 * 16);	// !!! Attention au d�calage, sinon le tank n'appara�t pas !
 					pData[0] = 1 + (((ABS((pSpe->nPosXOrg >> 8) - nGiridaPixPosX) >> 4) - 4) << 1);		// -4 : D�calage pour ne pas monter sur le camion.
 					MstAdd(e_Mst26_Girida0, nGiridaPixPosX, (pMst->nPosY >> 8) - 16, pData, -1);
 */
@@ -700,12 +700,12 @@ void Mst20_Init_Boss2A(struct SMstCommon *pMst, u8 *pData)
 	pMst->nPhase = e_MstB2A_ComeDistance;
 
 	pSpe->nSensY = 0;
-	pMst->nPosX = gScrollPos.nPosX + (B2A_DISTANCE_POSX_MIN << 8);
-	pMst->nPosY = gScrollPos.nPosY + ((SCR_Height / 2) << 8) - (46 << 8);
+	pMst->nPosX = gScrollPos.nPosX + (B2A_DISTANCE_POSX_MIN * 256);
+	pMst->nPosY = gScrollPos.nPosY + ((SCR_Height / 2) * 256) - (46 * 256);
 
 /*
-	pMst->nPosX = gScrollPos.nPosX + ((SCR_Width + 72) << 8);
-	pMst->nPosY = gScrollPos.nPosY + ((SCR_Height / 2) << 8);
+	pMst->nPosX = gScrollPos.nPosX + ((SCR_Width + 72) * 256);
+	pMst->nPosY = gScrollPos.nPosY + ((SCR_Height / 2) * 256);
 
 	gpMstQuestItems[MST_QUEST_ITEM_MST32]++;	// Bloque le scroll.
 	pMst->nSpd = 0x420;		// Spd empirique pour premi�re avance.
@@ -723,12 +723,12 @@ void Boss2_UpDown(s32 *pnMstPosY, s32 nMin, s32 nMax, s32 nSpd, u8 *pnSensY)
 	if (*pnSensY)
 	{
 		*pnMstPosY += nSpd;
-		if (*pnMstPosY >= gScrollPos.nPosY + (nMax << 8)) *pnSensY ^= 1;
+		if (*pnMstPosY >= gScrollPos.nPosY + (nMax * 256)) *pnSensY ^= 1;
 	}
 	else
 	{
 		*pnMstPosY -= nSpd;
-		if (*pnMstPosY <= gScrollPos.nPosY + (nMin << 8)) *pnSensY ^= 1;
+		if (*pnMstPosY <= gScrollPos.nPosY + (nMin * 256)) *pnSensY ^= 1;
 	}
 }
 
@@ -751,13 +751,13 @@ void Boss_Explosions(u8 *pnExplo, s32 nPosX, s32 nPosY, s32 nWidth2n, s32 nHeigh
 
 		i = rand();
 		DustSet(gAnm_Explosion0_Medium_Dust,	//gAnm_Explosion0_Medium_NoSfx_Dust,	//gAnm_Explosion0_Medium_Dust,
-			nPosX + ((i & nWidth2n) << 8),
-			nPosY + ((i & nHeight2n) << 8),
+			nPosX + ((i & nWidth2n) * 256),
+			nPosY + ((i & nHeight2n) * 256),
 			e_Prio_Ennemies+3, 0);
 		i += nWidth2n / 2;
 		DustSet(gAnm_Explosion0_Medium_NoSfx_Dust,	//gAnm_Explosion0_Medium_Dust,
-			nPosX + ((i & nWidth2n) << 8),
-			nPosY + (nHeight2n << 8) + ((i & nHeight2n) << 8),
+			nPosX + ((i & nWidth2n) * 256),
+			nPosY + (nHeight2n * 256) + ((i & nHeight2n) * 256),
 			e_Prio_Ennemies+3, 0);
 	}
 
@@ -790,8 +790,8 @@ void B2A_FrontC_Manage(struct SMstCommon *pMst)
 		if (pFC->nLife)
 		{
 			// Tirs.
-//			if (Mst_ShotCheckLife(gpnFrontCBaseSpr[i] + nInc, pMst->nPosX + (B2A_FRONTCANNON_OFFSX << 8), pMst->nPosY + (gpnFrontCPosY[i] << 8), &pFC->nHitCnt, &pFC->nLife))
-			if (Mst_ShotCheckLife2(gpnFrontCBaseSpr[i] + nInc, pMst->nPosX + (B2A_FRONTCANNON_OFFSX << 8), pMst->nPosY + (gpnFrontCPosY[i] << 8), &pFC->nHitCnt, &pFC->nLife, e_ShotCheck_MinimizedDamage))
+//			if (Mst_ShotCheckLife(gpnFrontCBaseSpr[i] + nInc, pMst->nPosX + (B2A_FRONTCANNON_OFFSX * 256), pMst->nPosY + (gpnFrontCPosY[i] * 256), &pFC->nHitCnt, &pFC->nLife))
+			if (Mst_ShotCheckLife2(gpnFrontCBaseSpr[i] + nInc, pMst->nPosX + (B2A_FRONTCANNON_OFFSX * 256), pMst->nPosY + (gpnFrontCPosY[i] * 256), &pFC->nHitCnt, &pFC->nLife, e_ShotCheck_MinimizedDamage))
 			{	// Le canon explose.
 				gShoot.nPlayerScore += B2A_FRONTC_SCORE;	// Score.
 				if (pFC->nShotAnm != -1)
@@ -819,8 +819,8 @@ void B2A_FrontC_Manage(struct SMstCommon *pMst)
 						struct SSprRect sRect1;
 						if (SprGetRect(gpnFrontCBaseSpr[i] + nInc, e_SprRectZone_ShotOrg, &sRect1))
 						if (sRect1.nType == e_SprRect_Rect)
-//							FireAdd(e_Shot_Enemy_RebSoldier_Bullet0, pMst->nPosX + (B2A_FRONTCANNON_OFFSX << 8) + (sRect1.nX1 << 8), pMst->nPosY + (gpnFrontCPosY[i] << 8) + ((pFC->nHB & 1 ? sRect1.nY1 : sRect1.nY2) << 8), 128);
-							FireAdd(e_Shot_Enemy_RebSoldier_Bullet0, pMst->nPosX + (B2A_FRONTCANNON_OFFSX << 8) + (sRect1.nX1 << 8), pMst->nPosY + (gpnFrontCPosY[i] << 8) + ((pFC->nHB & 1 ? sRect1.nY1 : sRect1.nY2) << 8), 128 + (pFC->nHB & 1 ? -8 : 8));
+//							FireAdd(e_Shot_Enemy_RebSoldier_Bullet0, pMst->nPosX + (B2A_FRONTCANNON_OFFSX * 256) + (sRect1.nX1 * 256), pMst->nPosY + (gpnFrontCPosY[i] * 256) + ((pFC->nHB & 1 ? sRect1.nY1 : sRect1.nY2) * 256), 128);
+							FireAdd(e_Shot_Enemy_RebSoldier_Bullet0, pMst->nPosX + (B2A_FRONTCANNON_OFFSX * 256) + (sRect1.nX1 * 256), pMst->nPosY + (gpnFrontCPosY[i] * 256) + ((pFC->nHB & 1 ? sRect1.nY1 : sRect1.nY2) * 256), 128 + (pFC->nHB & 1 ? -8 : 8));
 						pFC->nHB ^= 1;	// Inversion haut/bas.
 					}
 				} // if (pSpe->sFrontC[i].nShotAnm != -1)
@@ -833,8 +833,8 @@ void B2A_FrontC_Manage(struct SMstCommon *pMst)
 			if (pFC->nExplo)
 			if ((--pFC->nExplo & 0x0F) == 0)
 			{
-				x = pMst->nPosX + (B2A_FRONTCANNON_OFFSX << 8)   + (3 << 12) - ((pFC->nExplo & ~0x0F) << 8);
-				y = pMst->nPosY + (gpnFrontCPosY[i] << 8)   - (1 << 12) + ((pFC->nExplo & ~0x0F) << 7);
+				x = pMst->nPosX + (B2A_FRONTCANNON_OFFSX * 256)   + (3 * 4096) - ((pFC->nExplo & ~0x0F) * 256);
+				y = pMst->nPosY + (gpnFrontCPosY[i] * 256)   - (1 * 4096) + ((pFC->nExplo & ~0x0F) << 7);
 				DustSet(gAnm_Explosion0_Medium_Dust, x, y, e_Prio_Ennemies+3, 0);
 				if (((pFC->nExplo >> 4) + i) & 1)	// + D�bris 1 fois sur 2.
 					DustSetMvt(gAnm_Debris_Metal0_Dust, x, y, -0x180, -0x380, e_Prio_Ennemies+2, e_DustFlag_Gravity);
@@ -874,8 +874,8 @@ void B2A_Turret_Manage(struct SMstCommon *pMst, u8 nTurretTouch)
 		// Tant qu'on y est, on tourne la tourelle vers le joueur.
 		if (gShoot.nDeathFlag == 0)
 			pTurret->nAngle =
-			fatan2(-((gShoot.nPlayerPosY - (2 << 12) + (gShoot.nVehicleType < e_HeroVehicle_SlugBase ? 4 << 12 : 0)) - (pMst->nPosY + (gpnTurretPosY[i] << 8) - (27 << 8)) ),
-				gShoot.nPlayerPosX - (pMst->nPosX + (gpnTurretPosX[i] << 8)));
+			fatan2(-((gShoot.nPlayerPosY - (2 * 4096) + (gShoot.nVehicleType < e_HeroVehicle_SlugBase ? 4 * 4096 : 0)) - (pMst->nPosY + (gpnTurretPosY[i] * 256) - (27 * 256)) ),
+				gShoot.nPlayerPosX - (pMst->nPosX + (gpnTurretPosX[i] * 256)));
 
 		ChaserTarget_AddToList((pMst->nPosX >> 8) + gpnTurretPosX[i], (pMst->nPosY >> 8) + gpnTurretPosY[i] - 24);	// Ajout dans la table de vis�e des missiles.
 
@@ -886,10 +886,10 @@ void B2A_Turret_Manage(struct SMstCommon *pMst, u8 nTurretTouch)
 		if (nTurretTouch)
 		{
 			// Test des tirs.
-//			if (Mst_ShotCheckLife(e_Spr_Boss2Front_Turret, pMst->nPosX + (gpnTurretPosX[i] << 8), pMst->nPosY + (gpnTurretPosY[i] << 8), &pTurret->nHitCnt, &pTurret->nLife))
-			if (Mst_ShotCheckLife2(e_Spr_Boss2Front_Turret, pMst->nPosX + (gpnTurretPosX[i] << 8), pMst->nPosY + (gpnTurretPosY[i] << 8), &pTurret->nHitCnt, &pTurret->nLife, e_ShotCheck_MinimizedDamage))
+//			if (Mst_ShotCheckLife(e_Spr_Boss2Front_Turret, pMst->nPosX + (gpnTurretPosX[i] * 256), pMst->nPosY + (gpnTurretPosY[i] * 256), &pTurret->nHitCnt, &pTurret->nLife))
+			if (Mst_ShotCheckLife2(e_Spr_Boss2Front_Turret, pMst->nPosX + (gpnTurretPosX[i] * 256), pMst->nPosY + (gpnTurretPosY[i] * 256), &pTurret->nHitCnt, &pTurret->nLife, e_ShotCheck_MinimizedDamage))
 			{
-				DustSet(gAnm_Explosion0_Big_Dust, pMst->nPosX + (gpnTurretPosX[i] << 8), pMst->nPosY + (gpnTurretPosY[i] << 8), e_Prio_Ennemies+4, 0);//e_Prio_Ennemies+3
+				DustSet(gAnm_Explosion0_Big_Dust, pMst->nPosX + (gpnTurretPosX[i] * 256), pMst->nPosY + (gpnTurretPosY[i] * 256), e_Prio_Ennemies+4, 0);//e_Prio_Ennemies+3
 				gShoot.nPlayerScore += B2A_TURRET_SCORE;	// Score.
 				if (pTurret->nShotAnm != -1)
 				{	// Lib�re le slot de l'anm d'�clat du tir.
@@ -903,7 +903,7 @@ void B2A_Turret_Manage(struct SMstCommon *pMst, u8 nTurretTouch)
 			// Interception des tirs sans d�gats.
 			u8	nHitCnt, nLife;
 			nLife = 0;
-			Mst_ShotCheckLife(e_Spr_Boss2Front_Turret, pMst->nPosX + (gpnTurretPosX[i] << 8), pMst->nPosY + (gpnTurretPosY[i] << 8), &nHitCnt, &nLife);
+			Mst_ShotCheckLife(e_Spr_Boss2Front_Turret, pMst->nPosX + (gpnTurretPosX[i] * 256), pMst->nPosY + (gpnTurretPosY[i] * 256), &nHitCnt, &nLife);
 		}
 
 		// D�clenchement d'un tir ?
@@ -934,8 +934,8 @@ void B2A_Turret_Manage(struct SMstCommon *pMst, u8 nTurretTouch)
 						x2 = sRect1.nX2;
 						y2 = sRect1.nY2;
 					}
-					FireAdd(e_Shot_Enemy_RebSoldier_Bullet0, pMst->nPosX + ((gpnTurretPosX[i] + x1) << 8), pMst->nPosY + ((gpnTurretPosY[i] + y1) << 8), pTurret->nAngle);
-					FireAdd(e_Shot_Enemy_RebSoldier_Bullet0, pMst->nPosX + ((gpnTurretPosX[i] + x2) << 8), pMst->nPosY + ((gpnTurretPosY[i] + y2) << 8), pTurret->nAngle);
+					FireAdd(e_Shot_Enemy_RebSoldier_Bullet0, pMst->nPosX + ((gpnTurretPosX[i] + x1) * 256), pMst->nPosY + ((gpnTurretPosY[i] + y1) * 256), pTurret->nAngle);
+					FireAdd(e_Shot_Enemy_RebSoldier_Bullet0, pMst->nPosX + ((gpnTurretPosX[i] + x2) * 256), pMst->nPosY + ((gpnTurretPosY[i] + y2) * 256), pTurret->nAngle);
 				}
 			}
 		} // if (pSpe->sTurret[i].nShotAnm != -1)
@@ -945,7 +945,7 @@ void B2A_Turret_Manage(struct SMstCommon *pMst, u8 nTurretTouch)
 	{
 		// Fum�e noire quand tourelle d�truite.
 		if ((gnFrame & 15) == 0)
-			DustSetMvt(gAnm_BlackSmoke_Dust, pMst->nPosX + ((gpnTurretPosX[i] - 10) << 8), pMst->nPosY + ((gpnTurretPosY[i] - 22) << 8), 0x200, 0, e_Prio_Ennemies+3, 0);
+			DustSetMvt(gAnm_BlackSmoke_Dust, pMst->nPosX + ((gpnTurretPosX[i] - 10) * 256), pMst->nPosY + ((gpnTurretPosY[i] - 22) * 256), 0x200, 0, e_Prio_Ennemies+3, 0);
 	}
 
 }
@@ -1004,7 +1004,7 @@ if (gVar.pKeys[SDL_SCANCODE_J])
 	if (pMst->nPhase >= e_MstB2A_Avance1)
 	{
 		s32	nPlayerSpdX_sav = gShoot.nPlayerSpdX;
-		Mst_PlayerBlock(pMst->nPosX - (96 << 8), 0);
+		Mst_PlayerBlock(pMst->nPosX - (96 * 256), 0);
 		if (nPlayerSpdX_sav < 0) gShoot.nPlayerSpdX = nPlayerSpdX_sav;	// Si vitesse n�gative, on la remet (�vite le "coll�").
 	}
 
@@ -1021,20 +1021,20 @@ if (gVar.pKeys[SDL_SCANCODE_J])
 		SprDisplay(e_Spr_Boss2_InTheDistance_FullHealth+2, pMst->nPosX >> 8, (pMst->nPosY >> 8) + 30, e_Prio_EnnemiesBg);
 		// Avance.
 		pMst->nPosX += 0x100;
-		if (pMst->nPosX > gScrollPos.nPosX + ((B2A_DISTANCE_POSX_MAX + 32) << 8))
+		if (pMst->nPosX > gScrollPos.nPosX + ((B2A_DISTANCE_POSX_MAX + 32) * 256))
 		{
 //			gpMstQuestItems[MST_QUEST_ITEM_MST32]++;	// Blocage du scroll.
 			pMst->nPhase = e_MstB2A_Avance1; // Phase suivante.
 			//
-			pMst->nPosX = gScrollPos.nPosX + ((SCR_Width + 72) << 8);
-			pMst->nPosY = gScrollPos.nPosY + ((SCR_Height / 2) << 8);
+			pMst->nPosX = gScrollPos.nPosX + ((SCR_Width + 72) * 256);
+			pMst->nPosY = gScrollPos.nPosY + ((SCR_Height / 2) * 256);
 			pMst->nSpd = 0x420;		// Spd empirique pour premi�re avance.
 		}
 		return (e_MstState_Managed);
 		//break;
 
 	case e_MstB2A_Avance1:
-		if (pMst->nPosX <= gScrollPos.nPosX + (BOSS2A_AVANCE1X << 8))
+		if (pMst->nPosX <= gScrollPos.nPosX + (BOSS2A_AVANCE1X * 256))
 		{
 			pMst->nPhase = e_MstB2A_Phase1;
 			pSpe->nShotFrm = 32;
@@ -1056,7 +1056,7 @@ if (gVar.pKeys[SDL_SCANCODE_J])
 		{
 			Boss2_UpDown(&pMst->nPosY, BOSS2A_POSY_MIN, BOSS2A_POSY_MAX, 0x80, &pSpe->nSensY);
 			// 'Angle' des pilotes.
-			pSpe->nPilotsTarget = (pSpe->nSensY ? 3 << 4 : -3 << 4);
+			pSpe->nPilotsTarget = (pSpe->nSensY ? 3 * 16 : -3 * 16);
 			if ((pSpe->nSensY && pMst->nPosY >> 8 >= BOSS2A_POSY_MAX - 8) ||
 				(pSpe->nSensY == 0 && pMst->nPosY >> 8 <= BOSS2A_POSY_MIN + 8)) pSpe->nPilotsTarget = 0;
 
@@ -1067,23 +1067,23 @@ if (gVar.pKeys[SDL_SCANCODE_J])
 		if (pSpe->sFrontC[0].nExplo == 0 && pSpe->sFrontC[1].nExplo == 0)
 		{
 			pMst->nPhase = e_MstB2A_Recule1;
-			pSpe->nPilotsCur = 4 << 4;
-			pSpe->nPilotsTarget = 7 << 4;
+			pSpe->nPilotsCur = 4 * 16;
+			pSpe->nPilotsTarget = 7 * 16;
 		}
 		break;
 
 	case e_MstB2A_Recule1:
 		// Recentrage en y.
-		nDiff = (gScrollPos.nPosY + ((SCR_Height / 2) << 8)) - pMst->nPosY;
+		nDiff = (gScrollPos.nPosY + ((SCR_Height / 2) * 256)) - pMst->nPosY;
 		if (ABS(nDiff) >> 8) pMst->nPosY += SGN(nDiff) << 5;
 		// Recule en x.
 		pMst->nPosX += 0x40;//0x80;
-		if (pMst->nPosX >= gScrollPos.nPosX + (SCR_Width << 8))
+		if (pMst->nPosX >= gScrollPos.nPosX + (SCR_Width * 256))
 		{
 			pMst->nSpd = 0x470;		// Spd empirique pour seconde avance.
 			pMst->nPhase = e_MstB2A_Avance2;
 			pSpe->nShotFrm = 32;	// Init ici, la valeur doit �tre bonne pendant la phase e_MstB2A_Avance2.
-			pSpe->nPilotsTarget = 4 << 4;
+			pSpe->nPilotsTarget = 4 * 16;
 		}
 
 // tst de tremblement.
@@ -1093,7 +1093,7 @@ if (gVar.pKeys[SDL_SCANCODE_J])
 		break;
 
 	case e_MstB2A_Avance2:
-		if (pMst->nPosX <= gScrollPos.nPosX + (BOSS2A_AVANCE2X << 8)) pMst->nPhase = e_MstB2A_Phase2;
+		if (pMst->nPosX <= gScrollPos.nPosX + (BOSS2A_AVANCE2X * 256)) pMst->nPhase = e_MstB2A_Phase2;
 		break;
 
 	case e_MstB2A_Phase2:	// Tourelles.
@@ -1108,7 +1108,7 @@ if (gVar.pKeys[SDL_SCANCODE_J])
 		if (pSpe->sTurret[0].nLife == 0 && pSpe->sTurret[1].nLife == 0)
 		{
 			pMst->nPhase = e_MstB2A_Phase2Explo;
-			pSpe->nPilotsTarget = 7 << 4;
+			pSpe->nPilotsTarget = 7 * 16;
 			pSpe->nExplo = 100 + MEDIUMEXPLO_ANM_DURATION + (28*2);	// +(28*2) = Temps de l'explosion de la tourelle.
 			// Retire les tirs ennemis.
 			FireRemoveFromList((1<<31) | e_ShotOrg_Enemy);
@@ -1124,9 +1124,9 @@ if (gVar.pKeys[SDL_SCANCODE_J])
 		}
 
 		// Explosions partout.
-		Boss_Explosions(&pSpe->nExplo, gScrollPos.nPosX + ((SCR_Width - 64 - 8) << 8), gScrollPos.nPosY - (16 << 8), 64, 256);
+		Boss_Explosions(&pSpe->nExplo, gScrollPos.nPosX + ((SCR_Width - 64 - 8) * 256), gScrollPos.nPosY - (16 * 256), 64, 256);
 		pSpe->nExplo++;
-		Boss_Explosions(&pSpe->nExplo, gScrollPos.nPosX + ((SCR_Width - 128 - 16) << 8), gScrollPos.nPosY - (16 << 8), 64, 256);
+		Boss_Explosions(&pSpe->nExplo, gScrollPos.nPosX + ((SCR_Width - 128 - 16) * 256), gScrollPos.nPosY - (16 * 256), 64, 256);
 		// Decay.
 		if (pSpe->nExplo < MEDIUMEXPLO_ANM_DURATION + 32) pSpe->nDecayState = 1;
 		// Fin ?
@@ -1135,7 +1135,7 @@ if (gVar.pKeys[SDL_SCANCODE_J])
 
 	case e_MstB2A_Recule2:
 		pMst->nPosX += 0x80;
-		if (pMst->nPosX >= gScrollPos.nPosX + ((SCR_Width + 72) << 8))
+		if (pMst->nPosX >= gScrollPos.nPosX + ((SCR_Width + 72) * 256))
 		{
 			// On lib�re les anims.
 			if (pSpe->nFrontCannonAnm != -1) AnmReleaseSlot(pSpe->nFrontCannonAnm);
@@ -1278,8 +1278,8 @@ void Mst20_Init_Boss2B(struct SMstCommon *pMst, u8 *pData)
 
 	pMst->nPhase = e_MstB2B_ComeDistance;
 
-	pMst->nPosX = gScrollPos.nPosX + ((B2B_DISTANCE_POSX_MAX + 32) << 8);
-	pMst->nPosY = gScrollPos.nPosY + ((SCR_Height / 2) << 8) - (30 << 8);
+	pMst->nPosX = gScrollPos.nPosX + ((B2B_DISTANCE_POSX_MAX + 32) * 256);
+	pMst->nPosY = gScrollPos.nPosY + ((SCR_Height / 2) * 256) - (30 * 256);
 
 	gpMstQuestItems[MST_QUEST_ITEM_MST32]++;	// Bloque le scroll.
 
@@ -1326,7 +1326,7 @@ if (gVar.pKeys[SDL_SCANCODE_J])
 	if (pMst->nPhase >= e_MstB2B_Avance1)
 	{
 		s32	nPlayerSpdX_sav = gShoot.nPlayerSpdX;
-		Mst_PlayerBlock(pMst->nPosX + (164 << 8), 1);
+		Mst_PlayerBlock(pMst->nPosX + (164 * 256), 1);
 		if (nPlayerSpdX_sav > 0) gShoot.nPlayerSpdX = nPlayerSpdX_sav;	// Si vitesse n�gative, on la remet (�vite le "coll�").
 	}
 
@@ -1340,13 +1340,13 @@ if (gVar.pKeys[SDL_SCANCODE_J])
 		SprDisplay(e_Spr_Boss2_InTheDistance_HalfHealth_Smoke2 + i, (pMst->nPosX >> 8) + 60, (pMst->nPosY >> 8) + 30, e_Prio_EnnemiesBg);
 		// Avance.
 		pMst->nPosX -= 0x140;
-		if (pMst->nPosX < gScrollPos.nPosX + ((B2B_DISTANCE_POSX_MIN - 32) << 8))
+		if (pMst->nPosX < gScrollPos.nPosX + ((B2B_DISTANCE_POSX_MIN - 32) * 256))
 		{
 //			gpMstQuestItems[MST_QUEST_ITEM_MST32]++;	// Blocage du scroll.
 			pMst->nPhase = e_MstB2B_Avance1; // Phase suivante.
 			//
-			pMst->nPosX = gScrollPos.nPosX - (162 << 8);
-			pMst->nPosY = gScrollPos.nPosY + ((SCR_Height / 2) << 8);
+			pMst->nPosX = gScrollPos.nPosX - (162 * 256);
+			pMst->nPosY = gScrollPos.nPosY + ((SCR_Height / 2) * 256);
 			pMst->nSpd = 0x920;		// Spd empirique pour premi�re avance.
 		}
 		return (e_MstState_Managed);
@@ -1354,7 +1354,7 @@ if (gVar.pKeys[SDL_SCANCODE_J])
 
 	case e_MstB2B_Avance1:		// On se met en postition.
 		Boss2_MoveIn(pMst, 1);
-		if (pMst->nPosX >= gScrollPos.nPosX + (BOSS2B_AVANCE1X << 8)) pMst->nPhase = e_MstB2B_Phase1;
+		if (pMst->nPosX >= gScrollPos.nPosX + (BOSS2B_AVANCE1X * 256)) pMst->nPhase = e_MstB2B_Phase1;
 		break;
 
 	case e_MstB2B_Phase1:		// Flammes.
@@ -1376,14 +1376,14 @@ if (gVar.pKeys[SDL_SCANCODE_J])
 		// L�cher de mini bombes.
 		pSpe->nFrmCnt++;
 		if ((pSpe->nFrmCnt & 7) == 0 && (pSpe->nFrmCnt & 64))
-			FireAdd(e_Shot_Enemy_HairBusterRibert_Mine, pMst->nPosX - (56 << 8), pMst->nPosY - (28 << 8), 0 + (rand() & 15) + (pSpe->nSensY ? -15 : 0));
+			FireAdd(e_Shot_Enemy_HairBusterRibert_Mine, pMst->nPosX - (56 * 256), pMst->nPosY - (28 * 256), 0 + (rand() & 15) + (pSpe->nSensY ? -15 : 0));
 
 		nMaskDisp = 1;	// On demande l'affichage du cache.
 		break;
 
 	case e_MstB2B_Death:		// Mort.
 		// Recentrage en y.
-		nDiff = (gScrollPos.nPosY + ((SCR_Height / 2) << 8)) - pMst->nPosY;
+		nDiff = (gScrollPos.nPosY + ((SCR_Height / 2) * 256)) - pMst->nPosY;
 		if (ABS(nDiff) >> 8) pMst->nPosY += SGN(nDiff) << 5;
 		// Queue neutre.
 		pSpe->nTailTarget = 0;
@@ -1401,7 +1401,7 @@ if (gVar.pKeys[SDL_SCANCODE_J])
 			// Haut/Bas.
 			Boss2_UpDown(&pMst->nPosY, BOSS2B_POSY_MIN, BOSS2B_POSY_MAX, 0x80, &pSpe->nSensY);
 			// 'Angle' de la queue.
-			pSpe->nTailTarget = (pSpe->nSensY ? -4 << 4 : 4 << 4);
+			pSpe->nTailTarget = (pSpe->nSensY ? -4 * 16 : 4 * 16);
 			if ((pSpe->nSensY && pMst->nPosY >> 8 >= BOSS2B_POSY_MAX - 16) ||
 				(pSpe->nSensY == 0 && pMst->nPosY >> 8 <= BOSS2B_POSY_MIN + 16)) pSpe->nTailTarget = 0;
 		}
@@ -1413,9 +1413,9 @@ if (gVar.pKeys[SDL_SCANCODE_J])
 	// Explosions.
 	if (pSpe->nExplo)
 	{
-		Boss_Explosions(&pSpe->nExplo, gScrollPos.nPosX + (16 << 8), gScrollPos.nPosY - (16 << 8), 64, 256);
+		Boss_Explosions(&pSpe->nExplo, gScrollPos.nPosX + (16 * 256), gScrollPos.nPosY - (16 * 256), 64, 256);
 		pSpe->nExplo++;
-		Boss_Explosions(&pSpe->nExplo, gScrollPos.nPosX + (80 << 8), pMst->nPosY - (64 << 8), 128, 128);
+		Boss_Explosions(&pSpe->nExplo, gScrollPos.nPosX + (80 * 256), pMst->nPosY - (64 * 256), 128, 128);
 	}
 
 	struct SSprRect sRect1;
@@ -1476,8 +1476,8 @@ if (gVar.pKeys[SDL_SCANCODE_J])
 		if (SprGetRect(AnmGetLastImage(pSpe->nFlameShotAnm), e_SprRectZone_RectCol, &sRect1))
 		if (sRect1.nType == e_SprRect_Rect)
 		{
-			Enemy_PlayerBlowRect(&sRect1, pMst->nPosX + (BOSS2B_FLAME_OFFSX << 8), pMst->nPosY + (BOSS2B_FLAME_OFFSY1 << 8), MST_DAMAGE_BULLET);
-			Enemy_PlayerBlowRect(&sRect1, pMst->nPosX + (BOSS2B_FLAME_OFFSX << 8), pMst->nPosY + (BOSS2B_FLAME_OFFSY2 << 8), MST_DAMAGE_BULLET);
+			Enemy_PlayerBlowRect(&sRect1, pMst->nPosX + (BOSS2B_FLAME_OFFSX * 256), pMst->nPosY + (BOSS2B_FLAME_OFFSY1 * 256), MST_DAMAGE_BULLET);
+			Enemy_PlayerBlowRect(&sRect1, pMst->nPosX + (BOSS2B_FLAME_OFFSX * 256), pMst->nPosY + (BOSS2B_FLAME_OFFSY2 * 256), MST_DAMAGE_BULLET);
 		}
 	}
 
@@ -1599,8 +1599,8 @@ void B3C_Init(struct SMstCommon *pMst)
 
 	pCan->nAnm = AnmSet(gAnm_CoreCannon_Idle, -1);
 
-	pCan->nPosX = gScrollPos.nPosX + ((SCR_Width / 2) << 8);
-	pCan->nPosY = gScrollPos.nPosY;// + ((SCR_Width / 2) << 8);;
+	pCan->nPosX = gScrollPos.nPosX + ((SCR_Width / 2) * 256);
+	pCan->nPosY = gScrollPos.nPosY;// + ((SCR_Width / 2) * 256);;
 
 	pCan->nPhase = e_MstB3_Cannon_Wait;
 
@@ -1659,7 +1659,7 @@ void B3C_Manage(struct SMstCommon *pMst)
 			struct SSprRect sRect1;
 			if (SprGetRect(nSpr, e_SprRectZone_ShotOrg, &sRect1))
 			if (sRect1.nType == e_SprRect_Point)
-				FireAdd(e_Shot_Enemy_MothershipCore_Bullet, pCan->nPosX + (sRect1.nX1 << 8), pCan->nPosY + (sRect1.nY1 << 8), -1);
+				FireAdd(e_Shot_Enemy_MothershipCore_Bullet, pCan->nPosX + (sRect1.nX1 * 256), pCan->nPosY + (sRect1.nY1 * 256), -1);
 		}
 
 	// Affichage.
@@ -1685,8 +1685,8 @@ void B3U_Init(struct SMstCommon *pMst)
 
 	pUfo->nAnm = AnmSet(gAnm_MiniUFO_Fly, -1);
 
-	pUfo->nPosX = gScrollPos.nPosX + ((4 * SCR_Width / 5) << 8);
-//	pUfo->nPosY = gScrollPos.nPosY + ((SCR_Height / 2) << 8);
+	pUfo->nPosX = gScrollPos.nPosX + ((4 * SCR_Width / 5) * 256);
+//	pUfo->nPosY = gScrollPos.nPosY + ((SCR_Height / 2) * 256);
 	pUfo->nPosY = gScrollPos.nPosY;
 
 //	pUfo->nPhase = e_MstB3_Ufo_Wait;
@@ -1709,7 +1709,7 @@ void B3U_Manage(struct SMstCommon *pMst)
 	case e_MstB3_Ufo_Arrival:	// Arriv�e.
 		if (Transit2D_CheckEnd() == 0) return;
 
-		nDiff = (gScrollPos.nPosY + ((SCR_Height / 2) << 8)) - pUfo->nPosY;
+		nDiff = (gScrollPos.nPosY + ((SCR_Height / 2) * 256)) - pUfo->nPosY;
 		nDiff /= 4;
 		if (ABS(nDiff) > 0x200) nDiff = SGN(nDiff) * 0x200;
 		pUfo->nPosY += nDiff;
@@ -1724,14 +1724,14 @@ void B3U_Manage(struct SMstCommon *pMst)
 		// Touch� ? On part de l'autre c�t�.
 		if (pUfo->nHitCnt)
 		{
-			pUfo->nLR = (pUfo->nPosX > gScrollPos.nPosX + ((SCR_Width / 2) << 8) ? 0 : 1);
+			pUfo->nLR = (pUfo->nPosX > gScrollPos.nPosX + ((SCR_Width / 2) * 256) ? 0 : 1);
 			pUfo->nPhase = e_MstB3_Ufo_Move;
 		}
 		break;
 
 	case e_MstB3_Ufo_Move:
 		// D�placement vers l'autre c�t�.
-		nDiff = (gScrollPos.nPosX + ((pUfo->nLR ? 4 * SCR_Width / 5 : SCR_Width / 5) << 8)) - pUfo->nPosX;
+		nDiff = (gScrollPos.nPosX + ((pUfo->nLR ? 4 * SCR_Width / 5 : SCR_Width / 5) * 256)) - pUfo->nPosX;
 		nDiff /= 4;
 		if (ABS(nDiff) > 0x400) nDiff = SGN(nDiff) * 0x400;
 		pUfo->nPosX += nDiff;
@@ -1743,7 +1743,7 @@ void B3U_Manage(struct SMstCommon *pMst)
 	case e_MstB3_Ufo_Dead:
 		// Tourne le joueur vers le centre de l'�cran (��d vers le Monoeye).
 		if (gShoot.nPlayerGnd && gShoot.nPlayerAnmTop == -1)
-			gShoot.nPlayerDir = (gShoot.nPlayerPosX > gScrollPos.nPosX + ((SCR_Width / 2) << 8) ? 1 : 0);
+			gShoot.nPlayerDir = (gShoot.nPlayerPosX > gScrollPos.nPosX + ((SCR_Width / 2) * 256) ? 1 : 0);
 		return;
 	}
 
@@ -1853,7 +1853,7 @@ s32 Mst20_Main_Boss3(struct SMstCommon *pMst)
 
 	// Explosions.
 	if (pSpe->nExplo)
-		Boss_Explosions(&pSpe->nExplo, pMst->nPosX - ((64-8) << 8), pMst->nPosY - (80 << 8), 128, 64);
+		Boss_Explosions(&pSpe->nExplo, pMst->nPosX - ((64-8) * 256), pMst->nPosY - (80 * 256), 128, 64);
 
 /*
 	// Se prend un tir ?
@@ -1869,7 +1869,7 @@ s32 Mst20_Main_Boss3(struct SMstCommon *pMst)
 				pMst->nPhase = e_MstB3_Dead;
 				pSpe->nHitCnt = 0;
 				gShoot.nPlayerScore += BOSS3_SCORE;	// Score.
-				DustSet(gAnm_Explosion0_Big_Dust, pMst->nPosX + (8 << 8), pMst->nPosY - (48 << 8), e_Prio_Ennemies + 2, 0);
+				DustSet(gAnm_Explosion0_Big_Dust, pMst->nPosX + (8 * 256), pMst->nPosY - (48 * 256), e_Prio_Ennemies + 2, 0);
 
 				nSpr2 = SPR_NoSprite;	// Plus de glow.
 			}

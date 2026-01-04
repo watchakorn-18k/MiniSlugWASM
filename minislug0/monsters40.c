@@ -36,8 +36,8 @@ void Mst40_Init_L11SpaceTrash0(struct SMstCommon *pMst, u8 *pData)
 	u32	i;
 	for (i = 0; i < pSpe->nNb; i++)
 	{
-		pSpe->nPosY[i] = (i & 1 ? -(SCR_Height / 2)+40 : 0) << 4;
-		pSpe->nPosY[i] -= 50 << 4;
+		pSpe->nPosY[i] = (i & 1 ? -(SCR_Height / 2)+40 : 0) * 16;
+		pSpe->nPosY[i] -= 50 * 16;
 		pSpe->nWait[i] = (i + pSpe->nNb) * 96;//32;
 	}
 
@@ -176,9 +176,9 @@ void Mst41_Init_L11MarsUFO0(struct SMstCommon *pMst, u8 *pData)
 	// Prm de tir.
 	pSpe->nShotAnm = -1;
 	nVal = GetBits(24, 27, pData, 0);	// First delay.
-	pSpe->nShotCnt = (4 + nVal) << 4;	// + 4 pour laisser le temps aux soucoupes d'arriver.
+	pSpe->nShotCnt = (4 + nVal) * 16;	// + 4 pour laisser le temps aux soucoupes d'arriver.
 	nVal = GetBits(28, 31, pData, 0);	// Fréquence.
-	pSpe->nShotFreq = nVal << 4;
+	pSpe->nShotFreq = nVal * 16;
 	nVal = GetBits(32, 35, pData, 0);	// Nb de tirs.
 	pSpe->nShotNb = nVal;
 
@@ -196,8 +196,8 @@ s32 Mst41_Main_L11MarsUFO0(struct SMstCommon *pMst)
 	struct SMst34_L11MarsEye0	*pSpe = (struct SMst34_L11MarsEye0 *)pMst->pData;
 
 	// Destination (x,y) en fonction du n° d'ordre de la séquence. 0 = Right / 1 = Top / 2 = Left. L'ordre sert pour la phase "Go Away".
-	static s32	gpnDstX[] = { ((SCR_Width/2) + 48) << 8, (SCR_Width/2) << 8, ((SCR_Width/2) - 48) << 8 };
-	static s32	gpnDstY[] = { ((SCR_Height/4) + 32) << 8, (SCR_Height/4) << 8, ((SCR_Height/4) + 32) << 8 };
+	static s32	gpnDstX[] = { ((SCR_Width/2) + 48) * 256, (SCR_Width/2) * 256, ((SCR_Width/2) - 48) * 256 };
+	static s32	gpnDstY[] = { ((SCR_Height/4) + 32) * 256, (SCR_Height/4) * 256, ((SCR_Height/4) + 32) * 256 };
 	s32	nIncX, nIncY;
 
 	switch (pMst->nPhase)
@@ -275,7 +275,7 @@ u8	gpnM42StateMax[] = { 3, 1, 1, };	// State max utilisé, pas nb d'états total (
 u32	gpnM42SprBgTb[] = { e_Spr_Lev3_DoorR, e_Spr_Lev14_DoorR, e_Spr_Lev6_Door2, };
 u32	gpnM42SprFgTb[] = { e_Spr_Lev3_DoorR_fg-3, e_Spr_Lev14_DoorR_fg-1, SPR_NoSprite, };
 u8	gpnM42SprFgStates[] = { 0x08, 0x02, 0, };		// Bits pour indiquer si fg ou pas selon le 'state'.
-u8	gpnM42BlockDist[] = { 0x20, 0x2C, 0, }; // Distance de blocage (<< 8).
+u8	gpnM42BlockDist[] = { 0x20, 0x2C, 0, }; // Distance de blocage (* 256).
 
 #define	MST42_LIFE	8
 void Mst42_Init_DoorToDestroy0(struct SMstCommon *pMst, u8 *pData)
@@ -326,8 +326,8 @@ s32 Mst42_Main_DoorToDestroy0(struct SMstCommon *pMst)
 	{
 	case e_Mst42_Wait:			// Porte présente, empèche le joueur de passer + encaisse les tirs.
 		// Bloque le joueur.
-//		Mst_PlayerBlock(pMst->nPosX - (2 << 12), 0);
-		if (gpnM42BlockDist[pSpe->nType]) Mst_PlayerBlock(pMst->nPosX - ((u32)gpnM42BlockDist[pSpe->nType] << 8), 0);
+//		Mst_PlayerBlock(pMst->nPosX - (2 * 4096), 0);
+		if (gpnM42BlockDist[pSpe->nType]) Mst_PlayerBlock(pMst->nPosX - ((u32)gpnM42BlockDist[pSpe->nType] * 256), 0);
 
 		// Se prend un tir ?
 		if (Mst_ShotCheckLife(nSpr, pMst->nPosX, pMst->nPosY, &pSpe->nHitCnt, &pSpe->nLife))
@@ -450,7 +450,7 @@ void Mst43_Init_FlyingTara0(struct SMstCommon *pMst, u8 *pData)
 		break;
 	}
 
-	if (pMst->nAngle + 64 < 128) pMst->nPosX -= (SCR_Width << 8) + ((MST_CLIP_VAL * 2) << 12);
+	if (pMst->nAngle + 64 < 128) pMst->nPosX -= (SCR_Width * 256) + ((MST_CLIP_VAL * 2) * 4096);
 
 }
 
@@ -477,8 +477,8 @@ s32 Mst43_Main_FlyingTara0(struct SMstCommon *pMst)
 		// Lacher de bombe dans les levels normaux.
 		if (pSpe->nMode == 2 && pSpe->nBodyBomb)
 		{
-			if ((pMst->nFlipX == 0 && pMst->nPosX < gScrollPos.nPosX + ((2 * SCR_Width / 3) << 8)) ||
-				(pMst->nFlipX == 1 && pMst->nPosX > gScrollPos.nPosX + ((1 * SCR_Width / 3) << 8)))
+			if ((pMst->nFlipX == 0 && pMst->nPosX < gScrollPos.nPosX + ((2 * SCR_Width / 3) * 256)) ||
+				(pMst->nFlipX == 1 && pMst->nPosX > gScrollPos.nPosX + ((1 * SCR_Width / 3) * 256)))
 			{
 /*
 [mst45] F-Tara Bomb (DO NOT USE)
@@ -584,11 +584,11 @@ tmp = 1:7:
 		gShoot.nPlayerScore += gpMstTb[pMst->nMstNo].nPoints;	// Score.
 _43FlyingTaraDeath:
 		// Différents dusts.
-		DustSet(gAnm_Explosion0_Big_Dust, pMst->nPosX, pMst->nPosY + (5 << 8), e_Prio_DustUnder, 0);
-		DustSetMvt(gAnm_FlyingTara_DebrisEngine_Dust, pMst->nPosX + ((pMst->nFlipX ? 20 : -20) << 8), pMst->nPosY, (pMst->nFlipX ? 0x180 : -0x180), -0x120, e_Prio_DustUnder - 1, e_DustFlag_Gravity | (pMst->nFlipX ? e_DustFlag_FlipX : 0));
+		DustSet(gAnm_Explosion0_Big_Dust, pMst->nPosX, pMst->nPosY + (5 * 256), e_Prio_DustUnder, 0);
+		DustSetMvt(gAnm_FlyingTara_DebrisEngine_Dust, pMst->nPosX + ((pMst->nFlipX ? 20 : -20) * 256), pMst->nPosY, (pMst->nFlipX ? 0x180 : -0x180), -0x120, e_Prio_DustUnder - 1, e_DustFlag_Gravity | (pMst->nFlipX ? e_DustFlag_FlipX : 0));
 		DustSetMvt(gAnm_FlyingTara_DebrisWing_Dust, pMst->nPosX, pMst->nPosY, (pMst->nFlipX ? 0x080 : -0x080), 0, e_Prio_DustUnder - 1, e_DustFlag_Gravity | (pMst->nFlipX ? e_DustFlag_FlipX : 0));
-		DustSetMvt(gAnm_FlyingTara_DebrisBody1_Dust, pMst->nPosX + ((pMst->nFlipX ? -10 : 10) << 8), pMst->nPosY, (pMst->nFlipX ? -0x080 : 0x080), -0x200, e_Prio_DustUnder - 1, e_DustFlag_Gravity | (pMst->nFlipX ? e_DustFlag_FlipX : 0));
-		DustSetMvt(gAnm_FlyingTara_DebrisBody2_Dust, pMst->nPosX + ((pMst->nFlipX ? -20 : 20) << 8), pMst->nPosY, (pMst->nFlipX ? -0x200 : 0x200), -0x100, e_Prio_DustUnder - 1, e_DustFlag_Gravity | (pMst->nFlipX ? e_DustFlag_FlipX : 0));
+		DustSetMvt(gAnm_FlyingTara_DebrisBody1_Dust, pMst->nPosX + ((pMst->nFlipX ? -10 : 10) * 256), pMst->nPosY, (pMst->nFlipX ? -0x080 : 0x080), -0x200, e_Prio_DustUnder - 1, e_DustFlag_Gravity | (pMst->nFlipX ? e_DustFlag_FlipX : 0));
+		DustSetMvt(gAnm_FlyingTara_DebrisBody2_Dust, pMst->nPosX + ((pMst->nFlipX ? -20 : 20) * 256), pMst->nPosY, (pMst->nFlipX ? -0x200 : 0x200), -0x100, e_Prio_DustUnder - 1, e_DustFlag_Gravity | (pMst->nFlipX ? e_DustFlag_FlipX : 0));
 
 		u8	nDrop = 0;	// Item à lacher. Par défaut non.
 		// Si mst généré, gestion de la séquence.
@@ -673,7 +673,7 @@ Location = 5:6: Normal - Space - Underwater - Air
 		// Tir ?
 		else if (AnmCheckStepFlag(pSpe->nShotAnm))
 		{
-			FireAdd(e_Shot_Enemy_RebSoldier_Bullet0, pMst->nPosX + (nShotOffsX << 8), pMst->nPosY + (nShotOffsY << 8), (pMst->nFlipX ? 0 : 128));
+			FireAdd(e_Shot_Enemy_RebSoldier_Bullet0, pMst->nPosX + (nShotOffsX * 256), pMst->nPosY + (nShotOffsY * 256), (pMst->nFlipX ? 0 : 128));
 			// Reinitialisation du tir.
 			pSpe->nShotCnt = MST43_SHOT_FREQ;
 		}
@@ -769,8 +769,8 @@ s32 Mst45_Main_FlyingTaraBomb0(struct SMstCommon *pMst)
 		// !! Pas de break, tir lancé immédiatement !!
 	case e_Mst45_Explode:
 		// Sortie de l'écran ?
-		if (pMst->nPosY >> 8 >= (gMap.pPlanesHt[gMap.nHeroPlane] << 4) - 1 ||
-			(u32)(pMst->nPosY >> 8) >= gMap.pPlanesLg[gMap.nHeroPlane] << 4)
+		if (pMst->nPosY >> 8 >= (gMap.pPlanesHt[gMap.nHeroPlane] * 16) - 1 ||
+			(u32)(pMst->nPosY >> 8) >= gMap.pPlanesLg[gMap.nHeroPlane] * 16)
 			return (e_MstState_Dead);
 
 		// Une explosion ?
@@ -782,9 +782,9 @@ s32 Mst45_Main_FlyingTaraBomb0(struct SMstCommon *pMst)
 			if (--pSpe->nExploNb == 0) return (e_MstState_Dead);
 			// Déplacement pour la prochaine explosion.
 			s32	nHt;
-			pMst->nPosX += (pMst->nFlipX ? 24 : -24) << 8;
+			pMst->nPosX += (pMst->nFlipX ? 24 : -24) * 256;
 			nHt = BlockGetGroundLevel(pMst->nPosX >> 8, pMst->nPosY >> 8);
-			pMst->nPosY += nHt << 8;
+			pMst->nPosY += nHt * 256;
 			// Reinit cnt.
 			pSpe->nCnt = MST45_CNT;
 		}
@@ -820,7 +820,7 @@ s32 Mst44_Main_SlugWaitTransit0(struct SMstCommon *pMst)
 
 	// Affichage du slug.
 	nSpr = e_Spr_SlugSubmarine_WaitOpen;
-	nPosY = (gShoot.nSplashLevel == -1 ? pMst->nPosY : (gShoot.nSplashLevel - 8 - 4) << 8);
+	nPosY = (gShoot.nSplashLevel == -1 ? pMst->nPosY : (gShoot.nSplashLevel - 8 - 4) * 256);
 	pMst->nAngle += 2;//3;
 	SprDisplay(nSpr, pMst->nPosX >> 8, (nPosY >> 8) + (gVar.pCos[pMst->nAngle] >> 7)+1, e_Prio_Ennemies - 2);
 	// Affichage du splash.
@@ -903,7 +903,7 @@ void Mst46_Init_HairBusterRibert0(struct SMstCommon *pMst, u8 *pData)
 	pSpe->nShotWait = 0;
 
 	pMst->nPhase = e_Mst46_ComeDistance;
-	pMst->nPosX = gScrollPos.nPosX - (48 << 8);
+	pMst->nPosX = gScrollPos.nPosX - (48 * 256);
 
 	Mst46_Sub0_Init(&pSpe->sSub0);
 
@@ -958,7 +958,7 @@ void Mst_SubLRAC0_Main(struct SM46SubPrm *pPrm)
 	{
 	case e_Mst46Sub0_Aim:
 		// Visée normale.
-		nAng = fatan2(-((gShoot.nPlayerPosY + (10 << 8)) - (pPrm->pMst->nPosY + (pPrm->nOffsY << 8))), gShoot.nPlayerPosX - (pPrm->pMst->nPosX + (pPrm->nOffsX << 8)));
+		nAng = fatan2(-((gShoot.nPlayerPosY + (10 * 256)) - (pPrm->pMst->nPosY + (pPrm->nOffsY * 256))), gShoot.nPlayerPosX - (pPrm->pMst->nPosX + (pPrm->nOffsX * 256)));
 		pPrm->pSub0->nAngle = nAng;
 		// Déclenchement du tir ?
 		if (pPrm->nExplosions == 0)
@@ -977,7 +977,7 @@ void Mst_SubLRAC0_Main(struct SM46SubPrm *pPrm)
 		// Peur pendant les explosions.
 		if (pPrm->nExplosions)
 		{
-			SprDisplay(e_Spr_RebSoldier_LRAC_Fright | (pPrm->pMst->nPosX + (pPrm->nOffsX << 8) < gShoot.nPlayerPosX ? SPR_Flip_X : 0),
+			SprDisplay(e_Spr_RebSoldier_LRAC_Fright | (pPrm->pMst->nPosX + (pPrm->nOffsX * 256) < gShoot.nPlayerPosX ? SPR_Flip_X : 0),
 				(pPrm->pMst->nPosX >> 8) + pPrm->nOffsX, (pPrm->pMst->nPosY >> 8) + pPrm->nOffsY, e_Prio_Ennemies + 2);
 			// Decay au max ? => Action qui va bien.
 			if (pPrm->nExplosions == 1 && pPrm->nDecay >= pPrm->nDecayMax)
@@ -1010,11 +1010,11 @@ void Mst_SubLRAC0_Main(struct SM46SubPrm *pPrm)
 		Special Init = 23:26: None - Truck Jump - SuspSub Jump - Hero Height -	; Inits spéciales.
 		RESERVED2 = 27:31:
 		*/
-		u32	nPrm = (2) | (1 << 12) | (2 << 23);	// 2 = LRAC / 1 << 12 = Move / 1 << 23 = sub jump.
+		u32	nPrm = (2) | (1 * 4096) | (2 << 23);	// 2 = LRAC / 1 * 4096 = Move / 1 << 23 = sub jump.
 		MstAdd(e_Mst14_RebelSoldier0, (pPrm->pMst->nPosX >> 8) + pPrm->nOffsX, (pPrm->pMst->nPosY >> 8) + pPrm->nOffsY, (u8 *)&nPrm, -1);
 
 		// Première frame de saut superposée au nouveau monstre au cas ou le monstre soit généré avant le mst en cours dans la liste.
-		SprDisplay(e_Spr_RebSoldier_LRAC_Jump | ((pPrm->pMst->nPosX + (pPrm->nOffsX << 8)) - gShoot.nPlayerPosX >= 0 ? 0 : SPR_Flip_X),
+		SprDisplay(e_Spr_RebSoldier_LRAC_Jump | ((pPrm->pMst->nPosX + (pPrm->nOffsX * 256)) - gShoot.nPlayerPosX >= 0 ? 0 : SPR_Flip_X),
 			(pPrm->pMst->nPosX >> 8) + pPrm->nOffsX, (pPrm->pMst->nPosY >> 8) + pPrm->nOffsY, e_Prio_Ennemies + 2);
 
 		pPrm->pSub0->nPhase = e_Mst46Sub0_End;
@@ -1026,14 +1026,14 @@ void Mst_SubLRAC0_Main(struct SM46SubPrm *pPrm)
 		pPrm->pSub0->nPhase = e_Mst46Sub0_Dive;
 		// Dust du LRAC.
 		gDustExg.nRotInc = -6;
-		DustSetMvt(gAnm_RebSoldier_WeaponLRAC_Dust, pPrm->pMst->nPosX + (pPrm->nOffsX << 8), pPrm->pMst->nPosY + (pPrm->nOffsY << 8) - 0x1000, 0x100, -0x380, e_Prio_Ennemies + 2, e_DustFlag_Gravity | e_DustFlag_Rotation | e_DustFlag_CheckGnd);
+		DustSetMvt(gAnm_RebSoldier_WeaponLRAC_Dust, pPrm->pMst->nPosX + (pPrm->nOffsX * 256), pPrm->pMst->nPosY + (pPrm->nOffsY * 256) - 0x1000, 0x100, -0x380, e_Prio_Ennemies + 2, e_DustFlag_Gravity | e_DustFlag_Rotation | e_DustFlag_CheckGnd);
 	case e_Mst46Sub0_Dive:
 		nSpr = SPR_NoSprite;
 		if (pPrm->pSub0->nAnm != -1) nSpr = AnmGetImage(pPrm->pSub0->nAnm);
 		// Anim finie => Dust du saut. / Note, le slot sera libéré à la mort du Ribert.
 		if (nSpr == SPR_NoSprite)
 		{
-			DustSetMvt(gAnm_HairBusterRibert_SoldierJumpDive_Dust, pPrm->pMst->nPosX + (pPrm->nOffsX << 8), pPrm->pMst->nPosY + (pPrm->nOffsY << 8), -0x180, -0x200, e_Prio_Ennemies + 2, e_DustFlag_Gravity | e_DustFlag_CheckGnd);
+			DustSetMvt(gAnm_HairBusterRibert_SoldierJumpDive_Dust, pPrm->pMst->nPosX + (pPrm->nOffsX * 256), pPrm->pMst->nPosY + (pPrm->nOffsY * 256), -0x180, -0x200, e_Prio_Ennemies + 2, e_DustFlag_Gravity | e_DustFlag_CheckGnd);
 			pPrm->pSub0->nPhase = e_Mst46Sub0_End;
 		}
 		else
@@ -1058,8 +1058,8 @@ void Mst_SubLRAC0_Main(struct SM46SubPrm *pPrm)
 		if (SprGetRect(nSpr, e_SprRectZone_ShotOrg, &sRect1))
 		if (sRect1.nType == e_SprRect_Point)
 		{
-			FireAdd(e_Shot_Enemy_RebSoldier_LRAC_Rocket0, pPrm->pMst->nPosX + (sRect1.nX1 << 8) + (pPrm->nOffsX << 8), pPrm->pMst->nPosY + (sRect1.nY1 << 8) + (pPrm->nOffsY << 8), pPrm->pSub0->nAngle);
-			DustSet(gAnm_RebSoldier_LRAC_Shot_Dust, pPrm->pMst->nPosX + (sRect1.nX1 << 8) + (pPrm->nOffsX << 8), pPrm->pMst->nPosY + (sRect1.nY1 << 8) + (pPrm->nOffsY << 8), e_Prio_DustOver, (nSpr & SPR_Flip_X ? e_DustFlag_FlipX : 0));
+			FireAdd(e_Shot_Enemy_RebSoldier_LRAC_Rocket0, pPrm->pMst->nPosX + (sRect1.nX1 * 256) + (pPrm->nOffsX * 256), pPrm->pMst->nPosY + (sRect1.nY1 * 256) + (pPrm->nOffsY * 256), pPrm->pSub0->nAngle);
+			DustSet(gAnm_RebSoldier_LRAC_Shot_Dust, pPrm->pMst->nPosX + (sRect1.nX1 * 256) + (pPrm->nOffsX * 256), pPrm->pMst->nPosY + (sRect1.nY1 * 256) + (pPrm->nOffsY * 256), e_Prio_DustOver, (nSpr & SPR_Flip_X ? e_DustFlag_FlipX : 0));
 		}
 	}
 
@@ -1109,7 +1109,7 @@ u32	Mst46_sub_MoveY(struct SMstCommon *pMst, s32 nDst)
 {
 	if (pMst->nPosY >> 8 != (gScrollPos.nPosY >> 8) + nDst)
 	{
-		pMst->nSpdY += (pMst->nPosY < gScrollPos.nPosY + ((HBRIBERT_Y_HIGH + ((HBRIBERT_Y_LOW - HBRIBERT_Y_HIGH) / 2)) << 8) ? 0x10 : -0x10);
+		pMst->nSpdY += (pMst->nPosY < gScrollPos.nPosY + ((HBRIBERT_Y_HIGH + ((HBRIBERT_Y_LOW - HBRIBERT_Y_HIGH) / 2)) * 256) ? 0x10 : -0x10);
 		pMst->nPosY += pMst->nSpdY;
 		return (1);
 	}
@@ -1138,13 +1138,13 @@ s32 Mst46_Main_HairBusterRibert0(struct SMstCommon *pMst)
 		SprDisplay(e_Spr_Ribert_InTheDistance + ((gnFrame >> 2) & 1), pMst->nPosX >> 8, pMst->nPosY >> 8, e_Prio_EnnemiesBg);
 		// Avance.
 		pMst->nPosX += 0x100;
-		if (pMst->nPosX > gScrollPos.nPosX + ((SCR_Width + 48) << 8))
+		if (pMst->nPosX > gScrollPos.nPosX + ((SCR_Width + 48) * 256))
 		{
 //			gpMstQuestItems[MST_QUEST_ITEM_MST32]++;	// Blocage du scroll.
 			pMst->nPhase = e_Mst46_ComeIn; // Phase suivante.
 			//
-			pMst->nPosY = gScrollPos.nPosY + (HBRIBERT_Y_HIGH << 8);	// Pos haute.
-			pMst->nPosX = gScrollPos.nPosX + ((SCR_Width + 64+32) << 8);
+			pMst->nPosY = gScrollPos.nPosY + (HBRIBERT_Y_HIGH * 256);	// Pos haute.
+			pMst->nPosX = gScrollPos.nPosX + ((SCR_Width + 64+32) * 256);
 			pMst->nSpd = 0x780;		// Vitesse empirique pour l'arrivée.
 		}
 		return (e_MstState_Managed);
@@ -1152,7 +1152,7 @@ s32 Mst46_Main_HairBusterRibert0(struct SMstCommon *pMst)
 
 	case e_Mst46_ComeIn:	// Arrivée depuis la droite.
 		Boss2_MoveIn(pMst, -1);
-		if (pMst->nPosX <= gScrollPos.nPosX + (210 << 8))
+		if (pMst->nPosX <= gScrollPos.nPosX + (210 * 256))
 		{
 			pMst->nPhase = e_Mst46_LRAC1;
 			pMst->nSpdY = 0;
@@ -1185,7 +1185,7 @@ s32 Mst46_Main_HairBusterRibert0(struct SMstCommon *pMst)
 			pMst->nPhase = e_Mst46_GoUp;
 			AnmSetIfNew(gAnm_HairBusterRibert_DoorClosing, pMst->nAnm);
 			// Dust claquement de porte, avec wait intégré.
-			DustSet(gAnm_HairBusterRibert_DoorClose_Dust, pMst->nPosX - (40 << 8), pMst->nPosY - (40 << 8), e_Prio_DustOver, 0);
+			DustSet(gAnm_HairBusterRibert_DoorClose_Dust, pMst->nPosX - (40 * 256), pMst->nPosY - (40 * 256), e_Prio_DustOver, 0);
 		}
 		break;
 
@@ -1223,20 +1223,20 @@ s32 Mst46_Main_HairBusterRibert0(struct SMstCommon *pMst)
 		switch (pSpe->nDir)
 		{
 		case 0:	// Gauche.
-			if (pMst->nPosX <= gScrollPos.nPosX + (HBRIBERT_X_MIN << 8)) pSpe->nDir++;
+			if (pMst->nPosX <= gScrollPos.nPosX + (HBRIBERT_X_MIN * 256)) pSpe->nDir++;
 			break;
 		case 1:	// Droite.
-			if (pMst->nPosX >= gScrollPos.nPosX + (HBRIBERT_X_MAX << 8))
+			if (pMst->nPosX >= gScrollPos.nPosX + (HBRIBERT_X_MAX * 256))
 			{
 				pSpe->nDir++;
 				pSpe->nShotWait = HBRIBERT_SHOTWAIT;
 			}
 			break;
 		case 2:	// Bas.
-			if (pMst->nPosY >= gScrollPos.nPosY + (HBRIBERT_Y_LOW << 8)) pSpe->nDir++;
+			if (pMst->nPosY >= gScrollPos.nPosY + (HBRIBERT_Y_LOW * 256)) pSpe->nDir++;
 			break;
 		case 3:	// Haut.
-			if (pMst->nPosY <= gScrollPos.nPosY + (HBRIBERT_Y_HIGH << 8))
+			if (pMst->nPosY <= gScrollPos.nPosY + (HBRIBERT_Y_HIGH * 256))
 			{
 				pSpe->nDir = 0;
 				pSpe->nShotWait = HBRIBERT_SHOTWAIT;
@@ -1246,19 +1246,19 @@ s32 Mst46_Main_HairBusterRibert0(struct SMstCommon *pMst)
 
 		// Lâcher de mini bombes.
 		if ((++pSpe->nShotFrm & 15) == 0)
-			FireAdd(e_Shot_Enemy_HairBusterRibert_Mine, pMst->nPosX - (60 << 8), pMst->nPosY + (3 << 8), 144 - 8 + (rand() & 15));
+			FireAdd(e_Shot_Enemy_HairBusterRibert_Mine, pMst->nPosX - (60 * 256), pMst->nPosY + (3 * 256), 144 - 8 + (rand() & 15));
 		break;
 
 	case e_Mst46_FinalFall:		// Chute finale.
 		// Fumée derrière.
 		if ((gnFrame & 15) == 0)
-			DustSetMvt(gAnm_RebSoldier_LRAC_Shot_Dust, pMst->nPosX - (60 << 8), pMst->nPosY - (24 << 8), -0x200, (pMst->nSpdY / 2), e_Prio_DustUnder, 0);
+			DustSetMvt(gAnm_RebSoldier_LRAC_Shot_Dust, pMst->nPosX - (60 * 256), pMst->nPosY - (24 * 256), -0x200, (pMst->nSpdY / 2), e_Prio_DustUnder, 0);
 		// On attend la fin des explosions.
 		if (pSpe->nExplosions) break;
 		// Chute.
 		if (pMst->nSpdY < 0x280) pMst->nSpdY += 0x08;
 		pMst->nPosY += pMst->nSpdY;
-		if (pMst->nPosY > gScrollPos.nPosY + ((SCR_Height + 96) << 8))
+		if (pMst->nPosY > gScrollPos.nPosY + ((SCR_Height + 96) * 256))
 		{
 			// Disparition.
 			if (pSpe->nAnmExhaust != -1) AnmReleaseSlot(pSpe->nAnmExhaust);
@@ -1331,7 +1331,7 @@ s32 Mst46_Main_HairBusterRibert0(struct SMstCommon *pMst)
 		if (pSpe->nExplosions > MEDIUMEXPLO_ANM_DURATION && (pSpe->nExplosions & 0x7) == 0)
 		{
 			i = rand();
-			DustSet(gAnm_Explosion0_Medium_Dust, pMst->nPosX + (pSpe->nExplosions & 8 ? -64 << 8 : 0) + ((i & 63) << 8), pMst->nPosY - (40 << 8) + (((i >> 8) & 63) << 8), e_Prio_Ennemies+3, 0);
+			DustSet(gAnm_Explosion0_Medium_Dust, pMst->nPosX + (pSpe->nExplosions & 8 ? -64 * 256 : 0) + ((i & 63) * 256), pMst->nPosY - (40 * 256) + (((i >> 8) & 63) * 256), e_Prio_Ennemies+3, 0);
 
 //if (((pSpe->sFrontC[i].nExplo >> 4) + i) & 1)	// + Débris 1 fois sur 2.
 //DustSetMvt(gAnm_Debris_Metal0_Dust, x, y, -0x180, -0x380, e_Prio_Ennemies-1, e_DustFlag_Gravity);
@@ -1446,7 +1446,7 @@ s32 Mst47_Main_Lev9RocketTop0(struct SMstCommon *pMst)
 	if (Screen_ObjectOut(pMst->nPosX, pMst->nPosY)) return (e_MstState_Asleep);
 
 	// Bloque le joueur.
-	Mst_PlayerBlock(pMst->nPosX - (5 << 12), 0);
+	Mst_PlayerBlock(pMst->nPosX - (5 * 4096), 0);
 
 	switch (pMst->nPhase)
 	{
@@ -1502,7 +1502,7 @@ s32 Mst47_Main_Lev9RocketTop0(struct SMstCommon *pMst)
 				Special Init = 23:26: None - Truck Jump - SuspSub Jump - Hero Height -	; Inits spéciales.
 				RESERVED2 = 27:31:
 				*/
-				u32	nPrm = (2) | (1 << 12) | (1 << 14);		// 2 = LRAC / 1 << 12 = Move / 1 << 14 = Parachute.
+				u32	nPrm = (2) | (1 * 4096) | (1 << 14);		// 2 = LRAC / 1 * 4096 = Move / 1 << 14 = Parachute.
 				MstAdd(e_Mst14_RebelSoldier0, (pMst->nPosX >> 8) - ((7 + (rand()& 7)) * 16), (gScrollPos.nPosY >> 8), (u8 *)&nPrm, -1);
 				pSpe->nNbSoldiers--;
 			}
@@ -1512,17 +1512,17 @@ s32 Mst47_Main_Lev9RocketTop0(struct SMstCommon *pMst)
 
 	case e_Mst47_Explode:	// Explose !
 		// Petites explosions.
-		Boss_Explosions(&pSpe->nExplo, pMst->nPosX - (64 << 8), pMst->nPosY - (112 << 8), 128, 128);
+		Boss_Explosions(&pSpe->nExplo, pMst->nPosX - (64 * 256), pMst->nPosY - (112 * 256), 128, 128);
 		pSpe->nExplo++;
-		Boss_Explosions(&pSpe->nExplo, pMst->nPosX - (64 << 8), pMst->nPosY - (112 << 8), 128, 128);
+		Boss_Explosions(&pSpe->nExplo, pMst->nPosX - (64 * 256), pMst->nPosY - (112 * 256), 128, 128);
 		// Débris.
 		if ((pSpe->nExplo & 7) == 0)
 		{
 			s32	nPosX, nPosY;
 			i = rand();
-			nPosX = pMst->nPosX + ((-64 + (i & 127)) << 8);
+			nPosX = pMst->nPosX + ((-64 + (i & 127)) * 256);
 			i += 64;
-			nPosY = pMst->nPosY + ((-112 + (i & 127)) << 8);
+			nPosY = pMst->nPosY + ((-112 + (i & 127)) * 256);
 			i &= 127;
 			DustSetMvt(gAnm_Debris_Metal0_Dust, nPosX, nPosY, 0x180 + i, -0x480, e_Prio_Ennemies + 32, e_DustFlag_Gravity);
 			DustSetMvt(gAnm_Debris_Metal0_Dust, nPosX, nPosY, -0x180 - i, -0x380, e_Prio_Ennemies + 32, e_DustFlag_Gravity);
@@ -1655,13 +1655,13 @@ s32 Mst48Sub_Main_L7RockBottom0(struct SMstCommon *pMst)
 	{
 		// Explosion.
 //		DustSet(gAnm_Explosion0_Big_Dust, pMst->nPosX, (pMst->nPosY) - 0x800, e_Prio_Ennemies + 1, 0);
-		DustSet(gAnm_Explosion0_Big_Dust, pMst->nPosX, (pMst->nPosY) + ((s32)gpnM48_T9_OffsExplo[pSpe->nItemWait] << 8), e_Prio_Ennemies + 1, 0);
+		DustSet(gAnm_Explosion0_Big_Dust, pMst->nPosX, (pMst->nPosY) + ((s32)gpnM48_T9_OffsExplo[pSpe->nItemWait] * 256), e_Prio_Ennemies + 1, 0);
 		// Débris sur la cabane.
 //		if (pSpe->nItemWait == 1)	// nItemWait = Type.
 		{
 //			DustSetMvt(gAnm_Debris_Metal0_Dust, pMst->nPosX, pMst->nPosY - 0x200, 0x180, -0x480, e_Prio_DustUnder - 1, e_DustFlag_Gravity);
 //			DustSetMvt(gAnm_Debris_Metal0_Dust, pMst->nPosX, pMst->nPosY - 0x200, -0x180, -0x380, e_Prio_DustUnder - 1, e_DustFlag_Gravity);
-			s32	nPosY = pMst->nPosY - 0x1000 + ((s32)gpnM48_T9_OffsExplo[pSpe->nItemWait] << 8);
+			s32	nPosY = pMst->nPosY - 0x1000 + ((s32)gpnM48_T9_OffsExplo[pSpe->nItemWait] * 256);
 			DustSetMvt(gpM48_T9_Dust[pSpe->nItemWait][0], pMst->nPosX, nPosY, 0x200, -0x480, e_Prio_DustUnder - 1, e_DustFlag_Gravity);
 			DustSetMvt(gpM48_T9_Dust[pSpe->nItemWait][1], pMst->nPosX, nPosY, -0x200, -0x380, e_Prio_DustUnder - 1, e_DustFlag_Gravity);
 		}
@@ -1691,7 +1691,7 @@ s32 Mst48Sub_Main_L7RockBottom0(struct SMstCommon *pMst)
 
 /*
 	// Génération des soldats.
-//	if (ABS(gShoot.nPlayerPosX - pMst->nPosX) < ((2 * SCR_Width) / 3) << 8)		// Pas top...
+//	if (ABS(gShoot.nPlayerPosX - pMst->nPosX) < ((2 * SCR_Width) / 3) * 256)		// Pas top...
 	if (pSpe->nLife < M48_T9_LIFE)	// On attend le premier tir.
 	if (pSpe->nItemWait == 1)	// nItemWait = Type.
 	if (pSpe->nCnt2)
@@ -1712,7 +1712,7 @@ s32 Mst48Sub_Main_L7RockBottom0(struct SMstCommon *pMst)
 		RESERVED2 = 27:31:
 		* /
 		static u8 pM14[] = { 3, 3, 0, 1 };	// Pour générer des soldats, sauf LRAC.
-		u32	nPrm = ((u32)pM14[rand() & 3]) | (1 << 12) | (10 << 17);	// 0 = Rifle - 1 = Mortar - 3 = Grenade / 1 << 12 = Move / 10 << 17 = Décalage de la zone.
+		u32	nPrm = ((u32)pM14[rand() & 3]) | (1 * 4096) | (10 << 17);	// 0 = Rifle - 1 = Mortar - 3 = Grenade / 1 * 4096 = Move / 10 << 17 = Décalage de la zone.
 		MstAdd(e_Mst14_RebelSoldier0, (gScrollPos.nPosX >> 8) - 32, pMst->nPosY >> 8, (u8 *)&nPrm, -1);
 		pSpe->nCnt2--;
 	}
@@ -1796,7 +1796,7 @@ s32 Mst48Sub_Main_L8RebelBiker0(struct SMstCommon *pMst)
 
 		if (AnmGetKey(pMst->nAnm) == e_AnmKey_Null)
 		{	// Avance dans le wagon + déclenchement de la chute.
-			if (pMst->nPosX >> 8 >= ((u32)pSpe->nCloudsY[0] << 4) + 40)
+			if (pMst->nPosX >> 8 >= ((u32)pSpe->nCloudsY[0] * 16) + 40)
 			{
 				AnmSet(gAnm_RebSoldier_Biker_Jump, pMst->nAnm);
 				pMst->nSpdY = 0;
@@ -1809,9 +1809,9 @@ s32 Mst48Sub_Main_L8RebelBiker0(struct SMstCommon *pMst)
 			if (pMst->nSpdY > SPDY_MAX/2) pMst->nSpdY = SPDY_MAX/2;
 			pMst->nPosY += pMst->nSpdY;
 			// Atterrissage ? (En dur, comme un saguoin).
-			if (pMst->nPosY >= (gMap.pPlanesHt[gMap.nHeroPlane] << 12) - (16 << 8))
+			if (pMst->nPosY >= (gMap.pPlanesHt[gMap.nHeroPlane] * 4096) - (16 * 256))
 			{
-				pMst->nPosY = (gMap.pPlanesHt[gMap.nHeroPlane] << 12) - (16 << 8);
+				pMst->nPosY = (gMap.pPlanesHt[gMap.nHeroPlane] * 4096) - (16 * 256);
 				AnmSetIfNew(gAnm_RebSoldier_Biker_Land, pMst->nAnm);
 				pMst->nPhase = e_Mst48T8_Move2;
 				pMst->nSpd = 0x100;		// Ralentissement quand on touche le sol.
@@ -1839,7 +1839,7 @@ s32 Mst48Sub_Main_L8RebelBiker0(struct SMstCommon *pMst)
 
 	// Cache wagon.
 	if (nCache)
-		SprDisplay(e_Spr_Lev8_Cache1, ((u32)pSpe->nCloudsY[0] << 4) + 8, ((u32)pSpe->nCloudsY[1] << 4) + 15, e_Prio_Ennemies + 1);
+		SprDisplay(e_Spr_Lev8_Cache1, ((u32)pSpe->nCloudsY[0] * 16) + 8, ((u32)pSpe->nCloudsY[1] * 16) + 15, e_Prio_Ennemies + 1);
 
 	return (e_MstState_Managed);
 }
@@ -1864,7 +1864,7 @@ s32 Mst48Sub_Main_L14Generator0(struct SMstCommon *pMst)
 	struct SMst48_Joke0	*pSpe = (struct SMst48_Joke0 *)pMst->pData;
 
 	// Joueur dans la zone ?
-	if (gShoot.nPlayerPosX > pMst->nPosX + ((u32)pSpe->nItemWait << 12)) return (e_MstState_Dead);
+	if (gShoot.nPlayerPosX > pMst->nPosX + ((u32)pSpe->nItemWait * 4096)) return (e_MstState_Dead);
 	if (gShoot.nPlayerPosX < pMst->nPosX) return (e_MstState_Managed);
 	if (gnFrame & 31) return (e_MstState_Managed);
 	// On attend le changement de bloc du joueur.
@@ -1879,7 +1879,7 @@ s32 Mst48Sub_Main_L14Generator0(struct SMstCommon *pMst)
 	Zone = 4:7:
 	*/
 	pSpe->nCnt++;
-	u32	nPrm = (2 + 0) | (10 << 4);
+	u32	nPrm = (2 + 0) | (10 * 16);
 	MstAdd(e_Mst7_Zombie1, (gScrollPos.nPosX >> 8) + ((pSpe->nCnt & 3) == 0 ? -32 : SCR_Width + 32), pMst->nPosY >> 8, (u8 *)&nPrm, -1);
 
 	return (e_MstState_Managed);
@@ -1904,15 +1904,15 @@ void Mst48Sub_Init_L17Monoeye0(struct SMstCommon *pMst, u8 *pData)
 	AnmSet(gAnm_Monoeye_Appear, pMst->nAnm);	// (Slot réservé, pas de pb).
 	pMst->nPhase = e_Mst48T6_Appearing;
 
-	pMst->nPosY = gScrollPos.nPosY + (((SCR_Height / 2) + 40) << 8);
-	if (gShoot.nPlayerPosX > gScrollPos.nPosX + ((SCR_Width / 2) << 8))
+	pMst->nPosY = gScrollPos.nPosY + (((SCR_Height / 2) + 40) * 256);
+	if (gShoot.nPlayerPosX > gScrollPos.nPosX + ((SCR_Width / 2) * 256))
 	{
-		pMst->nPosX = gScrollPos.nPosX + ((SCR_Width / 4) << 8);
+		pMst->nPosX = gScrollPos.nPosX + ((SCR_Width / 4) * 256);
 		pMst->nFlipX = 1;
 	}
 	else
 	{
-		pMst->nPosX = gScrollPos.nPosX + ((SCR_Width - (SCR_Width / 4)) << 8);
+		pMst->nPosX = gScrollPos.nPosX + ((SCR_Width - (SCR_Width / 4)) * 256);
 	}
 
 	pSpe->nCnt = 1;			// Pour sin. 1 pour skipper les 256. (Step 2).
@@ -1946,7 +1946,7 @@ s32 Mst48Sub_Main_L17Monoeye0(struct SMstCommon *pMst)
 	case e_Mst48T6_GoUp:	// Dégage vers le haut.
 		pMst->nSpdY -= 0x10;
 		pMst->nPosY += pMst->nSpdY;
-		if (pMst->nPosY < -32 << 8)
+		if (pMst->nPosY < -32 * 256)
 		{
 			pMst->nPhase = e_Mst48T6_ToBeContinued;
 			// Init writer.
@@ -2063,7 +2063,7 @@ s32 Mst48Sub_Main_L8WagonDoor0(struct SMstCommon *pMst)
 			pMst->nPosX += 0x100;
 			pMst->nPosX += (s32)pSpe->nCnt;
 			// Out ?
-			if (pMst->nPosY > gScrollPos.nPosY + (SCR_Height << 8))
+			if (pMst->nPosY > gScrollPos.nPosY + (SCR_Height * 256))
 				return (e_MstState_Dead);
 			// Zoom.
 			pSpe->nCnt += 4;
@@ -2098,7 +2098,7 @@ void Mst48Sub_Init_L6Computer0(struct SMstCommon *pMst, u8 *pData)
 	nVal = GetBits(8, 15, pData, 0);		// Item utilisée pour état.
 	pSpe->nItemWait = nVal;
 
-	pMst->nPosY -= 8 << 8;		// Décalage par rapport au sol.
+	pMst->nPosY -= 8 * 256;		// Décalage par rapport au sol.
 	pSpe->nHitCnt = 0;
 	pSpe->nLife = M48S_L6COMPUTER_LIFE;
 
@@ -2209,8 +2209,8 @@ s32 Mst48Sub_Main_MainDoor0(struct SMstCommon *pMst)
 	}
 
 	// Affichage (5 parties).
-	for (i = 0; (i < 5) && ((u32)pSpe->nCnt + (i << 4) < (M48T3_HT+16)); i++)
-		SprDisplay(e_Spr_Lev6_HardDoor + i, pMst->nPosX >> 8, (pMst->nPosY >> 8) - (u32)pSpe->nCnt - (i << 4), e_Prio_Ennemies);
+	for (i = 0; (i < 5) && ((u32)pSpe->nCnt + (i * 16) < (M48T3_HT+16)); i++)
+		SprDisplay(e_Spr_Lev6_HardDoor + i, pMst->nPosX >> 8, (pMst->nPosY >> 8) - (u32)pSpe->nCnt - (i * 16), e_Prio_Ennemies);
 
 	return (e_MstState_Managed);
 }
@@ -2263,8 +2263,8 @@ enum
 // Init.
 void Mst48Sub_Init_Mothership0(struct SMstCommon *pMst, u8 *pData)
 {
-	pMst->nPosX = gScrollPos.nPosX + ((SCR_Width / 2) << 8);
-	pMst->nPosY = gScrollPos.nPosY + (-40 << 8);
+	pMst->nPosX = gScrollPos.nPosX + ((SCR_Width / 2) * 256);
+	pMst->nPosY = gScrollPos.nPosY + (-40 * 256);
 	pMst->nSpd = 0x3D0;		// Spd empirique pour première avance.
 
 	AnmSet(gAnm_AlienMothershipBlink, pMst->nAnm);	// Anim qui va bien.
@@ -2295,7 +2295,7 @@ s32 Mst48Sub_Main_Mothership0(struct SMstCommon *pMst)
 			pMst->nPosX = pMst->nPosY;
 			pMst->nPosY = nTmp;
 		}
-		if (pMst->nPosY >= gScrollPos.nPosY + (48 << 8)) pMst->nPhase = e_Mst48T1_ForcePlayer;
+		if (pMst->nPosY >= gScrollPos.nPosY + (48 * 256)) pMst->nPhase = e_Mst48T1_ForcePlayer;
 		break;
 
 	case e_Mst48T1_ForcePlayer:		// On force le joueur à se placer vaguement sous le trou.
@@ -2303,15 +2303,15 @@ s32 Mst48Sub_Main_Mothership0(struct SMstCommon *pMst)
 		if (gShoot.nDeathFlag) break;
 
 		// Annule le déplacement x de la fusée.
-		if (SGN(gShoot.nPlayerPosX - ((SCR_Width / 2) << 8)) == SGN(gShoot.nPlayerSpdX))
+		if (SGN(gShoot.nPlayerPosX - ((SCR_Width / 2) * 256)) == SGN(gShoot.nPlayerSpdX))
 		{
 			gShoot.nPlayerPosX -= gShoot.nPlayerSpdX;
 			gShoot.nPlayerSpdX = 0;
 		}
 		// Force le déplacement vers le centre de l'écran en x.
-		gShoot.nPlayerPosX += (gShoot.nPlayerPosX < gScrollPos.nPosX + ((SCR_Width / 2) << 8) ? 0x100 : -0x100);
+		gShoot.nPlayerPosX += (gShoot.nPlayerPosX < gScrollPos.nPosX + ((SCR_Width / 2) * 256) ? 0x100 : -0x100);
 		// Sous le trou ?
-		if (gShoot.nPlayerPosX > ((SCR_Width / 2) - 25) << 8 && gShoot.nPlayerPosX < ((SCR_Width / 2) + 25) << 8)
+		if (gShoot.nPlayerPosX > ((SCR_Width / 2) - 25) * 256 && gShoot.nPlayerPosX < ((SCR_Width / 2) + 25) * 256)
 		{
 			gShoot.nVehicleAutoPilot = e_KbDir_Up;	// Autopilot !
 			pMst->nPhase = e_Mst48T1_SucksIn;
@@ -2330,9 +2330,9 @@ s32 Mst48Sub_Main_Mothership0(struct SMstCommon *pMst)
 
 	// Limite Y du joueur.
 	if (gShoot.nVehicleAutoPilot == 0)
-	if (gShoot.nPlayerPosY <= pMst->nPosY + (80 << 8))
+	if (gShoot.nPlayerPosY <= pMst->nPosY + (80 * 256))
 	{
-		gShoot.nPlayerPosY = pMst->nPosY + (80 << 8);
+		gShoot.nPlayerPosY = pMst->nPosY + (80 * 256);
 		if (gShoot.nPlayerSpdY < 0) gShoot.nPlayerSpdY = 0;
 	}
 
@@ -2550,13 +2550,13 @@ s32 Mst49_Main_SuspSub0(struct SMstCommon *pMst)
 		// On y va, on décale le sprite à droite de l'écran pour l'arrivée.
 		pMst->nPhase = e_Mst49_Arrival;
 		pSpe->sSub0.nPhase = e_Mst46Sub0_Aim;	// Le soldat est là !
-		pMst->nPosX = gScrollPos.nPosX + ((SCR_Width + 64) << 8);
+		pMst->nPosX = gScrollPos.nPosX + ((SCR_Width + 64) * 256);
 		pMst->nSpd = 0x100;
 	case e_Mst49_Arrival:	// Arrivée du sub de la gauche.
 		if (((pMst->nPosX >> 8) & 0x1F) == 0) Sfx_PlaySfx(e_Sfx_Fx_DoorClang, e_SfxPrio_30);
 
 		pSpe->sSub0.nCntWait = 16;	// On empêche le soldat de tirer pendant le mvt.
-		if (pMst->nPosX <= ((u32)pSpe->nPosXOrg + 16) << 8)
+		if (pMst->nPosX <= ((u32)pSpe->nPosXOrg + 16) * 256)
 		{
 			pMst->nPhase = e_Mst49_Idle;
 			break;
@@ -2595,7 +2595,7 @@ s32 Mst49_Main_SuspSub0(struct SMstCommon *pMst)
 			*/
 			static u8 pM14[] = { 0, 1, 3, 3 };
 			u32	nSide = rand() & 1;
-			u32	nPrm = ((u32)pM14[rand() & 3]) | (1 << 12) | (((nSide ? -11 : 11) & 0x3F) << 17);
+			u32	nPrm = ((u32)pM14[rand() & 3]) | (1 * 4096) | (((nSide ? -11 : 11) & 0x3F) << 17);
 			MstAdd(e_Mst14_RebelSoldier0, (gScrollPos.nPosX >> 8) + (nSide ? SCR_Width + 16 : -16), 10 * 16, (u8 *)&nPrm, -1);
 		}
 		break;
@@ -2641,7 +2641,7 @@ s32 Mst49_Main_SuspSub0(struct SMstCommon *pMst)
 		{
 			u32	i;
 			i = rand();
-			DustSet(gAnm_Explosion0_Medium_Dust, pMst->nPosX + (pSpe->nExplosions & 8 ? -32 << 8 : 0) + ((i & 31) << 8), pMst->nPosY + (80 << 8) + (((i >> 8) & 31) << 8),
+			DustSet(gAnm_Explosion0_Medium_Dust, pMst->nPosX + (pSpe->nExplosions & 8 ? -32 * 256 : 0) + ((i & 31) * 256), pMst->nPosY + (80 * 256) + (((i >> 8) & 31) * 256),
 				e_Prio_Ennemies + 4 + (((MST49_EXPLO_CNT - pSpe->nExplosions) >> 2) & 0x1F), 0);
 
 //if (((pSpe->sFrontC[i].nExplo >> 4) + i) & 1)	// + Débris 1 fois sur 2.

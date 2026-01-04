@@ -296,8 +296,8 @@ void GIF_GetNextImage(struct SGIFFile *pGif)
 				u8	*pTmp8;
 				u32	*pTmp32 = (u32 *)pGif->pImg;
 // v1
-//				u32	nClr = (pGif->pLogicalScrDesc->nBkgClrIdx << 24) | (pGif->pLogicalScrDesc->nBkgClrIdx << 16) |
-//							(pGif->pLogicalScrDesc->nBkgClrIdx << 8) | pGif->pLogicalScrDesc->nBkgClrIdx;
+//				u32	nClr = (pGif->pLogicalScrDesc->nBkgClrIdx << 24) | (pGif->pLogicalScrDesc->nBkgClrIdx * 65536) |
+//							(pGif->pLogicalScrDesc->nBkgClrIdx * 256) | pGif->pLogicalScrDesc->nBkgClrIdx;
 
 // Test. (Certains cas posent problème dans certains GIFs, bkg color != transp color).
 				u32	nClr;
@@ -308,7 +308,7 @@ void GIF_GetNextImage(struct SGIFFile *pGif)
 						printf("GIF_GetNextImage(): Force bkg color(%d) to transparent(%d).\n", pGif->pLogicalScrDesc->nBkgClrIdx, pGif->nTransparentColorIndex);
 						nTmp = pGif->nTransparentColorIndex;
 					}
-				nClr = (nTmp << 24) | (nTmp << 16) | (nTmp << 8) | nTmp;
+				nClr = (nTmp << 24) | (nTmp * 65536) | (nTmp * 256) | nTmp;
 
 
 				u32	n4 = (pGif->pLogicalScrDesc->nLogScrWidth * pGif->pLogicalScrDesc->nLogScrHeight);

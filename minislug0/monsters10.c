@@ -28,7 +28,7 @@ s32 Mst10_Main_Jellyfish(struct SMstCommon *pMst)
 	if (pMst->nSpd + MST10_DEC <= 0) pMst->nSpd += MST10_DEC;
 	if (AnmCheckStepFlag(pMst->nAnm)) pMst->nSpd = -MST10_SPD;
 	// Sortie de l'écran par le haut ?
-	if (pMst->nPosY < -16 << 8) return (e_MstState_Dead);
+	if (pMst->nPosY < -16 * 256) return (e_MstState_Dead);
 
 	// Se prend un tir ?
 	u32	nDamage;
@@ -220,27 +220,27 @@ s32 Mst12_Main_HeroBlocker(struct SMstCommon *pMst)
 	// Héros en contact ?
 	if (SprGetRect(gShoot.nPlayerSprCol, e_SprRectZone_RectCol, &sRect1))
 	if (sRect1.nType == e_SprRect_Rect)
-	if (gShoot.nPlayerPosY + (sRect1.nY1 << 8) < pMst->nPosY)
-	if (pSpe->nHeight == 0 || gShoot.nPlayerPosY + (sRect1.nY2 << 8) > pMst->nPosY - ((s32)pSpe->nHeight << 12))
+	if (gShoot.nPlayerPosY + (sRect1.nY1 * 256) < pMst->nPosY)
+	if (pSpe->nHeight == 0 || gShoot.nPlayerPosY + (sRect1.nY2 * 256) > pMst->nPosY - ((s32)pSpe->nHeight * 4096))
 	{
 		s32	nMstX;
 		if (gShoot.nPlayerPosX <= pMst->nPosX)
 		{
 			// Le joueur est à gauche.
 			nMstX = pMst->nPosX & ~0xFFF;
-			if (gShoot.nPlayerPosX + (sRect1.nX2 << 8) > nMstX)
+			if (gShoot.nPlayerPosX + (sRect1.nX2 * 256) > nMstX)
 			{
-				gShoot.nPlayerPosX = nMstX - (sRect1.nX2 << 8);
+				gShoot.nPlayerPosX = nMstX - (sRect1.nX2 * 256);
 				gShoot.nPlayerSpdX = 0;
 			}
 		}
 		else
 		{
 			// Le joueur est à droite.
-			nMstX = (pMst->nPosX & ~0xFFF) + (pSpe->nWidth << 12) - 0x100;
-			if (gShoot.nPlayerPosX + (sRect1.nX1 << 8) < nMstX)
+			nMstX = (pMst->nPosX & ~0xFFF) + (pSpe->nWidth * 4096) - 0x100;
+			if (gShoot.nPlayerPosX + (sRect1.nX1 * 256) < nMstX)
 			{
-				gShoot.nPlayerPosX = nMstX - (sRect1.nX1 << 8);
+				gShoot.nPlayerPosX = nMstX - (sRect1.nX1 * 256);
 				gShoot.nPlayerSpdX = 0;
 			}
 		}
@@ -252,8 +252,8 @@ s32 Mst12_Main_HeroBlocker(struct SMstCommon *pMst)
 		// On créé un rectangle de collision correspondant à la taille du monstre.
 		sRect1.nType = e_SprRect_Rect;
 		sRect1.nX1 = -((pMst->nPosX >> 8) & 0x0F);
-		sRect1.nX2 = sRect1.nX1 + (pSpe->nWidth << 4) - 1;
-		sRect1.nY1 = (pSpe->nHeight == 0 ? -(pMst->nPosY >> 8) : -((pSpe->nHeight << 4) - 1));
+		sRect1.nX2 = sRect1.nX1 + (pSpe->nWidth * 16) - 1;
+		sRect1.nY1 = (pSpe->nHeight == 0 ? -(pMst->nPosY >> 8) : -((pSpe->nHeight * 16) - 1));
 		sRect1.nY2 = 0;
 		// Teste les tirs.
 		FireHitCheckRect(&sRect1, pMst->nPosX, pMst->nPosY, e_ShotOrg_Player, 0);
@@ -304,21 +304,21 @@ s32 Mst13_Main_NextLevel(struct SMstCommon *pMst)
 	// Héros en contact ?
 	if (SprGetRect(gShoot.nPlayerSprCol, e_SprRectZone_RectCol, &sRect1))
 	if (sRect1.nType == e_SprRect_Rect)
-	if (gShoot.nPlayerPosY + (sRect1.nY1 << 8) < pMst->nPosY)
-	if (pSpe->nHeight == 0 || gShoot.nPlayerPosY + (sRect1.nY2 << 8) > pMst->nPosY - ((s32)pSpe->nHeight << 12))
+	if (gShoot.nPlayerPosY + (sRect1.nY1 * 256) < pMst->nPosY)
+	if (pSpe->nHeight == 0 || gShoot.nPlayerPosY + (sRect1.nY2 * 256) > pMst->nPosY - ((s32)pSpe->nHeight * 4096))
 	{
 		s32	nMstX;
 		if (gShoot.nPlayerPosX <= pMst->nPosX)
 		{
 			// Le joueur est à gauche.
 			nMstX = pMst->nPosX & ~0xFFF;
-			if (gShoot.nPlayerPosX + (sRect1.nX2 << 8) <= nMstX) return (e_MstState_Managed);
+			if (gShoot.nPlayerPosX + (sRect1.nX2 * 256) <= nMstX) return (e_MstState_Managed);
 		}
 		else
 		{
 			// Le joueur est à droite.
-			nMstX = (pMst->nPosX & ~0xFFF) + (1 << 12) - 0x100;
-			if (gShoot.nPlayerPosX + (sRect1.nX1 << 8) >= nMstX) return (e_MstState_Managed);
+			nMstX = (pMst->nPosX & ~0xFFF) + (1 * 4096) - 0x100;
+			if (gShoot.nPlayerPosX + (sRect1.nX1 * 256) >= nMstX) return (e_MstState_Managed);
 		}
 		// Donne l'item qui va bien.
 		gpMstQuestItems[MST_QUEST_ITEM_NEXT_LEVEL] |= 1;
@@ -410,21 +410,21 @@ void Mst14_sub_ZoneMinMax(s32 *pnZoneMin, s32 *pnZoneMax, struct SMstCommon *pMs
 {
 	struct SMst14_RebelSoldier0	*pSpe = (struct SMst14_RebelSoldier0 *)pMst->pData;
 
-	*pnZoneMax = (u32)gpnMST14_ZoneMax[pSpe->nType] << 12;
+	*pnZoneMax = (u32)gpnMST14_ZoneMax[pSpe->nType] * 4096;
 	if (pMst->nPosX <= gShoot.nPlayerPosX)
 	{	// Le mst est à gauche du joueur.
-		if (gShoot.nPlayerPosX - *pnZoneMax < gScrollPos.nPosX + (1 << 12))
-			*pnZoneMax = gShoot.nPlayerPosX - (gScrollPos.nPosX + (1 << 12));
+		if (gShoot.nPlayerPosX - *pnZoneMax < gScrollPos.nPosX + (1 * 4096))
+			*pnZoneMax = gShoot.nPlayerPosX - (gScrollPos.nPosX + (1 * 4096));
 	}
 	else
 	{	// Le mst est à droite du joueur.
-		if (gShoot.nPlayerPosX + *pnZoneMax > gScrollPos.nPosX + (SCR_Width << 8) - (1 << 12))
-			*pnZoneMax = (gScrollPos.nPosX + (SCR_Width << 8) - (1 << 12)) - gShoot.nPlayerPosX;
+		if (gShoot.nPlayerPosX + *pnZoneMax > gScrollPos.nPosX + (SCR_Width * 256) - (1 * 4096))
+			*pnZoneMax = (gScrollPos.nPosX + (SCR_Width * 256) - (1 * 4096)) - gShoot.nPlayerPosX;
 	}
 	if (*pnZoneMax < 0x2000) *pnZoneMax = 0x2000;
 //	if (*pnZoneMax < 0x1000) *pnZoneMax = 0x1000;
 
-	*pnZoneMin = (u32)gpnMST14_ZoneMin[pSpe->nType] << 12;
+	*pnZoneMin = (u32)gpnMST14_ZoneMin[pSpe->nType] * 4096;
 	if (*pnZoneMin > *pnZoneMax - 0x1000) *pnZoneMin = *pnZoneMax - 0x1000;
 
 
@@ -455,10 +455,10 @@ Mst14_sub_ZoneMinMax(&nZoneMin, &nZoneMax, pMst);
 
 
 	// Si perso dans la zone de tir, stop.
-////	if (ABS(pMst->nPosX - gShoot.nPlayerPosX) < (MST14_ZONE_MAX << 12) &&
-////		ABS(pMst->nPosX - gShoot.nPlayerPosX) >= (MST14_ZONE_MIN << 12))
-//	if (ABS(pMst->nPosX - gShoot.nPlayerPosX) < ((u32)gpnMST14_ZoneMax[pSpe->nType] << 12) &&
-//		ABS(pMst->nPosX - gShoot.nPlayerPosX) >= ((u32)gpnMST14_ZoneMin[pSpe->nType] << 12))
+////	if (ABS(pMst->nPosX - gShoot.nPlayerPosX) < (MST14_ZONE_MAX * 4096) &&
+////		ABS(pMst->nPosX - gShoot.nPlayerPosX) >= (MST14_ZONE_MIN * 4096))
+//	if (ABS(pMst->nPosX - gShoot.nPlayerPosX) < ((u32)gpnMST14_ZoneMax[pSpe->nType] * 4096) &&
+//		ABS(pMst->nPosX - gShoot.nPlayerPosX) >= ((u32)gpnMST14_ZoneMin[pSpe->nType] * 4096))
 	if (ABS(pMst->nPosX - gShoot.nPlayerPosX) < nZoneMax &&
 		ABS(pMst->nPosX - gShoot.nPlayerPosX) >= nZoneMin)
 	{
@@ -467,19 +467,19 @@ Mst14_sub_ZoneMinMax(&nZoneMin, &nZoneMax, pMst);
 	}
 
 	// Si on est trop loin, on se tourne vers le joueur (à cause du cas de l'arrivée d'un saut déjà trop loin et pas tourné dans le bon sens : Le soldat court jusqu'à un stop (mur, trou, zone) avant de revenir).
-////	if (ABS(pMst->nPosX - gShoot.nPlayerPosX) >= (MST14_ZONE_MAX << 12))
-//	if (ABS(pMst->nPosX - gShoot.nPlayerPosX) >= ((u32)gpnMST14_ZoneMax[pSpe->nType] << 12))
+////	if (ABS(pMst->nPosX - gShoot.nPlayerPosX) >= (MST14_ZONE_MAX * 4096))
+//	if (ABS(pMst->nPosX - gShoot.nPlayerPosX) >= ((u32)gpnMST14_ZoneMax[pSpe->nType] * 4096))
 	if (ABS(pMst->nPosX - gShoot.nPlayerPosX) >= nZoneMax)
 		pMst->nFlipX = (pMst->nPosX - gShoot.nPlayerPosX >= 0 ? 0 : 1);		// Sens.
 
 /*
 	// Si le joueur est très proche, on court dans le sens inverse.
-	if (ABS(pMst->nPosX - gShoot.nPlayerPosX) < (MST14_ZONE_MIN << 12) && pMst->nFlipX == (pMst->nPosX < gShoot.nPlayerPosX ? 1 : 0)) pMst->nFlipX ^= 1;
+	if (ABS(pMst->nPosX - gShoot.nPlayerPosX) < (MST14_ZONE_MIN * 4096) && pMst->nFlipX == (pMst->nPosX < gShoot.nPlayerPosX ? 1 : 0)) pMst->nFlipX ^= 1;
 */
 
 	// Si le joueur est très proche, on court dans le sens inverse.
-////	if (ABS(pMst->nPosX - gShoot.nPlayerPosX) < (MST14_ZONE_MIN << 12) && pMst->nFlipX == (pMst->nPosX < gShoot.nPlayerPosX ? 1 : 0))
-//	if (ABS(pMst->nPosX - gShoot.nPlayerPosX) < ((u32)gpnMST14_ZoneMin[pSpe->nType] << 12) && pMst->nFlipX == (pMst->nPosX < gShoot.nPlayerPosX ? 1 : 0))
+////	if (ABS(pMst->nPosX - gShoot.nPlayerPosX) < (MST14_ZONE_MIN * 4096) && pMst->nFlipX == (pMst->nPosX < gShoot.nPlayerPosX ? 1 : 0))
+//	if (ABS(pMst->nPosX - gShoot.nPlayerPosX) < ((u32)gpnMST14_ZoneMin[pSpe->nType] * 4096) && pMst->nFlipX == (pMst->nPosX < gShoot.nPlayerPosX ? 1 : 0))
 	if (ABS(pMst->nPosX - gShoot.nPlayerPosX) < nZoneMin && pMst->nFlipX == (pMst->nPosX < gShoot.nPlayerPosX ? 1 : 0))
 	{
 		pMst->nFlipX ^= 1;
@@ -558,13 +558,13 @@ Mst14_sub_ZoneMinMax(&nZoneMin, &nZoneMax, pMst);
 		pMst->nFlipX = (pMst->nPosX - gShoot.nPlayerPosX >= 0 ? 0 : 1);		// Sens.
 
 		// On est à portée de tir.
-////		if (ABS(pMst->nPosX - gShoot.nPlayerPosX) < ((MST14_ZONE_MAX+1) << 12))
-//		if (ABS(pMst->nPosX - gShoot.nPlayerPosX) < (((u32)gpnMST14_ZoneMax[pSpe->nType] + 1) << 12))
+////		if (ABS(pMst->nPosX - gShoot.nPlayerPosX) < ((MST14_ZONE_MAX+1) * 4096))
+//		if (ABS(pMst->nPosX - gShoot.nPlayerPosX) < (((u32)gpnMST14_ZoneMax[pSpe->nType] + 1) * 4096))
 		if (ABS(pMst->nPosX - gShoot.nPlayerPosX) < nZoneMax + 0x1000)
 		{
 			// Joueur trop près ?
-////			if (ABS(pMst->nPosX - gShoot.nPlayerPosX) < ((MST14_ZONE_MIN-1) << 12))
-//			if (ABS(pMst->nPosX - gShoot.nPlayerPosX) < (((u32)gpnMST14_ZoneMin[pSpe->nType] - 1) << 12))
+////			if (ABS(pMst->nPosX - gShoot.nPlayerPosX) < ((MST14_ZONE_MIN-1) * 4096))
+//			if (ABS(pMst->nPosX - gShoot.nPlayerPosX) < (((u32)gpnMST14_ZoneMin[pSpe->nType] - 1) * 4096))
 			if (ABS(pMst->nPosX - gShoot.nPlayerPosX) < nZoneMin - 0x1000)
 			{
 				if (pSpe->nMove && (pSpe->nCachette & (1 << (pMst->nFlipX ^ 1))) == 0)	// La direction opposée n'est pas bloquée ?
@@ -577,7 +577,7 @@ Mst14_sub_ZoneMinMax(&nZoneMin, &nZoneMax, pMst);
 //			if (gShoot.nDeathFlag == 0)	// Si le héros n'est pas mort...
 			if (MST_SHOT_COND)	// Si le héros n'est pas mort...
 			if (nShotDy == 0 || ABS(pMst->nPosY - gShoot.nPlayerPosY) <= nShotDy)	// Si dans la zone Y.
-			if (pMst->nPosX >= gScrollPos.nPosX - 0x1000 && pMst->nPosX <= gScrollPos.nPosX + (SCR_Width << 8) + 0x1000)	// On ne tire pas si en dehors de l'écran.
+			if (pMst->nPosX >= gScrollPos.nPosX - 0x1000 && pMst->nPosX <= gScrollPos.nPosX + (SCR_Width * 256) + 0x1000)	// On ne tire pas si en dehors de l'écran.
 			{
 				if (pSpe->nCntWait)
 					pSpe->nCntWait--;
@@ -607,12 +607,12 @@ void Mst14_Parachute_Wait(struct SMstCommon *pMst)
 {
 	struct SMst14_RebelSoldier0	*pSpe = (struct SMst14_RebelSoldier0 *)pMst->pData;
 
-	if (pMst->nPosX <= gScrollPos.nPosX + (SCR_Width << 8) - (1 << 12))
+	if (pMst->nPosX <= gScrollPos.nPosX + (SCR_Width * 256) - (1 * 4096))
 	{
 		// Init de la descente.
 		pMst->nPosX += (((pMst->nPosX >> 8) & 0x0F) - 8) << 13;		// On récupère l'offset.
 		pSpe->nOrgX = pMst->nPosX >> 12;	// Du coup l'origine change, important pour le déplacement.
-		pMst->nPosY = gScrollPos.nPosY - (4 << 8);		// -4 pour faire sortir les pieds.
+		pMst->nPosY = gScrollPos.nPosY - (4 * 256);		// -4 pour faire sortir les pieds.
 		pMst->nPosY -= ABS(((pMst->nPosX >> 8) & 0x0F) - 8) << 11;	// On décale selon l'offet, pour en faire tomber plusieurs à la fois et qu'ils ne soient pas au même Y.
 		pSpe->nCnt0 = (pMst->nPosX >> 12) * 16;			// + Décalage du sinus du parachute.
 		pMst->nPhase = e_Mst14_Parachuting;
@@ -784,7 +784,7 @@ s32 Mst14Sub_Main_LRACSoldier0(struct SMstCommon *pMst)
 			}
 			else
 			{	// Visée normale.
-				nAng = fatan2(-((gShoot.nPlayerPosY + (10 << 8)) - pMst->nPosY), gShoot.nPlayerPosX - pMst->nPosX);
+				nAng = fatan2(-((gShoot.nPlayerPosY + (10 * 256)) - pMst->nPosY), gShoot.nPlayerPosX - pMst->nPosX);
 				nAdd = 0;
 			}
 			pMst->nAngle = nAng;
@@ -807,14 +807,14 @@ s32 Mst14Sub_Main_LRACSoldier0(struct SMstCommon *pMst)
 				if (SprGetRect(nSpr | (pMst->nFlipX ? SPR_Flip_X : 0), e_SprRectZone_ShotOrg, &sRect1))
 				if (sRect1.nType == e_SprRect_Point)
 				{
-//					FireAdd(e_Shot_Enemy_RebSoldier_LRAC_Rocket0, pMst->nPosX + (sRect1.nX1 << 8), pMst->nPosY + (sRect1.nY1 << 8), pMst->nAngle);
+//					FireAdd(e_Shot_Enemy_RebSoldier_LRAC_Rocket0, pMst->nPosX + (sRect1.nX1 * 256), pMst->nPosY + (sRect1.nY1 * 256), pMst->nAngle);
 					// Recalcul de l'angle entre la cible et le point de départ du tir.
 					u8	nAng;
-					nAng = fatan2(-((pSpe->nTargetY + (10 << 8)) - pMst->nPosY), pSpe->nTargetX - (pMst->nPosX + (sRect1.nX1 << 8)));
-//sans ShotTb[]					FireAdd(e_Shot_Enemy_RebSoldier_LRAC_Rocket0, pMst->nPosX + (sRect1.nX1 << 8), pMst->nPosY + (sRect1.nY1 << 8), nAng);
-					FireAdd(gpMST14_ShotTb[pSpe->nType], pMst->nPosX + (sRect1.nX1 << 8), pMst->nPosY + (sRect1.nY1 << 8), nAng);
+					nAng = fatan2(-((pSpe->nTargetY + (10 * 256)) - pMst->nPosY), pSpe->nTargetX - (pMst->nPosX + (sRect1.nX1 * 256)));
+//sans ShotTb[]					FireAdd(e_Shot_Enemy_RebSoldier_LRAC_Rocket0, pMst->nPosX + (sRect1.nX1 * 256), pMst->nPosY + (sRect1.nY1 * 256), nAng);
+					FireAdd(gpMST14_ShotTb[pSpe->nType], pMst->nPosX + (sRect1.nX1 * 256), pMst->nPosY + (sRect1.nY1 * 256), nAng);
 					// + Dust.
-					DustSet(gpMST14_AnmShotDustTb[pSpe->nType], pMst->nPosX + (sRect1.nX1 << 8), pMst->nPosY + (sRect1.nY1 << 8), e_Prio_DustOver, (pMst->nFlipX ? e_DustFlag_FlipX : 0));
+					DustSet(gpMST14_AnmShotDustTb[pSpe->nType], pMst->nPosX + (sRect1.nX1 * 256), pMst->nPosY + (sRect1.nY1 * 256), e_Prio_DustOver, (pMst->nFlipX ? e_DustFlag_FlipX : 0));
 				}
 			}
 		}
@@ -981,7 +981,7 @@ exemple
 //void Gen_StepDust(u32 nGndCol, u32 nStepFlag, u32 nPosX, u32 nPosY)	// Pour la flotte.
 
 #define	MST14RIFLE_ZONE_DOWN	4
-#define	MST14RIFLE_SHOT_DY		(2 << 12)	//((2 << 12) + (8 << 8))
+#define	MST14RIFLE_SHOT_DY		(2 * 4096)	//((2 * 4096) + (8 * 256))
 
 s32 Mst14Sub_Main_RifleSoldier0(struct SMstCommon *pMst)
 {
@@ -1043,7 +1043,7 @@ s32 Mst14Sub_Main_RifleSoldier0(struct SMstCommon *pMst)
 		if (gShoot.nVehicleType < e_HeroVehicle_SlugBase)		// Pas de coup de crosse quand slug (=> tir normal).
 		if (MST_SHOT_COND)	// Si le héros n'est pas mort...
 		if (ABS(pMst->nPosY - gShoot.nPlayerPosY) <= MST14RIFLE_SHOT_DY)	// Si dans la zone Y.
-		if (ABS(pMst->nPosX - gShoot.nPlayerPosX) < 3 << 12 &&
+		if (ABS(pMst->nPosX - gShoot.nPlayerPosX) < 3 * 4096 &&
 			pMst->nFlipX == (pMst->nPosX < gShoot.nPlayerPosX ? 1 : 0))
 		{
 			pMst->nPhase = e_Mst14Rifle_Strike;
@@ -1081,7 +1081,7 @@ s32 Mst14Sub_Main_RifleSoldier0(struct SMstCommon *pMst)
 		else
 		// Après le tir, on arrive ici avec la fin de l'anim de tir.
 		// Si le héros est trop près ou est passé de l'autre côté, on repasse en déplacement normal.
-		if (ABS(pMst->nPosX - gShoot.nPlayerPosX) < MST14RIFLE_ZONE_DOWN << 12 ||
+		if (ABS(pMst->nPosX - gShoot.nPlayerPosX) < MST14RIFLE_ZONE_DOWN * 4096 ||
 			pMst->nFlipX != (pMst->nPosX < gShoot.nPlayerPosX ? 1 : 0))
 		{
 			pMst->nPhase = e_Mst14_Wait;
@@ -1094,7 +1094,7 @@ s32 Mst14Sub_Main_RifleSoldier0(struct SMstCommon *pMst)
 		if (AnmGetKey(pMst->nAnm) == e_AnmKey_Enemy_Shot)	//e_AnmKey_Enemy_Shot => car il y a une anim de transition.
 		{
 			// Si le héros est trop près ou est passé de l'autre côté, on repasse en déplacement normal.
-			if (ABS(pMst->nPosX - gShoot.nPlayerPosX) < MST14RIFLE_ZONE_DOWN << 12 ||
+			if (ABS(pMst->nPosX - gShoot.nPlayerPosX) < MST14RIFLE_ZONE_DOWN * 4096 ||
 				pMst->nFlipX != (pMst->nPosX < gShoot.nPlayerPosX ? 1 : 0))
 			{
 				pMst->nPhase = e_Mst14_Wait;
@@ -1117,14 +1117,14 @@ s32 Mst14Sub_Main_RifleSoldier0(struct SMstCommon *pMst)
 					break;
 				}
 
-				if (pMst->nPosX >= gScrollPos.nPosX - 0x1000 && pMst->nPosX <= gScrollPos.nPosX + (SCR_Width << 8) + 0x1000)	// On ne tire pas si en dehors de l'écran.
+				if (pMst->nPosX >= gScrollPos.nPosX - 0x1000 && pMst->nPosX <= gScrollPos.nPosX + (SCR_Width * 256) + 0x1000)	// On ne tire pas si en dehors de l'écran.
 				if (ABS(pMst->nPosY - gShoot.nPlayerPosY) <= MST14RIFLE_SHOT_DY)	// Si dans la zone Y.
 				{
 					if (pSpe->nCntWait)
 						pSpe->nCntWait--;
 					else
-//					if (ABS(pMst->nPosX - gShoot.nPlayerPosX) < ((MST14_ZONE_MAX+1) << 12))		// A portée de tir ?
-					if (ABS(pMst->nPosX - gShoot.nPlayerPosX) < (((u32)gpnMST14_ZoneMax[pSpe->nType] + 1) << 12))		// A portée de tir ?
+//					if (ABS(pMst->nPosX - gShoot.nPlayerPosX) < ((MST14_ZONE_MAX+1) * 4096))		// A portée de tir ?
+					if (ABS(pMst->nPosX - gShoot.nPlayerPosX) < (((u32)gpnMST14_ZoneMax[pSpe->nType] + 1) * 4096))		// A portée de tir ?
 					{
 						pMst->nPhase = e_Mst14Rifle_HideGetUp;
 					}
@@ -1200,8 +1200,8 @@ exemple
 */
 }
 
-#define	MST14GUN_SHOT_DY		(2 << 12)
-#define	MST14GRENADE_SHOT_DY	(4 << 12)
+#define	MST14GUN_SHOT_DY		(2 * 4096)
+#define	MST14GRENADE_SHOT_DY	(4 * 4096)
 
 s32 Mst14Sub_Main_GunSoldier0(struct SMstCommon *pMst)
 {
@@ -1213,9 +1213,9 @@ s32 Mst14Sub_Main_GunSoldier0(struct SMstCommon *pMst)
 	case e_Mst14_Move:		// Déplacement.
 	case e_Mst14_Wait:		// Attente.
 		// Transtypage Gun/Grenade. Tire des grenades, si on est à la même hauteur et trop près ou trop loin pour des grenades, pistolet.
-		if ((ABS(pMst->nPosX - gShoot.nPlayerPosX) < (5 << 12) + (8 << 8) ||
-			ABS(pMst->nPosX - gShoot.nPlayerPosX) > (9 << 12) + (0 << 8)) &&
-			ABS(pMst->nPosY - gShoot.nPlayerPosY) < 2 << 12)
+		if ((ABS(pMst->nPosX - gShoot.nPlayerPosX) < (5 * 4096) + (8 * 256) ||
+			ABS(pMst->nPosX - gShoot.nPlayerPosX) > (9 * 4096) + (0 * 256)) &&
+			ABS(pMst->nPosY - gShoot.nPlayerPosY) < 2 * 4096)
 			pSpe->nType = 3;	// Gun.
 		else
 			pSpe->nType = 4;	// Grenade.
@@ -1293,7 +1293,7 @@ s32 Mst14Sub_Main_ShieldSoldier0(struct SMstCommon *pMst)
 		if (ABS(pMst->nPosY - gShoot.nPlayerPosY) <= MST14RIFLE_SHOT_DY)	// Si dans la zone Y.
 		if (pMst->nFlipX == (pMst->nPosX < gShoot.nPlayerPosX ? 1 : 0))
 		{
-			if (ABS(pMst->nPosX - gShoot.nPlayerPosX) < 3 << 12)
+			if (ABS(pMst->nPosX - gShoot.nPlayerPosX) < 3 * 4096)
 			{
 				// Joueur au contact ? On frappe avec une machette.
 				pMst->nPhase = e_Mst14Shield_Strike;
@@ -1304,8 +1304,8 @@ s32 Mst14Sub_Main_ShieldSoldier0(struct SMstCommon *pMst)
 			{
 				// A l'arrêt et à distance (x et y) ? => On va compter le temps d'inactivité du héros.
 				if (pMst->nPhase == e_Mst14_Wait &&
-					ABS(pMst->nPosY - gShoot.nPlayerPosY) <= 1 << 12 &&	// Si dans la zone Y (un peu plus petite).
-					ABS(pMst->nPosX - gShoot.nPlayerPosX) < (((u32)gpnMST14_ZoneMax[3] + 1) << 12))
+					ABS(pMst->nPosY - gShoot.nPlayerPosY) <= 1 * 4096 &&	// Si dans la zone Y (un peu plus petite).
+					ABS(pMst->nPosX - gShoot.nPlayerPosX) < (((u32)gpnMST14_ZoneMax[3] + 1) * 4096))
 					nTstPause = 1;
 
 				// Si le héros est devant et ne fout rien, on se transforme en gunner qu'on place directement en phase de tir.
@@ -1448,7 +1448,7 @@ void Mst14_Init_RebelSoldier0(struct SMstCommon *pMst, u8 *pData)
 	// Inits communes.
 	AnmSet(gpMST14_AnmWaitTb[pSpe->nType], pMst->nAnm);
 	nVal = GetBits(8, 11, pData, 1);	// Offset X.
-	pMst->nPosX += nVal << 8;
+	pMst->nPosX += nVal * 256;
 	pSpe->nOrgX = pMst->nPosX >> 12;
 	nVal = GetBits(17, 22, pData, 1);	// Décalage de l'origine de la zone.
 	pSpe->nOrgX += nVal;
@@ -1496,7 +1496,7 @@ void Mst14_Init_RebelSoldier0(struct SMstCommon *pMst, u8 *pData)
 		break;
 	case 3:		// Hero height. Le monstre n'apparaitra que si le héros est plus ou moins à la même hauteur (voir lev 6).
 		if (ABS(pMst->nPosY - gShoot.nPlayerPosY) > 0x2000)
-			pMst->nPosX = gScrollPos.nPosX + ((SCR_Width * 2) << 8);	// Si pas à la bonne hauteur, on décale le monstre pour le placer très au delà de l'écran. => Screen out.
+			pMst->nPosX = gScrollPos.nPosX + ((SCR_Width * 2) * 256);	// Si pas à la bonne hauteur, on décale le monstre pour le placer très au delà de l'écran. => Screen out.
 		break;
 
 //	case x:	 ex : sortie à genoux...
@@ -1512,7 +1512,7 @@ s32 Mst14_Main_RebelSoldier0(struct SMstCommon *pMst)
 	struct SMst14_RebelSoldier0	*pSpe = (struct SMst14_RebelSoldier0 *)pMst->pData;
 
 	// Sortie de l'écran ?
-	if (Screen_ObjectOutRect(pMst->nPosX - (MST14_MORTAR_AREA << 12), pMst->nPosY, MST14_MORTAR_AREA*2, 1)) return (e_MstState_Asleep);
+	if (Screen_ObjectOutRect(pMst->nPosX - (MST14_MORTAR_AREA * 4096), pMst->nPosY, MST14_MORTAR_AREA*2, 1)) return (e_MstState_Asleep);
 	// Couteau + visée du missile.
 	if (pMst->nPhase > e_Mst14_ParachuteWait)
 	{
@@ -1695,7 +1695,7 @@ s32 Mst15_Main_Truck0(struct SMstCommon *pMst)
 		if (gpMstQuestItems[pSpe->nItemWait])
 		{
 			pMst->nPhase = e_Mst15_Drive;
-			pMst->nPosX = gnScrollLimitXMax + (64 << 8);
+			pMst->nPosX = gnScrollLimitXMax + (64 * 256);
 		}
 		return (e_MstState_Managed);
 		break;
@@ -1733,7 +1733,7 @@ s32 Mst15_Main_Truck0(struct SMstCommon *pMst)
 					ZoneMax = 1:7:			; Zone de déplacement max, 0 = pas de limite.
 					*/
 					u8	pData[4];
-					s32	nGiridaPixPosX = (gScrollPos.nPosX >> 8) - (2 << 4);	// !!! Attention au décalage, sinon le tank n'apparaît pas !
+					s32	nGiridaPixPosX = (gScrollPos.nPosX >> 8) - (2 * 16);	// !!! Attention au décalage, sinon le tank n'apparaît pas !
 					pData[0] = 1 + (((ABS((pSpe->nPosXOrg >> 8) - nGiridaPixPosX) >> 4) - 4) << 1);		// -4 : Décalage pour ne pas monter sur le camion.
 					MstAdd(e_Mst26_Girida0, nGiridaPixPosX, (pMst->nPosY >> 8) - 16, pData, -1);
 				}
@@ -1766,15 +1766,15 @@ s32 Mst15_Main_Truck0(struct SMstCommon *pMst)
 			RESERVED2 = 27:31:
 			*/
 			static u8 pM14[] = { 3, 3, 0, 1 };	// Pour générer des soldats, sauf LRAC.
-			//u32	nPrm = (rand() & 1) | (1 << 12) | (1 << 23);	// 0 = Rifle - 1 = Mortar / 1 << 12 = Move / 1 << 23 = truck jump.
-			u32	nPrm = ((u32)pM14[rand() & 3]) | (1 << 12) | (1 << 23);	// 0 = Rifle - 1 = Mortar - 3 = Grenade / 1 << 12 = Move / 1 << 23 = truck jump.
+			//u32	nPrm = (rand() & 1) | (1 * 4096) | (1 << 23);	// 0 = Rifle - 1 = Mortar / 1 * 4096 = Move / 1 << 23 = truck jump.
+			u32	nPrm = ((u32)pM14[rand() & 3]) | (1 * 4096) | (1 << 23);	// 0 = Rifle - 1 = Mortar - 3 = Grenade / 1 * 4096 = Move / 1 << 23 = truck jump.
 			MstAdd(e_Mst14_RebelSoldier0, (pMst->nPosX >> 8) - 36, (pMst->nPosY >> 8) - 30, (u8 *)&nPrm, -1);
 			pSpe->nNbSoldiers--;
 
 			// 1 fois sur 4, on en fait apparaître 1 en plus à gauche de l'écran.
 			if ((pSpe->nNbSoldiers & 3) == 0)
 			{
-				nPrm = ((u32)pM14[rand() & 3]) | (1 << 12) | (16 << 17);	// 0 = Rifle - 1 = Mortar - 3 = Grenade / 1 << 12 = Move / 16 << 17, décalage d'origine de la zone.
+				nPrm = ((u32)pM14[rand() & 3]) | (1 * 4096) | (16 << 17);	// 0 = Rifle - 1 = Mortar - 3 = Grenade / 1 * 4096 = Move / 16 << 17, décalage d'origine de la zone.
 				MstAdd(e_Mst14_RebelSoldier0, (gScrollPos.nPosX >> 8) - 24, (pMst->nPosY >> 8), (u8 *)&nPrm, -1);
 			}
 
@@ -1819,7 +1819,7 @@ s32 Mst15_Main_Truck0(struct SMstCommon *pMst)
 	ChaserTarget_AddToList(pMst->nPosX >> 8, (pMst->nPosY >> 8) - 24);
 	// Bloque le joueur.
 	s32	nPlayerSpdX_sav = gShoot.nPlayerSpdX;
-	Mst_PlayerBlock(pMst->nPosX - (4 << 12) - (8 << 8), 0);
+	Mst_PlayerBlock(pMst->nPosX - (4 * 4096) - (8 * 256), 0);
 	if (nPlayerSpdX_sav < 0) gShoot.nPlayerSpdX = nPlayerSpdX_sav;	// Si vitesse négative, on la remet (évite le "collé").
 	// Se prend un tir ?
 	if (nTouch)
@@ -1914,9 +1914,9 @@ s32 Mst16_Main_BlkBkg2(struct SMstCommon *pMst)
 //>> tst / affichage du rect
 {
 	SprDisplay(e_Spr_Tstrct_CornerUL, (pMst->nPosX & ~0xFFF) >> 8, (pMst->nPosY & ~0xFFF) >> 8, e_Prio_Joueur + 3);
-	SprDisplay(e_Spr_Tstrct_CornerUR, ((pMst->nPosX & ~0xFFF) + (pSpe->nBlkLg << 12)) >> 8, (pMst->nPosY & ~0xFFF) >> 8, e_Prio_Joueur + 3);
-	SprDisplay(e_Spr_Tstrct_CornerDL, (pMst->nPosX & ~0xFFF) >> 8, ((pMst->nPosY & ~0xFFF) + (pSpe->nBlkHt << 12)) >> 8, e_Prio_Joueur + 3);
-	SprDisplay(e_Spr_Tstrct_CornerDR, ((pMst->nPosX & ~0xFFF) + (pSpe->nBlkLg << 12)) >> 8, ((pMst->nPosY & ~0xFFF) + (pSpe->nBlkHt << 12)) >> 8, e_Prio_Joueur + 3);
+	SprDisplay(e_Spr_Tstrct_CornerUR, ((pMst->nPosX & ~0xFFF) + (pSpe->nBlkLg * 4096)) >> 8, (pMst->nPosY & ~0xFFF) >> 8, e_Prio_Joueur + 3);
+	SprDisplay(e_Spr_Tstrct_CornerDL, (pMst->nPosX & ~0xFFF) >> 8, ((pMst->nPosY & ~0xFFF) + (pSpe->nBlkHt * 4096)) >> 8, e_Prio_Joueur + 3);
+	SprDisplay(e_Spr_Tstrct_CornerDR, ((pMst->nPosX & ~0xFFF) + (pSpe->nBlkLg * 4096)) >> 8, ((pMst->nPosY & ~0xFFF) + (pSpe->nBlkHt * 4096)) >> 8, e_Prio_Joueur + 3);
 }
 //<< tst / affichage du rect
 */
@@ -2006,8 +2006,8 @@ s32 Mst17_Main_Explosions0(struct SMstCommon *pMst)
 		if (pSpe->nFrames & 1)	// 1 frame sur 2.
 		{
 			s32	nPosX, nPosY;
-			nPosX = pMst->nPosX + ((rand() % (pSpe->nBlkLg << 4)) << 8);
-			nPosY = pMst->nPosY + ((rand() % (pSpe->nBlkHt << 4)) << 8);
+			nPosX = pMst->nPosX + ((rand() % (pSpe->nBlkLg * 16)) * 256);
+			nPosY = pMst->nPosY + ((rand() % (pSpe->nBlkHt * 16)) * 256);
 
 			// Explosion.
 			DustSet(gAnm_Explosion0_Medium_NoSfx_Dust, nPosX, nPosY, pSpe->nPrio, 0);
@@ -2095,9 +2095,9 @@ void Mst18_Init_RectShotsCheck0(struct SMstCommon *pMst, u8 *pData)
 	pMst->nPosX &= ~0xFFF;
 	pMst->nPosY &= ~0xFFF;
 	nVal = GetBits(40, 43, pData, 0);	// Offset X.
-	pMst->nPosX += nVal << 8;
+	pMst->nPosX += nVal * 256;
 	nVal = GetBits(44, 47, pData, 0);	// Offset Y.
-	pMst->nPosY += nVal << 8;
+	pMst->nPosY += nVal * 256;
 
 }
 
@@ -2114,9 +2114,9 @@ s32 Mst18_Main_RectShotsCheck0(struct SMstCommon *pMst)
 	// On créé un rectangle de collision correspondant à la taille du monstre.
 	sRect1.nType = e_SprRect_Rect;
 	sRect1.nX1 = 0;
-	sRect1.nX2 = (pSpe->nBlkLg << 4) - 1;
+	sRect1.nX2 = (pSpe->nBlkLg * 16) - 1;
 	sRect1.nY1 = 0;
-	sRect1.nY2 = (pSpe->nBlkHt << 4) - 1;
+	sRect1.nY2 = (pSpe->nBlkHt * 16) - 1;
 	// Test...
 	nDamage = FireHitCheckRect(&sRect1, pMst->nPosX, pMst->nPosY, e_ShotOrg_Player, 1);
 	if (nDamage)
@@ -2145,9 +2145,9 @@ Font_Print(10, 64, pScore, 0);
 
 {
 	SprDisplay(e_Spr_Tstrct_CornerUL, pMst->nPosX >> 8, pMst->nPosY >> 8, e_Prio_Joueur + 3);
-	SprDisplay(e_Spr_Tstrct_CornerUR, (pMst->nPosX + (pSpe->nBlkLg << 12)) >> 8, pMst->nPosY >> 8, e_Prio_Joueur + 3);
-	SprDisplay(e_Spr_Tstrct_CornerDL, pMst->nPosX >> 8, (pMst->nPosY + (pSpe->nBlkHt << 12)) >> 8, e_Prio_Joueur + 3);
-	SprDisplay(e_Spr_Tstrct_CornerDR, (pMst->nPosX + (pSpe->nBlkLg << 12)) >> 8, (pMst->nPosY + (pSpe->nBlkHt << 12)) >> 8, e_Prio_Joueur + 3);
+	SprDisplay(e_Spr_Tstrct_CornerUR, (pMst->nPosX + (pSpe->nBlkLg * 4096)) >> 8, pMst->nPosY >> 8, e_Prio_Joueur + 3);
+	SprDisplay(e_Spr_Tstrct_CornerDL, pMst->nPosX >> 8, (pMst->nPosY + (pSpe->nBlkHt * 4096)) >> 8, e_Prio_Joueur + 3);
+	SprDisplay(e_Spr_Tstrct_CornerDR, (pMst->nPosX + (pSpe->nBlkLg * 4096)) >> 8, (pMst->nPosY + (pSpe->nBlkHt * 4096)) >> 8, e_Prio_Joueur + 3);
 }
 */
 

@@ -95,8 +95,8 @@ s32 MstAdd(u32 nMstNo, s32 nPosX, s32 nPosY, u8 *pData, s32 nLoadIdx)
 
 	gpMstSlots[nSlotNo].nPhase = 0;
 	gpMstSlots[nSlotNo].nFlipX = 0;
-	gpMstSlots[nSlotNo].nPosX = nPosX << 8;		// Et on garde la position demandée.
-	gpMstSlots[nSlotNo].nPosY = nPosY << 8;
+	gpMstSlots[nSlotNo].nPosX = nPosX * 256;		// Et on garde la position demandée.
+	gpMstSlots[nSlotNo].nPosY = nPosY * 256;
 	gpMstSlots[nSlotNo].nSpd = 0;
 	gpMstSlots[nSlotNo].nAngle = 0;
 	gpMstSlots[nSlotNo].nSpdY = 0;
@@ -278,10 +278,10 @@ u32 MstOnScreenNb(u32 nMstType, s32 nBlkOffset)
 	for (i = 0; i < MST_MAX_SLOTS; i++)
 	{
 		if (gpMstSlots[i].nUsed && gpMstSlots[i].nMstNo == nMstType)
-		if (gpMstSlots[i].nPosX >= gScrollPos.nPosX - (nBlkOffset << 12) &&
-			gpMstSlots[i].nPosX < gScrollPos.nPosX + (SCR_Width << 8) + (nBlkOffset << 12) &&
-			gpMstSlots[i].nPosY >= gScrollPos.nPosY - (nBlkOffset << 12) &&
-			gpMstSlots[i].nPosY < gScrollPos.nPosY + (SCR_Height << 8) + (nBlkOffset << 12))
+		if (gpMstSlots[i].nPosX >= gScrollPos.nPosX - (nBlkOffset * 4096) &&
+			gpMstSlots[i].nPosX < gScrollPos.nPosX + (SCR_Width * 256) + (nBlkOffset * 4096) &&
+			gpMstSlots[i].nPosY >= gScrollPos.nPosY - (nBlkOffset * 4096) &&
+			gpMstSlots[i].nPosY < gScrollPos.nPosY + (SCR_Height * 256) + (nBlkOffset * 4096))
 			nTot++;
 	}
 	return (nTot);

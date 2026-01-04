@@ -79,8 +79,8 @@ void Mst21_Init_ScrollY1(struct SMstCommon *pMst, u8 *pData)
 	// Cas particulier pour initialiser un "rail" en début de niveau.
 	if (pMst->nPosX == 0)// && gScrollPos.nPosX == 0)
 	{
-		gnScrollLimitYMin = pMst->nPosY + ((s32)pSpe->nOffsetY[0] << 12);
-		gnScrollLimitYMax = gnScrollLimitYMin + ((u32)pSpe->nBlkHt[0] << 12);
+		gnScrollLimitYMin = pMst->nPosY + ((s32)pSpe->nOffsetY[0] * 4096);
+		gnScrollLimitYMax = gnScrollLimitYMin + ((u32)pSpe->nBlkHt[0] * 4096);
 	}
 
 }
@@ -109,13 +109,13 @@ s32 Mst21_Main_ScrollY1(struct SMstCommon *pMst)
 	else
 	{	// Une limite est donnée.
 		s32	nTarget;
-		nTarget = pMst->nPosY + ((s32)pSpe->nOffsetY[nIdx] << 12);		// Cible du déplacement.
+		nTarget = pMst->nPosY + ((s32)pSpe->nOffsetY[nIdx] * 4096);		// Cible du déplacement.
 
 		// Cas particulier, le scroll n'était pas contraint. On prend la position actuelle.
 		if (gnScrollLimitYMin == -1)
 		{
 			gnScrollLimitYMin = gScrollPos.nPosY;
-			gnScrollLimitYMax = gnScrollLimitYMin + ((u32)pSpe->nBlkHt[nIdx] << 12);
+			gnScrollLimitYMax = gnScrollLimitYMin + ((u32)pSpe->nBlkHt[nIdx] * 4096);
 		}
 
 		// Bit de flip une fois la ligne cible atteinte.
@@ -130,7 +130,7 @@ s32 Mst21_Main_ScrollY1(struct SMstCommon *pMst)
 		nDiff = ABS(gnScrollLimitYMin - nTarget);
 		if (nDiff > 0x100) nDiff = 0x100;
 		gnScrollLimitYMin += (gnScrollLimitYMin > nTarget ? -nDiff : nDiff);
-		gnScrollLimitYMax = gnScrollLimitYMin + ((u32)pSpe->nBlkHt[nIdx] << 12);
+		gnScrollLimitYMax = gnScrollLimitYMin + ((u32)pSpe->nBlkHt[nIdx] * 4096);
 
 	}
 
@@ -276,10 +276,10 @@ void Mst23_Init_FallingObjects0(struct SMstCommon *pMst, u8 *pData)
 
 	nVal = GetBits(8, 11, pData, 0);	// Offset X.
 	pMst->nPosX &= ~0xFFF;
-	pMst->nPosX += nVal << 8;
+	pMst->nPosX += nVal * 256;
 	nVal = GetBits(12, 15, pData, 0);	// Offset Y.
 	pMst->nPosY &= ~0xFFF;
-	pMst->nPosY += nVal << 8;
+	pMst->nPosY += nVal * 256;
 
 	pSpe->nFireSlot = -1;
 
@@ -473,13 +473,13 @@ s32 Mst25_Main_RocketDiver0(struct SMstCommon *pMst)
 		// Sortie de l'écran ?
 		if (Screen_ObjectOut(pMst->nPosX, pMst->nPosY)) return (e_MstState_Asleep);
 		// Joueur assez proche ?
-		if ( (pSpe->nFrom == 0 && (pMst->nPosX - gShoot.nPlayerPosX) < (12 << 12)) ||
-			 (pSpe->nFrom == 1 && (gShoot.nPlayerPosX - pMst->nPosX) > (4 << 12)) )
+		if ( (pSpe->nFrom == 0 && (pMst->nPosX - gShoot.nPlayerPosX) < (12 * 4096)) ||
+			 (pSpe->nFrom == 1 && (gShoot.nPlayerPosX - pMst->nPosX) > (4 * 4096)) )
 		{
 			pMst->nPhase = e_Mst25_Jump;
 			pMst->nSpdY = -0x600;
 //w			DustSet(gAnm_RocketDiver_WaterSplash_Dust, pMst->nPosX, pMst->nPosY, e_Prio_Joueur + 10, 0);
-			DustSet(gAnm_RocketDiver_WaterSplash_Dust, pMst->nPosX, (gShoot.nSplashLevel == -1 ? pMst->nPosY : (gShoot.nSplashLevel - 8) << 8), e_Prio_DustOver, 0);
+			DustSet(gAnm_RocketDiver_WaterSplash_Dust, pMst->nPosX, (gShoot.nSplashLevel == -1 ? pMst->nPosY : (gShoot.nSplashLevel - 8) * 256), e_Prio_DustOver, 0);
 		}
 		return (e_MstState_Managed);
 		break;
@@ -530,7 +530,7 @@ s32 Mst25_Main_RocketDiver0(struct SMstCommon *pMst)
 		if (pMst->nPosY >> 8 >= pSpe->nPosYOrg)
 		{
 //w			DustSet(gAnm_RocketDiver_WaterSplash_Dust, pMst->nPosX, pMst->nPosY, e_Prio_Joueur + 10, 0);
-			DustSet(gAnm_RocketDiver_WaterSplash_Dust, pMst->nPosX, (gShoot.nSplashLevel == -1 ? pMst->nPosY : (gShoot.nSplashLevel - 8) << 8), e_Prio_DustOver, 0);
+			DustSet(gAnm_RocketDiver_WaterSplash_Dust, pMst->nPosX, (gShoot.nSplashLevel == -1 ? pMst->nPosY : (gShoot.nSplashLevel - 8) * 256), e_Prio_DustOver, 0);
 			return (e_MstState_Dead);
 		}
 		break;
@@ -579,7 +579,7 @@ u8 Mst_SlopeAngle(struct SMstCommon *pMst, s32 nOffset, s32 *nOffsYDisp)
 	nHtL = BlockGetGroundLevel((pMst->nPosX - nOffset) >> 8, pMst->nPosY >> 8);
 	nHtR = BlockGetGroundLevel((pMst->nPosX + nOffset) >> 8, pMst->nPosY >> 8);
 	*nOffsYDisp = (nHtL + nHtR) / 2;		// Décalage Y pour l'affichage.
-	return (fatan2((nHtL - nHtR) << 8, nOffset * 2));
+	return (fatan2((nHtL - nHtR) * 256, nOffset * 2));
 }
 
 // Phases.
@@ -623,7 +623,7 @@ void Mst26_Init_Girida0(struct SMstCommon *pMst, u8 *pData)
 
 	Enemy_GroundLevel(pMst);			// Mise au niveau du sol.
 	pSpe->nAng = Mst_SlopeAngle(pMst, MST26_REF_OFFSETX, &nVal);
-	pSpe->nDispOffsY = nVal << 8;
+	pSpe->nDispOffsY = nVal * 256;
 	if (pSpe->nSens) pSpe->nAng = 256 - pSpe->nAng;
 	pSpe->nPosXOrg = (pMst->nPosX >> 12) + (pSpe->nSens ? -1 : 1);		// PosX originale.
 
@@ -661,8 +661,8 @@ u32 Mst26_Shot(struct SMstCommon *pMst, s32 nDist)
 	if (MST_SHOT_COND == 0) return (0);	// On ne tire plus quand le héros est mort.
 
 	if ((nDist < 0 ? 0 : 1) ^ pSpe->nSens)	// Le héros est bien devant ?
-	if (ABS(nDist) <= 10 << 12)		// Pas trop loin ?
-	if (pMst->nPosX >= gScrollPos.nPosX - (1 << 12) && pMst->nPosX <= gScrollPos.nPosX + (SCR_Width << 8) + (1 << 12))
+	if (ABS(nDist) <= 10 * 4096)		// Pas trop loin ?
+	if (pMst->nPosX >= gScrollPos.nPosX - (1 * 4096) && pMst->nPosX <= gScrollPos.nPosX + (SCR_Width * 256) + (1 * 4096))
 	if (--pSpe->nShotCnt == 0)		// !! Test en dernier pour ne pas passer à 0xFF si les autres tests ratent.
 	{
 		// Anims de tir.
@@ -680,7 +680,7 @@ u32 Mst26_Shot(struct SMstCommon *pMst, s32 nDist)
 			Rot2D_RotatePoint(&nOffsX, &nOffsY, (pSpe->nSens ? 256 - pSpe->nAng : pSpe->nAng));
 			// Tir.
 			s32	nSlot;
-			nSlot = FireAdd(e_Shot_Enemy_Girida0_Bullet0, pMst->nPosX + (nOffsX << 8), pSpe->nPosY + (nOffsY << 8), (pSpe->nSens ? 0 : 128));
+			nSlot = FireAdd(e_Shot_Enemy_Girida0_Bullet0, pMst->nPosX + (nOffsX * 256), pSpe->nPosY + (nOffsY * 256), (pSpe->nSens ? 0 : 128));
 			// Ajustement de la vitesse x du tir.
 			if (nSlot != -1)
 			{
@@ -689,7 +689,7 @@ u32 Mst26_Shot(struct SMstCommon *pMst, s32 nDist)
 				*pSpdX = ABS(nDist) / 50;	// Version 1, au pif et parfaite sauf dans les pentes.
 			}
 			// Dust de tir.
-			DustSet(gAnm_Girida0_Turret_ShotFx_Dust, pMst->nPosX + (nOffsX << 8), pSpe->nPosY + (nOffsY << 8), e_Prio_DustOver, 0);
+			DustSet(gAnm_Girida0_Turret_ShotFx_Dust, pMst->nPosX + (nOffsX * 256), pSpe->nPosY + (nOffsY * 256), e_Prio_DustOver, 0);
 		}
 		// Next shot.
 		pSpe->nShotCnt = (rand() & 127) | 32;
@@ -698,9 +698,9 @@ u32 Mst26_Shot(struct SMstCommon *pMst, s32 nDist)
 	return (0);
 }
 
-#define	MST26_LIM_MAX	(7 << 12)	//(10 << 12)
-#define	MST26_LIM_MIN	(5 << 12)	//(7 << 12)
-#define	MST26_TURRET_OFFSY_MAX	(1 << 12)
+#define	MST26_LIM_MAX	(7 * 4096)	//(10 * 4096)
+#define	MST26_LIM_MIN	(5 * 4096)	//(7 * 4096)
+#define	MST26_TURRET_OFFSY_MAX	(1 * 4096)
 #define	MST26_GIRIDA0_AREA	10
 s32 Mst26_Main_Girida0(struct SMstCommon *pMst)
 {
@@ -717,8 +717,8 @@ s32 Mst26_Main_Girida0(struct SMstCommon *pMst)
 		if (gnScrollLimitXMin != -1)
 			nVal = gnScrollLimitXMin;	// Quand scroll bloqué.
 		else
-			nVal = gScrollPos.nLastPosX - (((SCR_Width / 16) / 3) << 12);	// Quand scroll normal.
-		if ((pSpe->nPosXOrg + (pSpe->nSens == 0 ? 0 : pSpe->nZoneMax) + 2) << 12 <= nVal)
+			nVal = gScrollPos.nLastPosX - (((SCR_Width / 16) / 3) * 4096);	// Quand scroll normal.
+		if ((pSpe->nPosXOrg + (pSpe->nSens == 0 ? 0 : pSpe->nZoneMax) + 2) * 4096 <= nVal)
 		{
 			AnmReleaseSlot(pSpe->nTurretAnm);
 			return (e_MstState_Dead);	// e_MstState_Asleep ? e_MstState_Dead ?
@@ -734,14 +734,14 @@ s32 Mst26_Main_Girida0(struct SMstCommon *pMst)
 	switch (pMst->nPhase)
 	{
 	case e_Mst26_WaitScroll:	// Attente que le scroll ait dépassé la position du monstre pour apparaître.
-		if (gScrollPos.nPosX >= pMst->nPosX + (2 << 12)) pMst->nPhase = e_Mst26_Wait;
+		if (gScrollPos.nPosX >= pMst->nPosX + (2 * 4096)) pMst->nPhase = e_Mst26_Wait;
 		return (e_MstState_Managed);
 		//break;
 
 	case e_Mst26_Wait:		// Attente.
 		// Sortie de l'écran ? (Si pas de zone max, pas de test de sortie. Mais comme le tank fera chier sans arrêt, on ne devrait pas l'oublier).
 		if (pSpe->nZoneMax)
-			if (Screen_ObjectOutRect((pSpe->nPosXOrg - (pSpe->nSens ? MST26_GIRIDA0_AREA : pSpe->nZoneMax + MST26_GIRIDA0_AREA)) << 12, pMst->nPosY, pSpe->nZoneMax + (MST26_GIRIDA0_AREA * 2), 1))
+			if (Screen_ObjectOutRect((pSpe->nPosXOrg - (pSpe->nSens ? MST26_GIRIDA0_AREA : pSpe->nZoneMax + MST26_GIRIDA0_AREA)) * 4096, pMst->nPosY, pSpe->nZoneMax + (MST26_GIRIDA0_AREA * 2), 1))
 			{
 				AnmReleaseSlot(pSpe->nTurretAnm);
 				return (e_MstState_Asleep);
@@ -810,7 +810,7 @@ s32 Mst26_Main_Girida0(struct SMstCommon *pMst)
 		Mst_BasicMove(pMst, 0x100, 0);
 		// Angle du tank.
 		pSpe->nAng = Mst_SlopeAngle(pMst, MST26_REF_OFFSETX, &t);
-		pSpe->nDispOffsY = t << 8;
+		pSpe->nDispOffsY = t * 256;
 		pSpe->nPosY = pMst->nPosY + (s32)pSpe->nDispOffsY;
 		if (pSpe->nSens) pSpe->nAng = 256 - pSpe->nAng;
 		// Anim de déplacement.
@@ -992,7 +992,7 @@ Prm = 31:31:			; tmp
 */
 				pData[0] = pSpe->nItemWait;
 				pData[1] = pSpe->nItemGive;
-				pData[2] = (pSpe->nOrder << 4) | pSpe->nSeqNo;
+				pData[2] = (pSpe->nOrder * 16) | pSpe->nSeqNo;
 				pData[3] = 0;
 				pSpe->nOrder++;
 				break;
@@ -1099,7 +1099,7 @@ void Mst28_Init_Masknell0(struct SMstCommon *pMst, u8 *pData)
 		// Bits leader.
 		gMstMisc.pSeqLeader[pSpe->nSeqNo] |= 1 << pSpe->nOrder;	// Pour recherche des leaders.
 
-		pMst->nPosX = gScrollPos.nPosX + (SCR_Width << 8) + (2 << 12);	// Replacement hors de l'écran.
+		pMst->nPosX = gScrollPos.nPosX + (SCR_Width * 256) + (2 * 4096);	// Replacement hors de l'écran.
 		Mst_PathInit(pMst, &pSpe->sPath, 0x200, 128);	// Init path.
 		pMst->nPhase = e_Mst28_T0_Fly;
 		pSpe->nCurAdd = 3;
@@ -1112,17 +1112,17 @@ void Mst28_Init_Masknell0(struct SMstCommon *pMst, u8 *pData)
 
 	case 1:		// L02.
 		// Init à droite ou à gauche de l'écran en fct de la pos du joueur par rapport au centre de l'écran.
-		if (gShoot.nPlayerPosX < gScrollPos.nPosX + ((SCR_Width / 2) << 8))
+		if (gShoot.nPlayerPosX < gScrollPos.nPosX + ((SCR_Width / 2) * 256))
 		{
-			pMst->nPosX = gScrollPos.nPosX + (((SCR_Width / 16) - MST28_T1_OFFSX) << 12);
+			pMst->nPosX = gScrollPos.nPosX + (((SCR_Width / 16) - MST28_T1_OFFSX) * 4096);
 			pMst->nFlipX = 0;
 		}
 		else
 		{
-			pMst->nPosX = gScrollPos.nPosX + (MST28_T1_OFFSX << 12);
+			pMst->nPosX = gScrollPos.nPosX + (MST28_T1_OFFSX * 4096);
 			pMst->nFlipX = 1;
 		}
-		pMst->nPosY = gScrollPos.nPosY - (1 << 12);
+		pMst->nPosY = gScrollPos.nPosY - (1 * 4096);
 		pSpe->nAccCnt = 0;
 		pSpe->nShotNb = 2;	// Nb de tirs.
 
@@ -1228,7 +1228,7 @@ s32 Mst28_Main_Masknell0(struct SMstCommon *pMst)
 // tst de largage de bombe.
 
 //		if (MST_SHOT_COND)	// Si le héros n'est pas mort...
-//			if (pSpe->nFrmShot == 0 && ABS(nDist) < (3 << 12)) pSpe->nFrmShot = (16 * 3) << 1;	// Tir ?
+//			if (pSpe->nFrmShot == 0 && ABS(nDist) < (3 * 4096)) pSpe->nFrmShot = (16 * 3) << 1;	// Tir ?
 /* shobu
 	// Petite série de largage de bombe ?
 	if (pSpe->nFrmShot)
@@ -1295,7 +1295,7 @@ if (pMst->nAngle == 128 && (gnFrame & 31) == 0)
 	case e_Mst28_T0_Boss:
 		{
 			u8	nAng;
-			nAng = fatan2(-((gShoot.nPlayerPosY - (1 << 12)) - (pMst->nPosY - (1 << 12))), gShoot.nPlayerPosX - pMst->nPosX);
+			nAng = fatan2(-((gShoot.nPlayerPosY - (1 * 4096)) - (pMst->nPosY - (1 * 4096))), gShoot.nPlayerPosX - pMst->nPosX);
 
 			static u8 pnAng2[] = { 3,4,4,5,5,6,6,7,7,6,6,5,5,4,4,3 };
 			pSpe->nCurAdd = pnAng2[(nAng >> 3) & 0x0F];
@@ -1457,8 +1457,8 @@ _28MasknellDeath:
 				pnShotOffsX[(pMst->nFlipX ^ 1) & 1] = sRect1.nX2;
 				nAng = 192 - (pMst->nFlipX ? -pnShotAng[pSpe->nCurAdd] : pnShotAng[pSpe->nCurAdd]);
 
-				FireAdd(e_Shot_Enemy_RebSoldier_Bullet0, pMst->nPosX + (pnShotOffsX[0] << 8), pMst->nPosY + (pnShotOffsY[0] << 8), nAng);
-				FireAdd(e_Shot_Enemy_RebSoldier_Bullet0, pMst->nPosX + (pnShotOffsX[1] << 8), pMst->nPosY + (pnShotOffsY[1] << 8), nAng);
+				FireAdd(e_Shot_Enemy_RebSoldier_Bullet0, pMst->nPosX + (pnShotOffsX[0] * 256), pMst->nPosY + (pnShotOffsY[0] * 256), nAng);
+				FireAdd(e_Shot_Enemy_RebSoldier_Bullet0, pMst->nPosX + (pnShotOffsX[1] * 256), pMst->nPosY + (pnShotOffsY[1] * 256), nAng);
 			}
 		}
 	}
@@ -1501,7 +1501,7 @@ struct SMst29_Whale0
 };
 
 #define	MST29_SPDY_MAX	0x800
-#define	MST29_OFFSY	(163 << 8)
+#define	MST29_OFFSY	(163 * 256)
 #define	MST29_DOWN_WAIT	140
 
 void Mst29_Init_Whale0(struct SMstCommon *pMst, u8 *pData)
@@ -1528,7 +1528,7 @@ s32 Mst29_Main_Whale0(struct SMstCommon *pMst)
 		if (pSpe->nCnt) pSpe->nCnt--;
 		// Joueur à proximité ?
 		nDist = pMst->nPosX - gShoot.nPlayerPosX;
-		if (nDist < (8 << 12))
+		if (nDist < (8 * 4096))
 		if (pSpe->nCnt == 0)
 		{
 			pMst->nAnm = AnmSet(gAnm_Whale_Attack, pMst->nAnm);	// Reinit de l'anim d'attaque.
@@ -1538,7 +1538,7 @@ s32 Mst29_Main_Whale0(struct SMstCommon *pMst)
 		// Dust bubbles.
 		if ((gnFrame & 63) == 0)
 		{
-			DustSetMvt(gAnm_Whale_Bubbles_Dust, pMst->nPosX + ((64 - (rand() & 127)) << 8), pMst->nPosY - (8 << 8), 0, -0x40, e_Prio_Ennemies +32 +1, 0);
+			DustSetMvt(gAnm_Whale_Bubbles_Dust, pMst->nPosX + ((64 - (rand() & 127)) * 256), pMst->nPosY - (8 * 256), 0, -0x40, e_Prio_Ennemies +32 +1, 0);
 		}
 		// Dans cette phase, on s'arrête là.
 		return (e_MstState_Managed);
@@ -1584,12 +1584,12 @@ s32 Mst29_Main_Whale0(struct SMstCommon *pMst)
 		if (i >= 2) nImg = 0;	// Après les 2 premières images, plus d'anim.
 		SprDisplay(gpMst29Spr[i] + nImg, (pMst->nPosX >> 8) + gpMst29OffsX[i], (pMst->nPosY >> 8) + gpMst29OffsY[i] + (pSpe->nOffsY >> 8), e_Prio_Ennemies +32 +2);
 		// Arrête les tirs, mais pas de dégats.
-		FireHitCheck(gpMst29Spr[i] + nImg, pMst->nPosX  + (gpMst29OffsX[i] << 8), pMst->nPosY + (gpMst29OffsY[i] << 8) + pSpe->nOffsY, e_ShotOrg_Player, 0);
+		FireHitCheck(gpMst29Spr[i] + nImg, pMst->nPosX  + (gpMst29OffsX[i] * 256), pMst->nPosY + (gpMst29OffsY[i] * 256) + pSpe->nOffsY, e_ShotOrg_Player, 0);
 		// Player hit.
 		// On récupère la zone de col du sprite.
 		if (SprGetRect(gpMst29Spr[i] + nImg, e_SprRectZone_RectCol, &sRect1) == 0) continue;
 		if (sRect1.nType != e_SprRect_Rect) continue;
-		Enemy_PlayerBlowRect(&sRect1, pMst->nPosX + (gpMst29OffsX[i] << 8), pMst->nPosY + (gpMst29OffsY[i] << 8) + pSpe->nOffsY, SLUG_ENERGY_MAX);
+		Enemy_PlayerBlowRect(&sRect1, pMst->nPosX + (gpMst29OffsX[i] * 256), pMst->nPosY + (gpMst29OffsY[i] * 256) + pSpe->nOffsY, SLUG_ENERGY_MAX);
 	}
 
 	return (e_MstState_Managed);

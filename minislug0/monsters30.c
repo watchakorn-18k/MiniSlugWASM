@@ -126,7 +126,7 @@ Type = 0:3: Small - 	// << mais inutilis�.
 			pSpe->nMstNb--;
 		}
 		// La zone du g�n�rateur sort de l'�cran ? (Uniquement par la gauche).
-		if (pMst->nPosX + (((u32)pSpe->nZoneW * 16) << 8) < gScrollPos.nPosX) return (e_MstState_Dead);
+		if (pMst->nPosX + (((u32)pSpe->nZoneW * 16) * 256) < gScrollPos.nPosX) return (e_MstState_Dead);
 		break;
 	}
 
@@ -168,7 +168,7 @@ void Mst31_Init_Squid0(struct SMstCommon *pMst, u8 *pData)
 	pSpe->nLife = gpnM31Life[pSpe->nType];
 	pSpe->nHitCnt = 0;	// Hit counter.
 
-	pMst->nSpd = (s32)gpnM31Spd[pSpe->nType] << 4;
+	pMst->nSpd = (s32)gpnM31Spd[pSpe->nType] * 16;
 	pMst->nSpdY = (s32)gpnM31Dec[pSpe->nType];	// = Dec !!!
 	pMst->nAngle = 128 + gpnM31AngAdd[pSpe->nType];
 
@@ -190,12 +190,12 @@ s32 Mst31_Main_Squid0(struct SMstCommon *pMst)
 	if (pMst->nSpd - pMst->nSpdY >= 0) pMst->nSpd -= pMst->nSpdY;	// pMst->nSpdY = Dec !!!
 	if (AnmCheckStepFlag(pMst->nAnm))
 	{
-		pMst->nSpd = (s32)gpnM31Spd[pSpe->nType] << 4;
+		pMst->nSpd = (s32)gpnM31Spd[pSpe->nType] * 16;
 		pMst->nAngle = -pMst->nAngle;
 	}
 
 	// Sortie de l'�cran ?
-	if (pMst->nPosX + (64 << 8) < gScrollPos.nPosX) return (e_MstState_Dead);
+	if (pMst->nPosX + (64 * 256) < gScrollPos.nPosX) return (e_MstState_Dead);
 
 	// Se prend un tir ?
 	if (Mst_ShotCheckLife(nSpr, pMst->nPosX, pMst->nPosY, &pSpe->nHitCnt, &pSpe->nLife))
@@ -395,15 +395,15 @@ Shot Nb = 32:35:		; Nb de tirs.
 Scroll type = 36:36: Y - X	; Scroll V ou H.
 prm = 37:39:			; tmp
 */
-			pData[0] = pSpe->nType + (pSpe->nDrop << 4);
-			pData[1] = pSpe->nSeqNo + (pSpe->nOffset << 4);
+			pData[0] = pSpe->nType + (pSpe->nDrop * 16);
+			pData[1] = pSpe->nSeqNo + (pSpe->nOffset * 16);
 			pData[2] = pSpe->nOrder;
 
-			pData[2] |= (pSpe->sav_nShot << 4) & 0xF0;
+			pData[2] |= (pSpe->sav_nShot * 16) & 0xF0;
 			pData[3] = (pSpe->sav_nShot >> 4) & 0xFF;
 			pData[4] = (pSpe->sav_nShot >> 12) & 0x0F;
 
-			pData[4] |= (pSpe->sav_Bits0 << 4) & 0xF0;
+			pData[4] |= (pSpe->sav_Bits0 * 16) & 0xF0;
 
 			if (pSpe->nType == 4)
 			{	// Mars UFO.
@@ -440,9 +440,9 @@ SeqNo = 0:3:		; No de la s�quence.
 prm = 4:7:			; tmp
 */
 			// Position au hasard.
-//			nPosX = ((rand() % (SCR_Width * 2)) - (SCR_Width / 2)) << 8;
-			nPosX = ((rand() % SCR_Width) + (pSpe->nNb & 1 ? SCR_Width : 0) - (SCR_Width / 2)) << 8;
-			nPosY = gScrollPos.nPosY - (16 << 8);
+//			nPosX = ((rand() % (SCR_Width * 2)) - (SCR_Width / 2)) * 256;
+			nPosX = ((rand() % SCR_Width) + (pSpe->nNb & 1 ? SCR_Width : 0) - (SCR_Width / 2)) * 256;
+			nPosY = gScrollPos.nPosY - (16 * 256);
 			//
 			pData[0] = pSpe->nSeqNo;
 			MstAdd(e_Mst36_L11Asteroid0, nPosX >> 8, nPosY >> 8, pData, -1);
@@ -461,21 +461,21 @@ SeqNo = 0:3:		; No de la s�quence.
 Order = 4:7:		; N� d'ordre dans la s�quence (pour trouver le leader).
 */
 			// Au milieu.
-			nPosX = (SCR_Width / 2) << 8;
-			nPosY = gScrollPos.nPosY - (16 << 8);
-			pData[0] = pSpe->nSeqNo | (pSpe->nOrder << 4);
+			nPosX = (SCR_Width / 2) * 256;
+			nPosY = gScrollPos.nPosY - (16 * 256);
+			pData[0] = pSpe->nSeqNo | (pSpe->nOrder * 16);
 			MstAdd(e_Mst37_L11BigAsteroid0, nPosX >> 8, nPosY >> 8, pData, -1);
 			pSpe->nOrder++;
 			// A gauche.
-			nPosX = (SCR_Width / 4) << 8;
-			nPosY = gScrollPos.nPosY - (24 << 8);
-			pData[0] = pSpe->nSeqNo | (pSpe->nOrder << 4);
+			nPosX = (SCR_Width / 4) * 256;
+			nPosY = gScrollPos.nPosY - (24 * 256);
+			pData[0] = pSpe->nSeqNo | (pSpe->nOrder * 16);
 			MstAdd(e_Mst37_L11BigAsteroid0, nPosX >> 8, nPosY >> 8, pData, -1);
 			pSpe->nOrder++;
 			// A droite.
-			nPosX = (3 * SCR_Width / 4) << 8;
-			nPosY = gScrollPos.nPosY - (32 << 8);
-			pData[0] = pSpe->nSeqNo | (pSpe->nOrder << 4);
+			nPosX = (3 * SCR_Width / 4) * 256;
+			nPosY = gScrollPos.nPosY - (32 * 256);
+			pData[0] = pSpe->nSeqNo | (pSpe->nOrder * 16);
 			MstAdd(e_Mst37_L11BigAsteroid0, nPosX >> 8, nPosY >> 8, pData, -1);
 			pSpe->nOrder++;
 
@@ -492,7 +492,7 @@ Drop = 8:11: Nothing - H_Machinegun - Gas_Tank - Ammo_Box1	; H non utilis�.
 Mode = 12:14: L02_Path - L02_To_Player - Std_Level -
 prm = 15:15:			; tmp
 */
-			pData[0] = pSpe->nSeqNo + (pSpe->nOrder << 4);
+			pData[0] = pSpe->nSeqNo + (pSpe->nOrder * 16);
 			pData[1] = pSpe->nDrop;
 
 			MstAdd(e_Mst43_FlyingTara0, pMst->nPosX >> 8, pMst->nPosY >> 8, pData, -1);
@@ -531,14 +531,14 @@ Location = 5:6: Normal - Space - Underwater - Air
 				pData[0] = (gpnMst33ItmTb[pSpe->nDrop & 3] - 1);
 				if (pSpe->sav_Bits0)
 				{
-					nPosX = gScrollPos.nPosX + ((SCR_Width + 16) << 8);
+					nPosX = gScrollPos.nPosX + ((SCR_Width + 16) * 256);
 					nPosY = pMst->nPosY;
 					pData[0] |= 3 << 5;
 				}
 				else
 				{
 					nPosX = pMst->nPosX;
-					nPosY = gScrollPos.nPosY - (16 << 8);
+					nPosY = gScrollPos.nPosY - (16 * 256);
 					pData[0] |= 1 << 5;
 				}
 				MstAdd(e_Mst4_WeaponCapsule, nPosX >> 8, nPosY >> 8, pData, -1);
@@ -598,7 +598,7 @@ void Mst_PathInit(struct SMstCommon *pMst, struct SMstPath *pPath, s32 nSpdInit,
 	if ((nVal = Map_PathGndGetBlock(pMst->nPosX >> 12, (pMst->nPosY >> 12) + 1)) != -1)
 	if (nVal < 16)
 	{
-		pMst->nAngle = nVal << 4;
+		pMst->nAngle = nVal * 16;
 	}
 	pMst->nFlipX = ((u8)(pMst->nAngle + 64) < 128 ? 1 : 0);
 	if (pMst->nAngle == 64 || pMst->nAngle == 192)
@@ -649,7 +649,7 @@ void Mst_PathMove(struct SMstCommon *pMst, struct SMstPath *pPath, s32 nSpdAcc, 
 				{
 					u8	nDiff;
 					// D�termine le sens de rotation.
-					pPath->nNewAngle = nNew << 4;
+					pPath->nNewAngle = nNew * 16;
 					nDiff = pMst->nAngle - pPath->nNewAngle;
 					pPath->nSensRot = (nDiff & 128 ? 2 : -2);
 					pMst->nPhase = nPhaseTurn;
@@ -746,12 +746,12 @@ void Mst34_Init_L11MarsEye0(struct SMstCommon *pMst, u8 *pData)
 	// Prm de tir.
 	pSpe->nShotAnm = -1;
 	nVal = GetBits(24, 27, pData, 0);	// First delay.
-	pSpe->nShotCnt = nVal << 4;
+	pSpe->nShotCnt = nVal * 16;
 	nVal = GetBits(20, 23, pData, 0);	// Shot pattern. 0 = 1 par 1 / 1 = Tous ensemble.
 	if (nVal)
 		pSpe->nShotCnt -= (24 * pSpe->nOrder);		// Tous ensemble => On d�cale le timer mst par mst.
 	nVal = GetBits(28, 31, pData, 0);	// Fr�quence.
-	pSpe->nShotFreq = nVal << 4;
+	pSpe->nShotFreq = nVal * 16;
 	nVal = GetBits(32, 35, pData, 0);	// Nb de tirs.
 	pSpe->nShotNb = nVal;
 
@@ -760,13 +760,13 @@ void Mst34_Init_L11MarsEye0(struct SMstCommon *pMst, u8 *pData)
 	pSpe->nScrollXY = nVal;
 	if (pSpe->nScrollXY)
 	{	// Scroll X.
-		pMst->nPosX = gScrollPos.nPosX + (SCR_Width << 8);
-		pMst->nPosX -= nOffset << 12;
+		pMst->nPosX = gScrollPos.nPosX + (SCR_Width * 256);
+		pMst->nPosX -= nOffset * 4096;
 	}
 	else
 	{	// Scroll Y.
 		pMst->nPosY = gScrollPos.nPosY;
-		pMst->nPosY += nOffset << 12;
+		pMst->nPosY += nOffset * 4096;
 	}
 	// Et d�calage en dehors.
 	Mst_PutOutOfScreen(pMst, MST34_SCREEN_OFFSET);
@@ -789,7 +789,7 @@ u32 Mst34_41_Common(struct SMstCommon *pMst)
 		gShoot.nPlayerScore += gpMstTb[pMst->nMstNo].nPoints;	// Score.
 _34MarsEyeDeath:
 		// Diff�rents dusts.
-		DustSet(gAnm_Explosion0_Medium_Dust, pMst->nPosX, pMst->nPosY + (5 << 8), e_Prio_DustUnder, 0);
+		DustSet(gAnm_Explosion0_Medium_Dust, pMst->nPosX, pMst->nPosY + (5 * 256), e_Prio_DustUnder, 0);
 //	DustSetMvt(gAnm_Debris_Metal0_Dust, pMst->nPosX, pMst->nPosY, 0x180, -0x480, e_Prio_DustUnder - 1, e_DustFlag_Gravity);
 //	DustSetMvt(gAnm_Debris_Metal0_Dust, pMst->nPosX, pMst->nPosY, -0x180, -0x380, e_Prio_DustUnder - 1, e_DustFlag_Gravity);
 		// Cleare le bit de lead.
@@ -854,9 +854,9 @@ Location = 5:6: Normal - Space - Underwater - Air
 		// Tir ?
 		else if (AnmCheckStepFlag(pSpe->nShotAnm))
 		{
-			FireAdd(e_Shot_Enemy_MarsUFO_Bullet0, pMst->nPosX + (nShotOffsX << 8), pMst->nPosY + (nShotOffsY << 8),
-					fatan2(-((gShoot.nPlayerPosY - (2 << 12) + (gShoot.nVehicleType < e_HeroVehicle_SlugBase ? 4 << 12 : 0)) - (pMst->nPosY + (nShotOffsY << 8))), gShoot.nPlayerPosX - (pMst->nPosX + (nShotOffsX << 8))) );
-//					fatan2(-((gShoot.nPlayerPosY - (2 << 12)) - (pMst->nPosY + (nShotOffsY << 8))), gShoot.nPlayerPosX - (pMst->nPosX + (nShotOffsX << 8))) );
+			FireAdd(e_Shot_Enemy_MarsUFO_Bullet0, pMst->nPosX + (nShotOffsX * 256), pMst->nPosY + (nShotOffsY * 256),
+					fatan2(-((gShoot.nPlayerPosY - (2 * 4096) + (gShoot.nVehicleType < e_HeroVehicle_SlugBase ? 4 * 4096 : 0)) - (pMst->nPosY + (nShotOffsY * 256))), gShoot.nPlayerPosX - (pMst->nPosX + (nShotOffsX * 256))) );
+//					fatan2(-((gShoot.nPlayerPosY - (2 * 4096)) - (pMst->nPosY + (nShotOffsY * 256))), gShoot.nPlayerPosX - (pMst->nPosX + (nShotOffsX * 256))) );
 			// Reinitialisation du tir.
 			if (--pSpe->nShotNb) pSpe->nShotCnt = pSpe->nShotFreq;
 		}
@@ -956,8 +956,8 @@ void Mst35_sub_NewRock(u32 nIdx)
 {
 	u32	nRnd = rand();
 
-	gpL11SpaceRocks[nIdx].nPosX = ((nRnd % (SCR_Width * 2)) - (SCR_Width / 2)) << 8;
-	gpL11SpaceRocks[nIdx].nPosY = gScrollPos.nPosY - (10 << 8);
+	gpL11SpaceRocks[nIdx].nPosX = ((nRnd % (SCR_Width * 2)) - (SCR_Width / 2)) * 256;
+	gpL11SpaceRocks[nIdx].nPosY = gScrollPos.nPosY - (10 * 256);
 	gpL11SpaceRocks[nIdx].nType = (nRnd >> 1) & 1;
 	gpL11SpaceRocks[nIdx].nSpd = 0x050 + (nRnd & 0x30);	//0x110 + (nRnd & 0x70)
 	gpL11SpaceRocks[nIdx].nSpd += (gpL11SpaceRocks[nIdx].nType ? 0 : 0x80);
@@ -973,7 +973,7 @@ void Mst35_Init_L11SpaceRocks0(struct SMstCommon *pMst, u8 *pData)
 	for (i = 0; i < L11SPACEROCKS_MAX; i++)
 	{
 		Mst35_sub_NewRock(i);
-		gpL11SpaceRocks[i].nPosY = gScrollPos.nPosY + (((rand() % (SCR_Height + 20)) - 10) << 8);
+		gpL11SpaceRocks[i].nPosY = gScrollPos.nPosY + (((rand() % (SCR_Height + 20)) - 10) * 256);
 	}
 	gnL11SpaceRockAngle = 192;	// Par d�faut, vers le bas.
 	pSpe->nReqAngle = gnL11SpaceRockAngle;
@@ -999,7 +999,7 @@ s32 Mst35_Main_L11SpaceRocks0(struct SMstCommon *pMst)
 		pSpe->nPrevBlkY = nPlane1PosY;
 		if ((i = Map_PathAirGetBlock(pMst->nPosX >> 12, nPlane1PosY - MST_CLIP_VAL)) != -1)
 		if (i < 16)
-			pSpe->nReqAngle = i << 4;
+			pSpe->nReqAngle = i * 16;
 	}
 
 	// Changement de direction ?
@@ -1018,7 +1018,7 @@ s32 Mst35_Main_L11SpaceRocks0(struct SMstCommon *pMst)
 		gpL11SpaceRocks[i].nPosY += (gVar.pSin[gnL11SpaceRockAngle] * (s32)gpL11SpaceRocks[i].nSpd) >> 8;
 		gpL11SpaceRocks[i].nPosY += L11_SCROLLSPD;	// Scroll spd.
 		// Sortie de l'�cran ?
-		if (gpL11SpaceRocks[i].nPosY > gScrollPos.nPosY + ((SCR_Height + 10) << 8))
+		if (gpL11SpaceRocks[i].nPosY > gScrollPos.nPosY + ((SCR_Height + 10) * 256))
 			Mst35_sub_NewRock(i);
 		// Affichage.
 		SprDisplay((e_Spr_SpaceRock_Medium + ((u32)gpL11SpaceRocks[i].nCnt >> 5) + ((u32)gpL11SpaceRocks[i].nType << 3)) ^ (pMst->nFlipX ? SPR_Flip_X : 0), gpL11SpaceRocks[i].nPosX >> 8, gpL11SpaceRocks[i].nPosY >> 8, e_Prio_EnnemiesBg - 1 - gpL11SpaceRocks[i].nType);
@@ -1082,7 +1082,7 @@ s32 Mst36_Main_L11Asteroid0(struct SMstCommon *pMst)
 		gShoot.nPlayerScore += gpMstTb[pMst->nMstNo].nPoints;	// Score.
 _36AsteroidDeath:
 		// Dust.
-		DustSet(gAnm_Explosion0_Medium_Dust, pMst->nPosX, pMst->nPosY + (16 << 8), e_Prio_DustUnder, 0);
+		DustSet(gAnm_Explosion0_Medium_Dust, pMst->nPosX, pMst->nPosY + (16 * 256), e_Prio_DustUnder, 0);
 		// Mort.
 		gMstMisc.pSeqCount2[pSpe->nSeqNo]--;
 		return (e_MstState_Dead);
@@ -1145,8 +1145,8 @@ void Mst37_Init_L11BigAsteroid0(struct SMstCommon *pMst, u8 *pData)
 
 	pSpe->nHitCnt = 0;
 	pSpe->nLife = 20;
-	pMst->nSpdY = 0x80 + (pSpe->nOrder << 4);
-//	pMst->nSpd = (pSpe->nOrder << 4) * (pSpe->nOrder & 1 ? -1 : 1);
+	pMst->nSpdY = 0x80 + (pSpe->nOrder * 16);
+//	pMst->nSpd = (pSpe->nOrder * 16) * (pSpe->nOrder & 1 ? -1 : 1);
 	pMst->nSpd = (pSpe->nOrder ? (pSpe->nOrder & 1 ? -0x20 : 0x20) : 0);
 
 	pSpe->nPosX2 = pMst->nPosX;
@@ -1166,7 +1166,7 @@ s32 Mst37_Main_L11BigAsteroid0(struct SMstCommon *pMst)
 	u32	i;
 
 	// Sort de l'�cran par le bas ?
-	if (pMst->nPosY > gScrollPos.nPosY + (SCR_Height << 8) + (7 << 12))
+	if (pMst->nPosY > gScrollPos.nPosY + (SCR_Height * 256) + (7 * 4096))
 	{
 //		gMstMisc.pSeqCount2[pSpe->nSeqNo]--;
 		return (e_MstState_Dead);
@@ -1193,7 +1193,7 @@ s32 Mst37_Main_L11BigAsteroid0(struct SMstCommon *pMst)
 		// Dusts quand signal donn�.
 		if (AnmCheckStepFlag(pMst->nAnm))
 		{
-			DustSetMvt(gAnm_BigAsteroid_Cracks_Dust, pMst->nPosX + ((pSpe->nDustNo & 1) << (3+8)), pMst->nPosY - ((80 - (23 * pSpe->nDustNo)) << 8), pMst->nSpd, pMst->nSpdY, e_Prio_DustOver, 0);
+			DustSetMvt(gAnm_BigAsteroid_Cracks_Dust, pMst->nPosX + ((pSpe->nDustNo & 1) << (3+8)), pMst->nPosY - ((80 - (23 * pSpe->nDustNo)) * 256), pMst->nSpd, pMst->nSpdY, e_Prio_DustOver, 0);
 			pSpe->nDustNo++;
 		}
 		// Fin de l'anim ?
@@ -1222,7 +1222,7 @@ s32 Mst37_Main_L11BigAsteroid0(struct SMstCommon *pMst)
 	pMst->nPosY += pMst->nSpdY;
 
 	// D�cr�mente la s�quence ?
-	if (nOldY < gScrollPos.nPosY + ((SCR_Height - 32) << 8) && pMst->nPosY >= gScrollPos.nPosY + ((SCR_Height - 32) << 8))
+	if (nOldY < gScrollPos.nPosY + ((SCR_Height - 32) * 256) && pMst->nPosY >= gScrollPos.nPosY + ((SCR_Height - 32) * 256))
 		gMstMisc.pSeqCount2[pSpe->nSeqNo]--;
 
 	// Blocage des tirs + touch�s.
@@ -1250,15 +1250,15 @@ s32 Mst37_Main_L11BigAsteroid0(struct SMstCommon *pMst)
 			if (SprGetRect(gShoot.nPlayerSprCol, e_SprRectZone_RectCol, &sRect2) == 0) continue;
 			if (sRect2.nType != e_SprRect_Rect) continue;
 			// Rectangle de col de l'ennemi.
-			nXMin1 = (i == 0 ? pMst->nPosX : pSpe->nPosX2) + (sRect1.nX1 << 8);
-			nXMax1 = (i == 0 ? pMst->nPosX : pSpe->nPosX2) + (sRect1.nX2 << 8);
-			nYMin1 = pMst->nPosY + (sRect1.nY1 << 8);
-			nYMax1 = pMst->nPosY + (sRect1.nY2 << 8);
+			nXMin1 = (i == 0 ? pMst->nPosX : pSpe->nPosX2) + (sRect1.nX1 * 256);
+			nXMax1 = (i == 0 ? pMst->nPosX : pSpe->nPosX2) + (sRect1.nX2 * 256);
+			nYMin1 = pMst->nPosY + (sRect1.nY1 * 256);
+			nYMax1 = pMst->nPosY + (sRect1.nY2 * 256);
 			// Rectangle de col du joueur.
-			nXMin2 = gShoot.nPlayerPosX + (sRect2.nX1 << 8);
-			nXMax2 = gShoot.nPlayerPosX + (sRect2.nX2 << 8);
-			nYMin2 = gShoot.nPlayerPosY + (sRect2.nY1 << 8);
-			nYMax2 = gShoot.nPlayerPosY + (sRect2.nY2 << 8);
+			nXMin2 = gShoot.nPlayerPosX + (sRect2.nX1 * 256);
+			nXMax2 = gShoot.nPlayerPosX + (sRect2.nX2 * 256);
+			nYMin2 = gShoot.nPlayerPosY + (sRect2.nY1 * 256);
+			nYMax2 = gShoot.nPlayerPosY + (sRect2.nY2 * 256);
 
 			// Collisions entre les rectangles ?
 			if (nXMax1 >= nXMin2 && nXMin1 <= nXMax2 && nYMax1 >= nYMin2 && nYMin1 <= nYMax2)
@@ -1405,12 +1405,12 @@ s32 Mst38_Main_BigJellyfish0(struct SMstCommon *pMst)
 			// Init des satellites.
 			Mst38_sub_SatellitesInit(pSpe, MST38_SAT_OFFSET);
 			// Position. (On pourrait l'initialiser de l'autre c�t� en fct de la pos du joueur).
-			pMst->nPosX = gScrollPos.nPosX + ((SCR_Width + 64) << 8);
-			pMst->nPosY = gScrollPos.nPosY + ((SCR_Height / 2) << 8);
+			pMst->nPosX = gScrollPos.nPosX + ((SCR_Width + 64) * 256);
+			pMst->nPosY = gScrollPos.nPosY + ((SCR_Height / 2) * 256);
 			pMst->nSpd = 0;
 			// Init move.
 			pMst->nPhase = e_Mst38_BigJellyfish_Move;
-			pSpe->nTargetX = gScrollPos.nPosX + ((2 * SCR_Width / 3) << 8);
+			pSpe->nTargetX = gScrollPos.nPosX + ((2 * SCR_Width / 3) * 256);
 			pSpe->nTargetY = pMst->nPosY;
 		}
 		else
@@ -1597,8 +1597,8 @@ s32 Mst39_Main_SensorMine0(struct SMstCommon *pMst)
 		s32	nTargetX, nTargetY;
 		s32	nDX, nDY;
 
-		nTargetX = gShoot.nPlayerPosX + ((sRect1.nX1 + ((sRect1.nX2 - sRect1.nX1) / 2)) << 8);
-		nTargetY = gShoot.nPlayerPosY + ((sRect1.nY1 + ((sRect1.nY2 - sRect1.nY1) / 2)) << 8);
+		nTargetX = gShoot.nPlayerPosX + ((sRect1.nX1 + ((sRect1.nX2 - sRect1.nX1) / 2)) * 256);
+		nTargetY = gShoot.nPlayerPosY + ((sRect1.nY1 + ((sRect1.nY2 - sRect1.nY1) / 2)) * 256);
 		nDX = (nTargetX - pMst->nPosX) >> 8;
 		nDY = (nTargetY - pMst->nPosY) >> 8;
 		if ((nDX * nDX) + (nDY * nDY) <= MST39_ATTK_PERIM)
@@ -1616,7 +1616,7 @@ s32 Mst39_Main_SensorMine0(struct SMstCommon *pMst)
 	if (SprCheckColBox(nSpr, pMst->nPosX >> 8, pMst->nPosY >> 8,
 		gShoot.nPlayerSprCol, gShoot.nPlayerPosX >> 8, gShoot.nPlayerPosY >> 8))
 	{
-		FireAdd(e_Shot_Enemy_RShobu_Bomb_Explo, pMst->nPosX, pMst->nPosY + (MST39_OFFSY << 8), -1);
+		FireAdd(e_Shot_Enemy_RShobu_Bomb_Explo, pMst->nPosX, pMst->nPosY + (MST39_OFFSY * 256), -1);
 		return (e_MstState_Dead);
 	}
 
@@ -1625,7 +1625,7 @@ s32 Mst39_Main_SensorMine0(struct SMstCommon *pMst)
 	{
 		// Mort.
 		gShoot.nPlayerScore += gpMstTb[pMst->nMstNo].nPoints;	// Score.
-		DustSet(gAnm_Explosion0_Medium_Dust, pMst->nPosX, pMst->nPosY + (MST39_OFFSY << 8), e_Prio_DustUnder, 0);
+		DustSet(gAnm_Explosion0_Medium_Dust, pMst->nPosX, pMst->nPosY + (MST39_OFFSY * 256), e_Prio_DustUnder, 0);
 		return (e_MstState_Dead);
 	}
 

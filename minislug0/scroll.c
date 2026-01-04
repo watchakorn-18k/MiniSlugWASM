@@ -170,11 +170,11 @@ s32	gnScrollLimitYMax;
 //gnScrollLockOrgX = gScrollPos.nPosX;
 
 //// En macro car �a ne sert que dans ScrollPosition et une seule fois dans InitScreen. => Appel de fonction pas rentable.
-//#define	SCROLL_PLYR_POSX	( gShoot.nPlayerPosX - (((gShoot.nPlayerDir ? 3 : 1) * (SCR_Width / 16) / 4) << 12) )
-//#define	SCROLL_PLYR_POSY	( gShoot.nPlayerPosY - ((2 * (SCR_Height / 16) / 3) << 12) )
+//#define	SCROLL_PLYR_POSX	( gShoot.nPlayerPosX - (((gShoot.nPlayerDir ? 3 : 1) * (SCR_Width / 16) / 4) * 4096) )
+//#define	SCROLL_PLYR_POSY	( gShoot.nPlayerPosY - ((2 * (SCR_Height / 16) / 3) * 4096) )
 
-#define	SCROLL_PLYR_POSX	( gShoot.nPlayerPosX - (((gShoot.nPlayerDir ? 2 : 1) * (SCR_Width / 16) / 3) << 12) )
-#define	SCROLL_PLYR_POSY	( (gShoot.nPlayerGnd ? gShoot.nPlayerPosY : gShoot.nPlayerLastGndPosY) - ((2 * (SCR_Height / 16) / 3) << 12) )
+#define	SCROLL_PLYR_POSX	( gShoot.nPlayerPosX - (((gShoot.nPlayerDir ? 2 : 1) * (SCR_Width / 16) / 3) * 4096) )
+#define	SCROLL_PLYR_POSY	( (gShoot.nPlayerGnd ? gShoot.nPlayerPosY : gShoot.nPlayerLastGndPosY) - ((2 * (SCR_Height / 16) / 3) * 4096) )
 
 /*
 s32 Scroll_sub_PlayerPosX(void)
@@ -182,15 +182,15 @@ s32 Scroll_sub_PlayerPosX(void)
 	switch (gnScrollType)
 	{
 	case e_ScrollType_RightOnly:
-		return ( gShoot.nPlayerPosX - (((SCR_Width / 16) / 2) << 12) );
+		return ( gShoot.nPlayerPosX - (((SCR_Width / 16) / 2) * 4096) );
 		break;
 	}
 	// Par d�faut, "free", on excentre le perso � 1/4 d'�cran.
-	return ( gShoot.nPlayerPosX - (((gShoot.nPlayerDir ? 3 : 1) * (SCR_Width / 16) / 4) << 12) );
+	return ( gShoot.nPlayerPosX - (((gShoot.nPlayerDir ? 3 : 1) * (SCR_Width / 16) / 4) * 4096) );
 }
 s32 Scroll_sub_PlayerPosY(void)
 {
-	return ( (gShoot.nPlayerGnd ? gShoot.nPlayerPosY : gShoot.nPlayerLastGndPosY) - ((2 * (SCR_Height / 16) / 3) << 12) );
+	return ( (gShoot.nPlayerGnd ? gShoot.nPlayerPosY : gShoot.nPlayerLastGndPosY) - ((2 * (SCR_Height / 16) / 3) * 4096) );
 }
 */
 
@@ -211,9 +211,9 @@ void ScrollPosition(void)
 	nPos = SCROLL_PLYR_POSY;
 	nSpd = SCROLL_SPDY;
 	// Trop bas ? (ex: le joueur saute dans un trou, du coup la ligne du dessus ne change pas l'offset).
-	if (gShoot.nPlayerPosY > nPos + ((3 * (SCR_Height / 16) / 4) << 12) )
+	if (gShoot.nPlayerPosY > nPos + ((3 * (SCR_Height / 16) / 4) * 4096) )
 	{
-		nPos = gShoot.nPlayerPosY - ((3 * (SCR_Height / 16) / 4) << 12);
+		nPos = gShoot.nPlayerPosY - ((3 * (SCR_Height / 16) / 4) * 4096);
 		nSpd = SCROLL_SPDY_MAX;		// A ce moment l�, on permet de descendre plus vite (� la vitesse Y max du joueur).
 	}
 	nDiff = (nPos - gScrollPos.nPosY) / 2;
@@ -223,23 +223,23 @@ void ScrollPosition(void)
 	// Emp�che le retour arri�re dans les scrolls e_ScrollType_RightOnly.
 	if (gnScrollLimitXMin == -1)
 	if (gScrollPos.nScrollType == e_ScrollType_RightOnly)
-		if (gScrollPos.nPosX < gScrollPos.nLastPosX - (((SCR_Width / 16) / 3) << 12) ) gScrollPos.nPosX = gScrollPos.nLastPosX - (((SCR_Width / 16) / 3) << 12);
+		if (gScrollPos.nPosX < gScrollPos.nLastPosX - (((SCR_Width / 16) / 3) * 4096) ) gScrollPos.nPosX = gScrollPos.nLastPosX - (((SCR_Width / 16) / 3) * 4096);
 
 	// Limites du scroll X ?
 	if (gnScrollLimitXMax != -1)
-		if (gScrollPos.nPosX + (SCR_Width << 8) >= gnScrollLimitXMax) gScrollPos.nPosX = gnScrollLimitXMax - (SCR_Width << 8);
+		if (gScrollPos.nPosX + (SCR_Width * 256) >= gnScrollLimitXMax) gScrollPos.nPosX = gnScrollLimitXMax - (SCR_Width * 256);
 	if (gnScrollLimitXMin != -1)
 		if (gScrollPos.nPosX < gnScrollLimitXMin) gScrollPos.nPosX = gnScrollLimitXMin;
 	// Limites du scroll Y ?
 	if (gnScrollLimitYMax != -1)
-		if (gScrollPos.nPosY + (SCR_Height << 8) >= gnScrollLimitYMax) gScrollPos.nPosY = gnScrollLimitYMax - (SCR_Height << 8);
+		if (gScrollPos.nPosY + (SCR_Height * 256) >= gnScrollLimitYMax) gScrollPos.nPosY = gnScrollLimitYMax - (SCR_Height * 256);
 	if (gnScrollLimitYMin != -1)
 		if (gScrollPos.nPosY < gnScrollLimitYMin) gScrollPos.nPosY = gnScrollLimitYMin;
 
 	// Limites de la map.
-	if ((gScrollPos.nPosX >> 12) + (SCR_Width / 16) >= gMap.pPlanesLg[gMap.nHeroPlane]) gScrollPos.nPosX = ((gMap.pPlanesLg[gMap.nHeroPlane] - (SCR_Width / 16)) << 12);// - 0x100;
+	if ((gScrollPos.nPosX >> 12) + (SCR_Width / 16) >= gMap.pPlanesLg[gMap.nHeroPlane]) gScrollPos.nPosX = ((gMap.pPlanesLg[gMap.nHeroPlane] - (SCR_Width / 16)) * 4096);// - 0x100;
 	if (gScrollPos.nPosX < 0) gScrollPos.nPosX = 0;
-	if ((gScrollPos.nPosY >> 12) + (SCR_Height / 16) >= gMap.pPlanesHt[gMap.nHeroPlane]) gScrollPos.nPosY = ((gMap.pPlanesHt[gMap.nHeroPlane] - (SCR_Height / 16)) << 12);// - 0x100;
+	if ((gScrollPos.nPosY >> 12) + (SCR_Height / 16) >= gMap.pPlanesHt[gMap.nHeroPlane]) gScrollPos.nPosY = ((gMap.pPlanesHt[gMap.nHeroPlane] - (SCR_Height / 16)) * 4096);// - 0x100;
 	if (gScrollPos.nPosY < 0) gScrollPos.nPosY = 0;
 
 	// Suppression du d�sagr�able effet de scintillement sur le joueur !
@@ -317,7 +317,7 @@ gScrollPos.nLastPosX = gScrollPos.nPosX;
 
 //tst
 //gnScrollLimitXMin = 0;
-//gnScrollLimitXMax = (gMap.pPlanesLg[gMap.nHeroPlane] << 12) - 0x100;
+//gnScrollLimitXMax = (gMap.pPlanesLg[gMap.nHeroPlane] * 4096) - 0x100;
 gnScrollLimitXMin = gnScrollLimitXMax = -1;
 gnScrollLimitYMin = gnScrollLimitYMax = -1;
 //tst
@@ -386,8 +386,8 @@ void ScrollPatchLev11(void)
 	// Loop ?
 	if (gScrollM.pPlaneNewPosY[0] < 0)
 	{
-		gScrollM.pPlanePosY[0] += 16 << 12;
-		gScrollM.pPlaneNewPosY[0] += 16 << 12;
+		gScrollM.pPlanePosY[0] += 16 * 4096;
+		gScrollM.pPlaneNewPosY[0] += 16 * 4096;
 	}
 
 	// Scroll du plan du h�ros (sauf quand mort).
@@ -408,19 +408,19 @@ void ScrollPatchLev02(void)
 	// Loop ?
 	u32	i;
 	for (i = 0; i < 2; i++)
-	if (gScrollM.pPlaneNewPosX[i] + (SCR_Width << 8) >= gMap.pPlanesLg[i] << 12)
+	if (gScrollM.pPlaneNewPosX[i] + (SCR_Width * 256) >= gMap.pPlanesLg[i] * 4096)
 	{
-		gScrollM.pPlanePosX[i] &= ~(-1 << 8);
-		gScrollM.pPlanePosX[i] -= 1 << 8;	// Pour forcer la mise � jour de la premi�re colonne � droite de l'�cran lors du loop. Lev2, plan 1, le plan mesure 2 fois la largeur du buffer, si on ne force pas l'affichage lors du loop, une col n'est pas mise � jour.
-		gScrollM.pPlaneNewPosX[i] &= ~(-1 << 8);
+		gScrollM.pPlanePosX[i] &= ~(-1 * 256);
+		gScrollM.pPlanePosX[i] -= 1 * 256;	// Pour forcer la mise � jour de la premi�re colonne � droite de l'�cran lors du loop. Lev2, plan 1, le plan mesure 2 fois la largeur du buffer, si on ne force pas l'affichage lors du loop, une col n'est pas mise � jour.
+		gScrollM.pPlaneNewPosX[i] &= ~(-1 * 256);
 	}
 
 	// Scroll du plan du h�ros (sauf quand mort).
 	if (gShoot.nDeathFlag == 0)
 	{
 		gScrollM.pPlaneNewPosX[gMap.nHeroPlane] += gScrollPos.nL02SpdX;
-		if (gScrollM.pPlaneNewPosX[gMap.nHeroPlane] + (SCR_Width << 8) >= gMap.pPlanesLg[gMap.nHeroPlane] << 12)
-			gScrollM.pPlaneNewPosX[gMap.nHeroPlane] = (gMap.pPlanesLg[gMap.nHeroPlane] << 12) - (SCR_Width << 8);
+		if (gScrollM.pPlaneNewPosX[gMap.nHeroPlane] + (SCR_Width * 256) >= gMap.pPlanesLg[gMap.nHeroPlane] * 4096)
+			gScrollM.pPlaneNewPosX[gMap.nHeroPlane] = (gMap.pPlanesLg[gMap.nHeroPlane] * 4096) - (SCR_Width * 256);
 	}
 
 }
@@ -457,7 +457,7 @@ if (gScrollPos.nL08PosX < 0) gScrollPos.nL08PosX = 0;
 	if ((gScrollPos.nL08PosX >> 12) == 208)
 	{
 		// On calcule les diff�rentes positions des plans � la position de loop (pour �viter de scroller en arri�re jusqu'� la position de loop).
-		nOldPosX -= (208 - 48) << 12;
+		nOldPosX -= (208 - 48) * 4096;
 		gScrollPos.nPosX = nOldPosX;
 		gMap.nHeroPlane = gMap.nHeroPlane - 1;
 		ScrollDifferentiel();
@@ -469,8 +469,8 @@ if (gScrollPos.nL08PosX < 0) gScrollPos.nL08PosX = 0;
 		}
 
 		// Loop.
-//			nPosX -= (208 - 48) << 12;
-		gScrollPos.nL08PosX -= (208 - 48) << 12;
+//			nPosX -= (208 - 48) * 4096;
+		gScrollPos.nL08PosX -= (208 - 48) * 4096;
 	}
 
 //		gScrollPos.nPosX = nPosX;

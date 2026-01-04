@@ -4,6 +4,9 @@ IMAGE_NAME="minislug-lint"
 # Change directory to project root (where Dockerfile.lint is)
 cd "$(dirname "$0")"
 
+# Clean up old lint reports before running
+rm -f lint_report.txt lint_report_*.txt
+
 echo "=========================================="
 echo "  MiniSlug Lint Script (Podman)"
 echo "=========================================="

@@ -237,7 +237,7 @@ void Enemy_GroundLevel(struct SMstCommon *pMst)
 	s32	nHt;
 
 	nHt = BlockGetGroundLevel(pMst->nPosX >> 8, pMst->nPosY >> 8);
-	pMst->nPosY += nHt << 8;
+	pMst->nPosY += nHt * 256;
 	pMst->nGround = 1;
 	pMst->nSpdY = 0;
 
@@ -248,20 +248,20 @@ void Enemy_GroundLevel(struct SMstCommon *pMst)
 // Out : 0 = Toujours à l'écran / 1 = Sorti.
 u32 Screen_ObjectOut(s32 nPosX, s32 nPosY)
 {
-	if (nPosX > gScrollPos.nPosX + (SCR_Width << 8) + ((MST_CLIP_VAL + 1) << 12)) return (1);
-	if (nPosX < gScrollPos.nPosX - ((MST_CLIP_VAL + 1) << 12)) return (1);
-	if (nPosY > gScrollPos.nPosY + (SCR_Height << 8) + ((MST_CLIP_VAL + 1) << 12)) return (1);
-	if (nPosY < gScrollPos.nPosY - ((MST_CLIP_VAL + 1) << 12)) return (1);
+	if (nPosX > gScrollPos.nPosX + (SCR_Width * 256) + ((MST_CLIP_VAL + 1) * 4096)) return (1);
+	if (nPosX < gScrollPos.nPosX - ((MST_CLIP_VAL + 1) * 4096)) return (1);
+	if (nPosY > gScrollPos.nPosY + (SCR_Height * 256) + ((MST_CLIP_VAL + 1) * 4096)) return (1);
+	if (nPosY < gScrollPos.nPosY - ((MST_CLIP_VAL + 1) * 4096)) return (1);
 	return (0);
 }
 // Idem avec un rectangle.
 // Out : 0 = Toujours à l'écran / 1 = Sorti.
 u32 Screen_ObjectOutRect(s32 nPosX, s32 nPosY, u32 nBlkLg, u32 nBlkHt)
 {
-	if (nPosX > gScrollPos.nPosX + (SCR_Width << 8) + ((MST_CLIP_VAL + 1) << 12)) return (1);
-	if (nPosX + (s32)(nBlkLg << 12) < gScrollPos.nPosX - ((MST_CLIP_VAL + 1) << 12)) return (1);
-	if (nPosY > gScrollPos.nPosY + (SCR_Height << 8) + ((MST_CLIP_VAL + 1) << 12)) return (1);
-	if (nPosY + (s32)(nBlkHt << 12) < gScrollPos.nPosY - ((MST_CLIP_VAL + 1) << 12)) return (1);
+	if (nPosX > gScrollPos.nPosX + (SCR_Width * 256) + ((MST_CLIP_VAL + 1) * 4096)) return (1);
+	if (nPosX + (s32)(nBlkLg * 4096) < gScrollPos.nPosX - ((MST_CLIP_VAL + 1) * 4096)) return (1);
+	if (nPosY > gScrollPos.nPosY + (SCR_Height * 256) + ((MST_CLIP_VAL + 1) * 4096)) return (1);
+	if (nPosY + (s32)(nBlkHt * 4096) < gScrollPos.nPosY - ((MST_CLIP_VAL + 1) * 4096)) return (1);
 	return (0);
 }
 
@@ -271,8 +271,8 @@ void Mst_ProximityCheck(struct SMstCommon *pMst)
 	s32	dx;
 	dx = pMst->nPosX - gShoot.nPlayerPosX;
 	// Distance.
-	if (ABS(dx) > (0x28 << 8)) return;
-	if (ABS(pMst->nPosY - gShoot.nPlayerPosY) > (0x18 << 8)) return;
+	if (ABS(dx) > (0x28 * 256)) return;
+	if (ABS(pMst->nPosY - gShoot.nPlayerPosY) > (0x18 * 256)) return;
 	// Joueur tourné vers le monstre ?
 	if (gShoot.nPlayerDir != (dx < 0 ? 1 : 0)) return;
 //SprDisplay(e_Spr_Tstrct_Cross, pMst->nPosX>>8, pMst->nPosY>>8, e_Prio_HUD);	// debug
@@ -285,8 +285,8 @@ u32 Mst_KnifeHitCheck(struct SMstCommon *pMst, u32 nMstSpr)
 	// Couteau ?
 	if (gShoot.nPlayerKnifeSprCol == SPR_NoSprite) return (0);
 	// Distance.
-	if (ABS(pMst->nPosX - gShoot.nPlayerPosX) > (4 << 12)) return (0);
-	if (ABS(pMst->nPosY - gShoot.nPlayerPosY) > (3 << 12)) return (0);
+	if (ABS(pMst->nPosX - gShoot.nPlayerPosX) > (4 * 4096)) return (0);
+	if (ABS(pMst->nPosY - gShoot.nPlayerPosY) > (3 * 4096)) return (0);
 	// On est pas trop loin, on teste le couteau.
 	return (SprCheckColBox(nMstSpr, pMst->nPosX >> 8, pMst->nPosY >> 8,
 				gShoot.nPlayerKnifeSprCol, gShoot.nPlayerPosX >> 8, gShoot.nPlayerPosY >> 8));
@@ -305,9 +305,9 @@ u32 Mst_ShotLaunch(struct SMstCommon *pMst, u32 nSpr, u32 nShotNo, u64 *pDustAnm
 		if (SprGetRect(nSpr | (pMst->nFlipX ? SPR_Flip_X : 0), e_SprRectZone_ShotOrg, &sRect1))
 		if (sRect1.nType == e_SprRect_Point)
 		{
-			FireAdd(nShotNo, pMst->nPosX + (sRect1.nX1 << 8), pMst->nPosY + (sRect1.nY1 << 8), (pMst->nFlipX ? 0 : 128));
+			FireAdd(nShotNo, pMst->nPosX + (sRect1.nX1 * 256), pMst->nPosY + (sRect1.nY1 * 256), (pMst->nFlipX ? 0 : 128));
 			if (pDustAnm != NULL)
-				DustSet(pDustAnm, pMst->nPosX + (sRect1.nX1 << 8), pMst->nPosY + (sRect1.nY1 << 8), e_Prio_DustOver, (pMst->nFlipX ? e_DustFlag_FlipX : 0));
+				DustSet(pDustAnm, pMst->nPosX + (sRect1.nX1 * 256), pMst->nPosY + (sRect1.nY1 * 256), e_Prio_DustOver, (pMst->nFlipX ? e_DustFlag_FlipX : 0));
 			return (1);
 		}
 	}
@@ -342,7 +342,7 @@ u32 Mst_BasicMove(struct SMstCommon *pMst, s32 nSpdX, u32 nFlags)
 	{
 		pMst->nSpd = (pMst->nFlipX ? nSpdX : -nSpdX);
 		pMst->nPosX += pMst->nSpd;	//(pMst->nFlipX ? nSpdX : -nSpdX);
-		pMst->nPosY += nHt << 8;
+		pMst->nPosY += nHt * 256;
 		pMst->nGround = 1;
 		pMst->nSpdY = 0;
 		return (0);
@@ -369,7 +369,7 @@ u32 Mst_BasicMove(struct SMstCommon *pMst, s32 nSpdX)
 	if (nHt > -8 && nHt <= (nOffset >> 8) + 1)	// +1 : Pour les vitesses < 0x100.
 	{
 		pMst->nPosX += (pMst->nFlipX ? nSpdX : -nSpdX);
-		pMst->nPosY += nHt << 8;
+		pMst->nPosY += nHt * 256;
 		pMst->nGround = 1;
 		return (0);
 	}
@@ -390,7 +390,7 @@ void Mst_Gravity2(struct SMstCommon *pMst, s32 nGravity, s32 nSpdYMax)
 	nHt = BlockGetGroundLevel(pMst->nPosX >> 8, pMst->nPosY >> 8);
 	if (nHt <= 0)
 	{
-		pMst->nPosY += nHt << 8;
+		pMst->nPosY += nHt * 256;
 		pMst->nPosY &= ~0xFF;	// Pour annuler les bits de virgule ajoutés par la gravité.
 		pMst->nGround = 1;
 		pMst->nSpdY = 0;
@@ -412,7 +412,7 @@ void Mst_Gravity(struct SMstCommon *pMst)
 //	if (nHt < 0)
 	if (nHt <= 0)
 	{
-		pMst->nPosY += nHt << 8;
+		pMst->nPosY += nHt * 256;
 		pMst->nPosY &= ~0xFF;	// Pour annuler les bits de virgule de la gravité.
 		pMst->nGround = 1;
 		pMst->nSpdY = 0;
@@ -439,7 +439,7 @@ u32 Mst_ShotCheckHit(struct SMstCommon *pMst, u32 nSpr, u64 *pDeathAnmTb[])
 	{
 		if (pMst->nMstNo == e_Mst14_RebelSoldier0 && pMst->nGround == 0)
 		{
-//		nDamage = e_ShotDamageType_Blow << 16;	// Cas spécial du rebel soldier en l'air.
+//		nDamage = e_ShotDamageType_Blow * 65536;	// Cas spécial du rebel soldier en l'air.
 			DustSetMvt(pDeathAnmTb[e_ShotDamageType_Blow], pMst->nPosX, pMst->nPosY, 0, -0x300, e_Prio_DustUnder, (pMst->nFlipX ? e_DustFlag_FlipX : 0) | e_DustFlag_Gravity);
 		}
 		else
@@ -585,7 +585,7 @@ void Mst0_Init_Platform1(struct SMstCommon *pMst, u8 *pData)
 		fprintf(stderr, "Mst0(%d, %d): No direction found.\n", (int)(pMst->nPosX >> 12), (int)(pMst->nPosY >> 12));
 		pMst->nSpd = 0;	// Vitesse à zéro.
 	}
-	pMst->nAngle = (nDir & 15) << 4;
+	pMst->nAngle = (nDir & 15) * 16;
 
 	pMst->nPhase = e_Mst0_Platform1_WaitForPlayer;
 
@@ -606,7 +606,7 @@ u32 Mst0_Sub_PfGrab(struct SMstCommon *pMst, s8 *pOffsY)
 
 		if (SprGetRect(pMst->nAnm, e_SprRectZone_RectCol, &sRectP) == 0) return (0);	// (Normalement, ça n'arrive pas).
 
-		nPfPosY = pMst->nPosY + (sRectP.nY1 << 8);		// Ligne supérieure de la zone de col. C'est là que posera le joueur.
+		nPfPosY = pMst->nPosY + (sRectP.nY1 * 256);		// Ligne supérieure de la zone de col. C'est là que posera le joueur.
 		if (gShoot.nPlayerPosY - nPfPosY > SPDY_MAX) return (0);	// On est trop bas, on ne monte pas.
 
 		// Le joueur pose sur la plateforme, on note l'offset Y.
@@ -700,7 +700,7 @@ s32 Mst0_Main_Platform1(struct SMstCommon *pMst)
 	if (gShoot.nPfAddress == (u64)pMst)
 	{
 		// Recalage du joueur après le mouvement.
-		gShoot.nPlayerPosY = pMst->nPosY + ((s32)pSpe->nOffsY << 8);
+		gShoot.nPlayerPosY = pMst->nPosY + ((s32)pSpe->nOffsY * 256);
 		gShoot.nPlayerSpdY = 0;
 		gShoot.nPlayerPosX += nOffsDeplX;
 		// Test de col. Si plus de collision, plus de plateforme, on relache le joueur.
@@ -729,7 +729,7 @@ void Mst1_Init_ForegroundSpr1(struct SMstCommon *pMst, u8 *pData)
 		e_Spr_Lev13_SubmarinePart0_fg, e_Spr_Lev13_SubmarinePart1L_fg, e_Spr_Lev13_SubmarinePart1R_fg,
 		(u64)gAnm_Lev7_TubeUp_fg, (u64)gAnm_Lev7_TubeDown_fg, e_Spr_Lev13_WaterfallBottom_fg,
 	};
-	static	u32	nAnmFlg = (1 << 8) | (1 << 9);	// Pour indiquer les anims dans la table du dessus.
+	static	u32	nAnmFlg = (1 * 256) | (1 << 9);	// Pour indiquer les anims dans la table du dessus.
 	static	u32	nFgFlg = (1 << 10);				// Pour indiquer qu'on passe au dessus de l'avant plan.
 	u32	nVal;
 
@@ -841,7 +841,7 @@ s32 Mst2_Main_MiniUFO0(struct SMstCommon *pMst)
 				if (MST_SHOT_COND)		// Si le héros n'est pas mort...
 				if ((u32)(((pMst->nPosY + 0x2000) - gShoot.nPlayerPosY) >> 8) <= MST2_SHOTYPIX &&
 					ABS(pMst->nPosX - gShoot.nPlayerPosX) >> 12 < MST2_SHOTXBLK)
-				if (pMst->nPosX >= gScrollPos.nPosX + 0x1000 && pMst->nPosX <= gScrollPos.nPosX + (SCR_Width << 8) - 0x1000)	// On ne tire pas si en dehors de l'écran.
+				if (pMst->nPosX >= gScrollPos.nPosX + 0x1000 && pMst->nPosX <= gScrollPos.nPosX + (SCR_Width * 256) - 0x1000)	// On ne tire pas si en dehors de l'écran.
 				{
 					pMst->nPhase = e_Mst2_MiniUfo_Shot;
 				}
@@ -879,7 +879,7 @@ s32 Mst2_Main_MiniUFO0(struct SMstCommon *pMst)
 		if (pSpe->nShotAnm == -1)
 		if ((u32)(((pMst->nPosY + 0x2000) - gShoot.nPlayerPosY) >> 8) > MST2_SHOTYPIX ||
 			ABS(pMst->nPosX - gShoot.nPlayerPosX) >> 12 >= (MST2_SHOTXBLK + 1) ||
-			(pMst->nPosX >= gScrollPos.nPosX + 0x1000 && pMst->nPosX <= gScrollPos.nPosX + (SCR_Width << 8) - 0x1000) == 0)
+			(pMst->nPosX >= gScrollPos.nPosX + 0x1000 && pMst->nPosX <= gScrollPos.nPosX + (SCR_Width * 256) - 0x1000) == 0)
 		{
 			pMst->nPhase = e_Mst2_MiniUfo_Fly;
 		}
@@ -933,7 +933,7 @@ s32 Mst2_Main_MiniUFO0(struct SMstCommon *pMst)
 		// Tir ?
 		else if (AnmCheckStepFlag(pSpe->nShotAnm))
 		{
-			FireAdd(e_Shot_Enemy_MarsUFO_Bullet0, pMst->nPosX + (nShotOffsX << 8), pMst->nPosY + (nShotOffsY << 8), (gShoot.nPlayerPosX > pMst->nPosX ? 0 : 128));
+			FireAdd(e_Shot_Enemy_MarsUFO_Bullet0, pMst->nPosX + (nShotOffsX * 256), pMst->nPosY + (nShotOffsY * 256), (gShoot.nPlayerPosX > pMst->nPosX ? 0 : 128));
 		}
 	}
 
@@ -997,7 +997,7 @@ void Mst3_Init_POW1(struct SMstCommon *pMst, u8 *pData)
 	pSpe->nPOWNo = nVal;
 	AnmSet(pMst3_AnmInit[nVal], pMst->nAnm);
 	if (pSpe->nPOWNo == 2)
-		pMst->nPosY += (53 - 16) << 8;	// Décalage pour le POW hanging.
+		pMst->nPosY += (53 - 16) * 256;	// Décalage pour le POW hanging.
 
 	nVal = GetBits(3, 3, pData, 0);	// Type de fuite.
 	pSpe->nFleeType = nVal;
@@ -1186,7 +1186,7 @@ void Mst4_Init_WeaponCapsule1(struct SMstCommon *pMst, u8 *pData)
 
 	// Mise au niveau du sol, mais seulement si dans du dur.
 	nVal = BlockGetGroundLevel(pMst->nPosX >> 8, pMst->nPosY >> 8);
-	if (nVal < 0) pMst->nPosY += nVal << 8;
+	if (nVal < 0) pMst->nPosY += nVal * 256;
 
 	// On sauvegarde les pos x et y originales.
 	pSpe->nPosXOrg = pMst->nPosX;
@@ -1204,7 +1204,7 @@ s32 Mst4_Main_WeaponCapsule1(struct SMstCommon *pMst)
 	u32	nSpr;
 
 	// Sortie de l'écran ?
-	if (Screen_ObjectOutRect(pMst->nPosX - (MST04_CAPSULE_AREA << 12), pMst->nPosY, MST04_CAPSULE_AREA*2, 1))
+	if (Screen_ObjectOutRect(pMst->nPosX - (MST04_CAPSULE_AREA * 4096), pMst->nPosY, MST04_CAPSULE_AREA*2, 1))
 		return (pMst->nLoadIdx == -1 || pSpe->nAltered ? e_MstState_Dead : e_MstState_Asleep);
 
 	// Mouvement de la capsule.
@@ -1349,7 +1349,7 @@ s32 Mst5_Main_ScrollLockX1(struct SMstCommon *pMst)
 			(pMst->nFlipX == 1 && gScrollPos.nPosX <= pMst->nPosX))
 		{
 			gnScrollLimitXMin = pMst->nPosX;
-			gnScrollLimitXMax = pMst->nPosX + (pSpe->nBlkLg << 12);
+			gnScrollLimitXMax = pMst->nPosX + (pSpe->nBlkLg * 4096);
 
 			gpMstQuestItems[pSpe->nItemGive] = 1;
 			pMst->nPhase = e_Mst5_ScrollLock_WaitItem;
@@ -1363,7 +1363,7 @@ s32 Mst5_Main_ScrollLockX1(struct SMstCommon *pMst)
 		{
 			// Empêche le retour à gauche dans les scroll forcés vers la droite.
 			if (gScrollPos.nScrollType == e_ScrollType_RightOnly)
-				gScrollPos.nLastPosX = gnScrollLimitXMin + (((SCR_Width / 16) / 3) << 12);
+				gScrollPos.nLastPosX = gnScrollLimitXMin + (((SCR_Width / 16) / 3) * 4096);
 			// Relâche le scroll.
 			gnScrollLimitXMin = gnScrollLimitXMax = -1;
 			return (e_MstState_Dead);
@@ -1439,7 +1439,7 @@ void Mst6_MoveToPlayer(struct SMstCommon *pMst)
 
 	nDist = gShoot.nPlayerPosX - pMst->nPosX;
 //	nDist = gShoot.nPlayerPosX - (pMst->nPosX - 0x800);	// tst pour tirer un peu à côté du joueur.
-	if (ABS(nDist) > (1 << 12))
+	if (ABS(nDist) > (1 * 4096))
 	{
 		// Accélération.
 		if (nDist > 0)
@@ -1477,8 +1477,8 @@ s32 Mst6_Main_RShobu1(struct SMstCommon *pMst)
 		{
 			pMst->nPhase = e_Mst6_RShobu_Arrival;
 			// Position. (On pourrait l'initialiser de l'autre côté en fct de la pos du joueur).
-			pMst->nPosX = gScrollPos.nPosX + (((SCR_Width * 3) / 4) << 8);
-			pMst->nPosY = gScrollPos.nPosY - (1 << 12);
+			pMst->nPosX = gScrollPos.nPosX + (((SCR_Width * 3) / 4) * 256);
+			pMst->nPosY = gScrollPos.nPosY - (1 * 4096);
 			pMst->nSpd = 0;
 			pMst->nFlipX = 0;
 			pSpe->nInclin = 3;
@@ -1492,8 +1492,8 @@ s32 Mst6_Main_RShobu1(struct SMstCommon *pMst)
 		//break;
 
 	case e_Mst6_RShobu_Arrival:			// Descente dans l'écran.
-		pMst->nPosY += 1 << 8;
-		if (pMst->nPosY >= gScrollPos.nPosY + (5 << 12))
+		pMst->nPosY += 1 * 256;
+		if (pMst->nPosY >= gScrollPos.nPosY + (5 * 4096))
 		{
 			pMst->nPhase = e_Mst6_RShobu_Normal;
 		}
@@ -1502,7 +1502,7 @@ s32 Mst6_Main_RShobu1(struct SMstCommon *pMst)
 	case e_Mst6_RShobu_Normal:			// Vol stationnaire.
 		pSpe->nSinIdx += 2;		// Sinus du vol stationnaire.
 		if (MST_SHOT_COND)	// Si le héros n'est pas mort...
-			if (pSpe->nFrmShot == 0 && ABS(nDist) < (3 << 12)) pSpe->nFrmShot = (16 * 3) << 1;	// Tir ?
+			if (pSpe->nFrmShot == 0 && ABS(nDist) < (3 * 4096)) pSpe->nFrmShot = (16 * 3) << 1;	// Tir ?
 		break;
 	}
 
@@ -1519,7 +1519,7 @@ s32 Mst6_Main_RShobu1(struct SMstCommon *pMst)
 	// Doit-on se retourner ?
 	nSensDepl = (pMst->nSpd < 0 ? 0 : 1) ^ pMst->nFlipX;
 	// Si on recule et que le joueur est trop loin, flip.
-	if (nSensDepl && ABS(nDist) > (3 << 12))
+	if (nSensDepl && ABS(nDist) > (3 * 4096))
 	{
 		AnmSetIfNew(gAnm_RShobu_Flip, pMst->nAnm);
 	}
@@ -1689,13 +1689,13 @@ void Mst7Sub_Move(struct SMstCommon *pMst)
 //old		nFlip |= Mst_BasicMove(pMst, (pSpe->nHitCnt ? 0 : pSpe->nCurSpd), 0);
 //old		nFlip |= Mst_BasicMove(pMst, (pSpe->nHitCnt > 4 ? 0 : pSpe->nCurSpd), 0);
 
-		if ((pMst->nFlipX == 0 && pMst->nPosX <= pSpe->nZoneMin << 12) ||
-			(pMst->nFlipX && pMst->nPosX >= ((pSpe->nZoneMax + 1) << 12) - 1) || nFlip)
+		if ((pMst->nFlipX == 0 && pMst->nPosX <= pSpe->nZoneMin * 4096) ||
+			(pMst->nFlipX && pMst->nPosX >= ((pSpe->nZoneMax + 1) * 4096) - 1) || nFlip)
 			AnmSetIfNew(gpMST7_AnmFlipTb[pSpe->nType], pMst->nAnm);
 
 		// Recalage en bord de zone (avec le move, on peut déborder un peu).
-		if (pMst->nPosX < pSpe->nZoneMin << 12) pMst->nPosX = pSpe->nZoneMin << 12;
-		if (pMst->nPosX > ((pSpe->nZoneMax + 1) << 12) - 1) pMst->nPosX = ((pSpe->nZoneMax + 1) << 12) - 1;
+		if (pMst->nPosX < pSpe->nZoneMin * 4096) pMst->nPosX = pSpe->nZoneMin * 4096;
+		if (pMst->nPosX > ((pSpe->nZoneMax + 1) * 4096) - 1) pMst->nPosX = ((pSpe->nZoneMax + 1) * 4096) - 1;
 	}
 }
 
@@ -1717,7 +1717,7 @@ s32 Mst7Sub_Main_BrainBot0(struct SMstCommon *pMst)
 	struct SMst7_LeftRight0	*pSpe = (struct SMst7_LeftRight0 *)pMst->pData;
 
 	// Sortie de l'écran ?
-	if (Screen_ObjectOutRect(pSpe->nZoneMin << 12, pMst->nPosY, pSpe->nZoneMax - pSpe->nZoneMin + 1, 1)) return (e_MstState_Asleep);
+	if (Screen_ObjectOutRect(pSpe->nZoneMin * 4096, pMst->nPosY, pSpe->nZoneMax - pSpe->nZoneMin + 1, 1)) return (e_MstState_Asleep);
 
 	switch (pSpe->nOrgPhase)
 	{
@@ -1749,8 +1749,8 @@ s32 Mst7Sub_Main_BrainBot0(struct SMstCommon *pMst)
 		if (SprGetRect(nSpr | (pMst->nFlipX ? SPR_Flip_X : 0), e_SprRectZone_ShotOrg, &sRect1))
 		if (sRect1.nType == e_SprRect_Point)
 		{
-			FireAdd(e_Shot_Enemy_BrainBot_RingLow, pMst->nPosX + (sRect1.nX1 << 8), pMst->nPosY + (sRect1.nY1 << 8), (pMst->nFlipX ? 0 : 128));
-			FireAdd(e_Shot_Enemy_BrainBot_RingHigh, pMst->nPosX + (sRect1.nX1 << 8), pMst->nPosY + (sRect1.nY1 << 8), (pMst->nFlipX ? 0 : 128));
+			FireAdd(e_Shot_Enemy_BrainBot_RingLow, pMst->nPosX + (sRect1.nX1 * 256), pMst->nPosY + (sRect1.nY1 * 256), (pMst->nFlipX ? 0 : 128));
+			FireAdd(e_Shot_Enemy_BrainBot_RingHigh, pMst->nPosX + (sRect1.nX1 * 256), pMst->nPosY + (sRect1.nY1 * 256), (pMst->nFlipX ? 0 : 128));
 		}
 	}
 
@@ -1764,7 +1764,7 @@ s32 Mst7Sub_Main_BrainBot0(struct SMstCommon *pMst)
 		// Dust de mort.
 		DustSetMvt(gAnm_BrainBot_Death_Dust, pMst->nPosX, pMst->nPosY, (nDiff < 0 ? -M7T3_DUST_SPD : M7T3_DUST_SPD), 0, e_Prio_DustUnder, (nDiff < 0 ? e_DustFlag_FlipX : 0));
 		DustSet(gAnm_BrainBot_DeathLand_Dust, pMst->nPosX + (24 * (nDiff < 0 ? -M7T3_DUST_SPD : M7T3_DUST_SPD)), pMst->nPosY, e_Prio_DustUnder, (nDiff < 0 ? e_DustFlag_FlipX : 0));
-		DustSetMvt(gAnm_BrainBot_BrainExplo_Dust, pMst->nPosX, pMst->nPosY - (50 << 8), (nDiff < 0 ? -M7T3_DUST_SPD/2 : M7T3_DUST_SPD/2), 0, e_Prio_DustUnder + 1, (nDiff < 0 ? e_DustFlag_FlipX : 0));
+		DustSetMvt(gAnm_BrainBot_BrainExplo_Dust, pMst->nPosX, pMst->nPosY - (50 * 256), (nDiff < 0 ? -M7T3_DUST_SPD/2 : M7T3_DUST_SPD/2), 0, e_Prio_DustUnder + 1, (nDiff < 0 ? e_DustFlag_FlipX : 0));
 		// Score.
 		gShoot.nPlayerScore += gpMstTb[pMst->nMstNo].nPoints;
 		return (e_MstState_Dead);
@@ -1824,7 +1824,7 @@ s32 Mst7Sub_Main_MarsPeople0(struct SMstCommon *pMst)
 	struct SMst7_LeftRight0	*pSpe = (struct SMst7_LeftRight0 *)pMst->pData;
 
 	// Sortie de l'écran ?
-	if (Screen_ObjectOutRect(pSpe->nZoneMin << 12, pMst->nPosY, pSpe->nZoneMax - pSpe->nZoneMin + 1, 1)) return (e_MstState_Asleep);
+	if (Screen_ObjectOutRect(pSpe->nZoneMin * 4096, pMst->nPosY, pSpe->nZoneMax - pSpe->nZoneMin + 1, 1)) return (e_MstState_Asleep);
 
 	switch (pSpe->nOrgPhase)
 	{
@@ -1918,7 +1918,7 @@ s32 Mst7Sub_Main_Zombie0(struct SMstCommon *pMst)
 
 	// Sortie de l'écran ?
 	if (pMst->nPhase != e_Mst7_LeftRight_Zombie_BurnWalk)
-	if (Screen_ObjectOutRect(pSpe->nZoneMin << 12, pMst->nPosY, pSpe->nZoneMax - pSpe->nZoneMin + 1, 1)) return (e_MstState_Asleep);
+	if (Screen_ObjectOutRect(pSpe->nZoneMin * 4096, pMst->nPosY, pSpe->nZoneMax - pSpe->nZoneMin + 1, 1)) return (e_MstState_Asleep);
 
 	// GetImage avant, pour les flips... >_<
 	u32	nSpr;
@@ -2072,15 +2072,15 @@ s32 Mst7_Main_LeftRight0(struct SMstCommon *pMst)
 	if (pMst->nPhase < e_Mst7_LeftRight_CommonLast)	//	if (pMst->nPhase == e_Mst7_LeftRight_Idle || pMst->nPhase == e_Mst7_LeftRight_Walk)
 	if (AnmGetKey(pMst->nAnm) == e_AnmKey_Null)		// ie pas en flip ou autre.
 	{
-		if (ABS(nDistX) < ((u32)gpMST7_ShotDstXMinTb[pSpe->nType] << 8)) pSpe->nShotCnt = 0;	// Joueur trop près, stoppe la pause d'après tir.
+		if (ABS(nDistX) < ((u32)gpMST7_ShotDstXMinTb[pSpe->nType] * 256)) pSpe->nShotCnt = 0;	// Joueur trop près, stoppe la pause d'après tir.
 
 //		// A distance de tir ET (pas trop près OU qui sort de flip).
-//		if (ABS(nDistX) <= (u32)gpMST7_ShotDstXTb[pSpe->nType] << 12 &&
+//		if (ABS(nDistX) <= (u32)gpMST7_ShotDstXTb[pSpe->nType] * 4096 &&
 		// A distance de tir ET (pas trop près OU qui sort de flip). + cas spécial pour que le Mars People tire dès qu'il se retourne.
-		if ((ABS(nDistX) <= (u32)gpMST7_ShotDstXTb[pSpe->nType] << 12 || (pSpe->nType == 2 && pSpe->nLastAnmKey == e_AnmKey_Enemy_Flip && nSide == pMst->nFlipX)) &&
-			(ABS(nDistX) >= (u32)gpMST7_ShotDstXMinTb[pSpe->nType] << 8 || (pSpe->nLastAnmKey == e_AnmKey_Enemy_Flip && nSide == pMst->nFlipX)))
-		if (pMst->nPosX >= gScrollPos.nPosX + 0x1000 && pMst->nPosX <= gScrollPos.nPosX + (SCR_Width << 8) - 0x1000)	// Dans l'écran ?
-		if (nDistY <= (0x10 << 8) && nDistY >= -(0x28 << 8))
+		if ((ABS(nDistX) <= (u32)gpMST7_ShotDstXTb[pSpe->nType] * 4096 || (pSpe->nType == 2 && pSpe->nLastAnmKey == e_AnmKey_Enemy_Flip && nSide == pMst->nFlipX)) &&
+			(ABS(nDistX) >= (u32)gpMST7_ShotDstXMinTb[pSpe->nType] * 256 || (pSpe->nLastAnmKey == e_AnmKey_Enemy_Flip && nSide == pMst->nFlipX)))
+		if (pMst->nPosX >= gScrollPos.nPosX + 0x1000 && pMst->nPosX <= gScrollPos.nPosX + (SCR_Width * 256) - 0x1000)	// Dans l'écran ?
+		if (nDistY <= (0x10 * 256) && nDistY >= -(0x28 * 256))
 		{
 			if (nSide == pMst->nFlipX)
 			{
@@ -2092,7 +2092,7 @@ s32 Mst7_Main_LeftRight0(struct SMstCommon *pMst)
 				}
 			}
 			else
-//			if (ABS(nDistX) >= ((u32)gpMST7_ShotDstXMinTb[pSpe->nType] + 8) << 8)
+//			if (ABS(nDistX) >= ((u32)gpMST7_ShotDstXMinTb[pSpe->nType] + 8) * 256)
 			{
 				AnmSetIfNew(gpMST7_AnmFlipTb[pSpe->nType], pMst->nAnm);	// Flip. On se tourne vers le joueur.
 				pSpe->nShotCnt = 0;		// On entre dans la boucle que si key == null => le animset passe forcément.
@@ -2104,9 +2104,9 @@ s32 Mst7_Main_LeftRight0(struct SMstCommon *pMst)
 
 
 	// Gestion de la nervosité.
-	if (((ABS(nDistX) <= ((u32)gpMST7_ShotDstXTb[pSpe->nType] << 12) + 0x2000 && nSide == pMst->nFlipX) ||
-		(ABS(nDistX) < (u32)gpMST7_ShotDstXMinTb[pSpe->nType] << 8)) &&
-		nDistY <= (0x10 << 8) && nDistY >= -(0x28 << 8))
+	if (((ABS(nDistX) <= ((u32)gpMST7_ShotDstXTb[pSpe->nType] * 4096) + 0x2000 && nSide == pMst->nFlipX) ||
+		(ABS(nDistX) < (u32)gpMST7_ShotDstXMinTb[pSpe->nType] * 256)) &&
+		nDistY <= (0x10 * 256) && nDistY >= -(0x28 * 256))
 		pSpe->nNervousCnt = 32;	// Compteur pour "nervosité".
 	// Accélération/ralentissement.
 	u16	nTargetSpd;
@@ -2150,13 +2150,13 @@ s32 Mst7_Main_LeftRight0(struct SMstCommon *pMst)
 //			nFlip |= Mst_BasicMove(pMst, (pSpe->nHitCnt ? 0 : pSpe->nCurSpd), 0);
 //			nFlip |= Mst_BasicMove(pMst, (pSpe->nHitCnt > 4 ? 0 : pSpe->nCurSpd), 0);
 
-			if ((pMst->nFlipX == 0 && pMst->nPosX <= pSpe->nZoneMin << 12) ||
-				(pMst->nFlipX && pMst->nPosX >= ((pSpe->nZoneMax + 1) << 12) - 1) || nFlip)
+			if ((pMst->nFlipX == 0 && pMst->nPosX <= pSpe->nZoneMin * 4096) ||
+				(pMst->nFlipX && pMst->nPosX >= ((pSpe->nZoneMax + 1) * 4096) - 1) || nFlip)
 				AnmSetIfNew(gpMST7_AnmFlipTb[pSpe->nType], pMst->nAnm);
 
 			// Recalage en bord de zone (avec le move, on peut déborder un peu).
-			if (pMst->nPosX < pSpe->nZoneMin << 12) pMst->nPosX = pSpe->nZoneMin << 12;
-			if (pMst->nPosX > ((pSpe->nZoneMax + 1) << 12) - 1) pMst->nPosX = ((pSpe->nZoneMax + 1) << 12) - 1;
+			if (pMst->nPosX < pSpe->nZoneMin * 4096) pMst->nPosX = pSpe->nZoneMin * 4096;
+			if (pMst->nPosX > ((pSpe->nZoneMax + 1) * 4096) - 1) pMst->nPosX = ((pSpe->nZoneMax + 1) * 4096) - 1;
 		}
 */
 		break;
@@ -2394,11 +2394,11 @@ s32 Mst9_Main_Slug(struct SMstCommon *pMst)
 		{
 			Mst_Gravity2(pMst, GRAVITY, SPDY_MAX);
 			nPosY_sav = pMst->nPosY;				// *** (Après la gravité, mais avant le break)
-			pMst->nPosY += (s32)pSpe->nOffsY << 8;	// ***
+			pMst->nPosY += (s32)pSpe->nOffsY * 256;	// ***
 			if (pMst->nGround == 0) break;			// On s'arrête là si chute.
 		}
 		else
-			pMst->nPosY += (s32)pSpe->nOffsY << 8;	// ***
+			pMst->nPosY += (s32)pSpe->nOffsY * 256;	// ***
 
 		// Si le joueur n'est pas déjà dans un véhicule.
 		if (gShoot.nVehicleType < e_HeroVehicle_SlugBase)
@@ -2418,8 +2418,8 @@ s32 Mst9_Main_Slug(struct SMstCommon *pMst)
 			{
 				struct SSprRect sRect1;
 				if (SprGetRect(nSpr, e_SprRectZone_RectCol, &sRect1))
-				if (gShoot.nPlayerPosY >= pMst->nPosY + (sRect1.nY1 << 8) &&
-					gShoot.nPlayerPosY <= pMst->nPosY + (sRect1.nY2 << 8) &&
+				if (gShoot.nPlayerPosY >= pMst->nPosY + (sRect1.nY1 * 256) &&
+					gShoot.nPlayerPosY <= pMst->nPosY + (sRect1.nY2 * 256) &&
 					gShoot.nPlayerSpdY > 0)
 						nCond = 1;
 			}
@@ -2445,7 +2445,7 @@ s32 Mst9_Main_Slug(struct SMstCommon *pMst)
 		break;
 
 	case e_Mst9_Explode:	// Le slug va exploser (trop de dégats).
-		pMst->nPosY += (s32)pSpe->nOffsY << 8;	// ***
+		pMst->nPosY += (s32)pSpe->nOffsY * 256;	// ***
 		//
 		if (pSpe->nEnergy)
 		{

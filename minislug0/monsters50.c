@@ -91,7 +91,7 @@ void Mst50_Init_AikawaRumi0(struct SMstCommon *pMst, u8 *pData)
 	pMst->nPhase = e_Mst50_Walk;
 	pMst->nFlipX = 1;
 
-	pSpe->nBlkPosXFin = (gScrollPos.nPosX + ((SCR_Width / 3) << 8)) >> 12;	// Position finale.
+	pSpe->nBlkPosXFin = (gScrollPos.nPosX + ((SCR_Width / 3) * 256)) >> 12;	// Position finale.
 
 	gRumiGen.nPres = 1;		// Flag pr�sence.
 
@@ -117,7 +117,7 @@ s32 Mst50_Main_AikawaRumi0(struct SMstCommon *pMst)
 		if (AnmCheckNewImgFlag(pMst->nAnm))
 			pSpe->nCurSpd = (AnmCheckStepFlag(pMst->nAnm) ? 0x300 : 0x200);		// 2 pixels de base, 3 si flag.
 		// Arrive ?
-//		if (pMst->nPosX > gScrollPos.nPosX + ((SCR_Width / 3) << 8))
+//		if (pMst->nPosX > gScrollPos.nPosX + ((SCR_Width / 3) * 256))
 		if (pMst->nPosX >> 12 > pSpe->nBlkPosXFin)
 		{
 			pMst->nPhase = e_Mst50_GiveItem;
@@ -462,7 +462,7 @@ s32 Mst51_Main_HowToPlay0(struct SMstCommon *pMst)
 			if ((gHTPVar.pTitle[i].nPosY ^ v) & 0x80000000)
 			{
 				gHTPVar.pTitle[i].nSpdMax = -gHTPVar.pTitle[i].nSpdMax;
-				gHTPVar.pTitle[i].nSpdMax += -(SGN(gHTPVar.pTitle[i].nSpdMax) << 8);
+				gHTPVar.pTitle[i].nSpdMax += -(SGN(gHTPVar.pTitle[i].nSpdMax) * 256);
 				if (gHTPVar.pTitle[i].nSpdMax == 0) gHTPVar.pTitle[i].nPosY = 0;
 			}
 		}
@@ -607,7 +607,7 @@ void Mst52_Init_Credits0(struct SMstCommon *pMst, u8 *pData)
 	gpMstQuestItems[MST_QUEST_ITEM_MST32]++;		// Scroll stop.
 
 	gShoot.nVehicleAutoPilot = 0x80;
-	gShoot.nPlayerPosX = gScrollPos.nPosX + ((SCR_Width / 2) << 8);
+	gShoot.nPlayerPosX = gScrollPos.nPosX + ((SCR_Width / 2) * 256);
 
 	pSpe->nCurIdx = 0;
 	pSpe->nSens = 1;
@@ -901,7 +901,7 @@ if (gVar.pKeys[gMSCfg.pKeys[e_CfgKey_ButtonA]])
 			break;
 
 		case 1:
-			if (gShoot.nPlayerPosX < gScrollPos.nPosX + (((SCR_Width * 2) / 3) << 8))
+			if (gShoot.nPlayerPosX < gScrollPos.nPosX + (((SCR_Width * 2) / 3) * 256))
 				gShoot.nVehicleAutoPilot |= e_KbDir_Right;
 			else
 			{
@@ -911,7 +911,7 @@ if (gVar.pKeys[gMSCfg.pKeys[e_CfgKey_ButtonA]])
 			break;
 
 		case 3:
-			if (gShoot.nPlayerPosX > gScrollPos.nPosX + (((SCR_Width * 1) / 3) << 8))
+			if (gShoot.nPlayerPosX > gScrollPos.nPosX + (((SCR_Width * 1) / 3) * 256))
 				gShoot.nVehicleAutoPilot |= e_KbDir_Left;
 			else
 				pSpe->nHelicoPhase = 0;

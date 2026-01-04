@@ -1140,13 +1140,13 @@ void SprDisplayLock(struct SSprStockage *pSprSto)
 	{
 		// Affichage sprite rougi pour le Hit.
 
-//u32	tst = (gVar.pScreen->format->Rmask << 16) | gVar.pScreen->format->Rmask;
+//u32	tst = (gVar.pScreen->format->Rmask * 65536) | gVar.pScreen->format->Rmask;
 //u32	tst2 = ((gVar.pScreen->format->Gmask >> 1) & gVar.pScreen->format->Gmask) | ((gVar.pScreen->format->Bmask >> 1) & gVar.pScreen->format->Bmask);
-//tst2 |= tst2 << 16;
+//tst2 |= tst2 * 65536;
 
-//u32	tst3 = (gVar.pScreen->format->Rmask << 16) | gVar.pScreen->format->Rmask;
+//u32	tst3 = (gVar.pScreen->format->Rmask * 65536) | gVar.pScreen->format->Rmask;
 u32	tst3 = gVar.pScreen->format->Rmask | ((gVar.pScreen->format->Gmask >> 2) & gVar.pScreen->format->Gmask);
-tst3 |= tst3 << 16;
+tst3 |= tst3 * 65536;
 
 		for (iy = nSprYMin; iy <= nSprYMax; iy++)
 		{
@@ -1186,10 +1186,10 @@ tst3 |= tst3 << 16;
 	{
 		// Affichage normal.
 
-//u32	tst = (gVar.pScreen->format->Rmask << 16) | gVar.pScreen->format->Rmask;
+//u32	tst = (gVar.pScreen->format->Rmask * 65536) | gVar.pScreen->format->Rmask;
 //u32	tst2 = ((gVar.pScreen->format->Gmask >> 1) & gVar.pScreen->format->Gmask) | ((gVar.pScreen->format->Bmask >> 1) & gVar.pScreen->format->Bmask);
-//tst2 |= tst2 << 16;
-//u32	tst3 = (gVar.pScreen->format->Rmask << 16) | gVar.pScreen->format->Rmask;
+//tst2 |= tst2 * 65536;
+//u32	tst3 = (gVar.pScreen->format->Rmask * 65536) | gVar.pScreen->format->Rmask;
 
 		for (iy = nSprYMin; iy <= nSprYMax; iy++)
 		{

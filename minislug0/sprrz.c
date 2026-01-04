@@ -127,18 +127,18 @@ void RotLineBuf(s32 nX1, s32 nY1, s32 nX2, s32 nY2, s32 *pBufL, s32 *pBufR,
 	s32	nMapIncX, nMapIncY;
 
 	nDelta = ABS(nY2 - nY1);
-	nIncX = ((nX2 - nX1) << 8) / nDelta;
+	nIncX = ((nX2 - nX1) * 256) / nDelta;
 	nX1 <<= 8;
 	nX1 |= 0x7F;
-//nIncX = ((nX2 - nX1) << 12) / nDelta;
+//nIncX = ((nX2 - nX1) * 4096) / nDelta;
 //nX1 <<= 12;
 //nX1 |= 0x7FF;
 
-	nMapIncX = ((nMapX2 - nMapX1) << 8) / nDelta;
+	nMapIncX = ((nMapX2 - nMapX1) * 256) / nDelta;
 	nMapX1 <<= 8;
 	nMapX1 |= 0x7F;
 
-	nMapIncY = ((nMapY2 - nMapY1) << 8) / nDelta;
+	nMapIncY = ((nMapY2 - nMapY1) * 256) / nDelta;
 	nMapY1 <<= 8;
 	nMapY1 |= 0x7F;
 
@@ -308,8 +308,8 @@ void SprZoom_Render(void)
 	u8	*pRenderBuf;
 	u8	*pGfx8;
 
-	nZoomIncX = (gSprRZ.pSprDesc->nLg << 8) / gSprRZ.nMaxX;
-	nZoomIncY = (gSprRZ.pSprDesc->nHt << 8) / gSprRZ.nMaxY;
+	nZoomIncX = (gSprRZ.pSprDesc->nLg * 256) / gSprRZ.nMaxX;
+	nZoomIncY = (gSprRZ.pSprDesc->nHt * 256) / gSprRZ.nMaxY;
 	nY1 = 0;
 
 	pRenderBuf = gpRotBuf;

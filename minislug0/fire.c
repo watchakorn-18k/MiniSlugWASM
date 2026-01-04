@@ -23,7 +23,7 @@ enum
 	e_ShotFlag_Remain = 1 << 1,		// Le tir ne disparait pas lors d'un touché d'ennemi (explosions).
 	e_ShotFlag_NoClip = 1 << 2,		// Pas de clip avec le scroll (grenades, explosions).
 	e_ShotFlag_Chaser = 1 << 3,		// Homing missile.
-	e_ShotFlag_RotoZoom = 1 << 4,	// Affichage en roto zoom.
+	e_ShotFlag_RotoZoom = 1 * 16,	// Affichage en roto zoom.
 	e_ShotFlag_Destructible = 1 << 5,	// Tir destructible en tirant dessus.
 	e_ShotFlag_CancelNoCtc = 1 << 6,	// Annule le NoCtc => Un tir avec 'Remain' touchera tout le temps.
 };
@@ -38,7 +38,7 @@ struct SFireRecord
 	u8	nAngle;
 
 	u8	nPlyr;		// 1 = Tir du joueur, 0 = Tir d'un monstre.
-	u8	nGravity;	// 0 = Sans. x : x << 4 = vitesse de chute max.
+	u8	nGravity;	// 0 = Sans. x : x * 16 = vitesse de chute max.
 	u8	nDamagePts;		// Points de dégats.
 	u8	nDamageType;	// Type du dégat.
 	s8	nNextShot;	// N° du tir généré (grenades, etc... qui vont faire une explosion). -1 si pas de tir à générer.
@@ -297,8 +297,8 @@ s32 FireAdd(u32 nShot, s32 nPosX, s32 nPosY, s32 nAngle)
 	if ((gpFireSlots[nSlotNo].nAnm = AnmSet(gpFireTable[nShot].pAnm, -1)) == -1) { FireReleaseSlot(nSlotNo); return (-1); }
 
 	gpFireSlots[nSlotNo].nTbIdx = nShot;
-	gpFireSlots[nSlotNo].nPosX = nPosX;// << 8;
-	gpFireSlots[nSlotNo].nPosY = nPosY;// << 8;
+	gpFireSlots[nSlotNo].nPosX = nPosX;// * 256;
+	gpFireSlots[nSlotNo].nPosY = nPosY;// * 256;
 	//
 	nSpeed = gpFireTable[nShot].nSpeed & ~(1 << 15);
 	nSpeedY = -nSpeed << ((u16)gpFireTable[nShot].nSpeed >> 15);
@@ -324,7 +324,7 @@ s32 FireAdd(u32 nShot, s32 nPosX, s32 nPosY, s32 nAngle)
 	return (nSlotNo);
 }
 
-#define	SHOT_CLIP_VAL	(32 << 8)
+#define	SHOT_CLIP_VAL	(32 * 256)
 #define	SHOT_PRIO_AND	31
 // Gestion des tirs.
 void FireManage(void)
@@ -370,8 +370,8 @@ void FireManage(void)
 				{
 					gpFireSlots[i].nPosY += (s32)gpFireSlots[i].nSpeedY;
 					gpFireSlots[i].nSpeedY += GRAVITY;
-					if (gpFireSlots[i].nSpeedY > (s32)(gpFireTable[gpFireSlots[i].nTbIdx].nGravity << 4))
-						gpFireSlots[i].nSpeedY = (s32)(gpFireTable[gpFireSlots[i].nTbIdx].nGravity << 4);
+					if (gpFireSlots[i].nSpeedY > (s32)(gpFireTable[gpFireSlots[i].nTbIdx].nGravity * 16))
+						gpFireSlots[i].nSpeedY = (s32)(gpFireTable[gpFireSlots[i].nTbIdx].nGravity * 16);
 				}
 
 				// Tests de sortie de l'écran.
@@ -390,7 +390,7 @@ void FireManage(void)
 				else
 				{
 					// Vers le bas.
-					if (gpFireSlots[i].nPosY > gScrollPos.nPosY + (SCR_Height << 8) + SHOT_CLIP_VAL)
+					if (gpFireSlots[i].nPosY > gScrollPos.nPosY + (SCR_Height * 256) + SHOT_CLIP_VAL)
 					{
 						FireReleaseSlot(i);
 						continue;
@@ -413,7 +413,7 @@ void FireManage(void)
 				else
 				{
 					// Vers la droite.
-					if (gpFireSlots[i].nPosX > gScrollPos.nPosX + (SCR_Width << 8) + SHOT_CLIP_VAL)
+					if (gpFireSlots[i].nPosX > gScrollPos.nPosX + (SCR_Width * 256) + SHOT_CLIP_VAL)
 					{
 						FireReleaseSlot(i);
 						continue;
@@ -461,8 +461,8 @@ _FireEnd:
 									{
 										s32	nGndLevel;
 										nGndLevel = BlockGetGroundLevel(gpFireSlots[i].nPosX >> 8, gpFireSlots[i].nPosY >> 8);
-										if (gpFireSlots[i].nPosY + (nGndLevel << 8) >= nLastY - gpFireSlots[i].nSpeedY)
-											gpFireSlots[i].nPosY += nGndLevel << 8;
+										if (gpFireSlots[i].nPosY + (nGndLevel * 256) >= nLastY - gpFireSlots[i].nSpeedY)
+											gpFireSlots[i].nPosY += nGndLevel * 256;
 									}
 _FireEnd2:
 									// Fin du tir.
@@ -511,7 +511,7 @@ _FireEnd2:
 							if (gpFireTable[gpFireSlots[i].nTbIdx].nFlags & e_ShotFlag_RotoZoom)
 								Rot2D_RotatePoint(&nOffsX, &nOffsY, gpFireSlots[i].nAngle);
 							// Dust.
-							DustSet(gpFireTable[gpFireSlots[i].nTbIdx].pTrailDust, gpFireSlots[i].nPosX + (nOffsX << 8), gpFireSlots[i].nPosY + (nOffsY << 8),
+							DustSet(gpFireTable[gpFireSlots[i].nTbIdx].pTrailDust, gpFireSlots[i].nPosX + (nOffsX * 256), gpFireSlots[i].nPosY + (nOffsY * 256),
 								(gpFireTable[gpFireSlots[i].nTbIdx].nPrio ? gpFireTable[gpFireSlots[i].nTbIdx].nPrio - 1 : e_Prio_DustUnder), 0);
 //e_DustFlag_FlipX ? => a voir quand on aura de quoi le faire.
 						}
@@ -569,10 +569,10 @@ u32 FireHitCheckRect(struct SSprRect *pRect1, s32 nPosX, s32 nPosY, u32 nToCheck
 	s32	nXMin1, nXMax1, nYMin1, nYMax1;
 	s32	nXMin2, nXMax2, nYMin2, nYMax2;
 
-	nXMin1 = nPosX + (pRect1->nX1 << 8);
-	nXMax1 = nPosX + (pRect1->nX2 << 8);
-	nYMin1 = nPosY + (pRect1->nY1 << 8);
-	nYMax1 = nPosY + (pRect1->nY2 << 8);
+	nXMin1 = nPosX + (pRect1->nX1 * 256);
+	nXMax1 = nPosX + (pRect1->nX2 * 256);
+	nYMin1 = nPosY + (pRect1->nY1 * 256);
+	nYMax1 = nPosY + (pRect1->nY2 * 256);
 
 /*
 //>> tst / affichage du sprite de col
@@ -593,10 +593,10 @@ u32 FireHitCheckRect(struct SSprRect *pRect1, s32 nPosX, s32 nPosY, u32 nToCheck
 			if (gpFireSlots[i].nPlyr == nToCheck)
 			{
 				if (gpFireSlots[i].sColRect.nType != e_SprRect_Rect) continue;
-				nXMin2 = gpFireSlots[i].nPosX + (gpFireSlots[i].sColRect.nX1 << 8);
-				nXMax2 = gpFireSlots[i].nPosX + (gpFireSlots[i].sColRect.nX2 << 8);
-				nYMin2 = gpFireSlots[i].nPosY + (gpFireSlots[i].sColRect.nY1 << 8);
-				nYMax2 = gpFireSlots[i].nPosY + (gpFireSlots[i].sColRect.nY2 << 8);
+				nXMin2 = gpFireSlots[i].nPosX + (gpFireSlots[i].sColRect.nX1 * 256);
+				nXMax2 = gpFireSlots[i].nPosX + (gpFireSlots[i].sColRect.nX2 * 256);
+				nYMin2 = gpFireSlots[i].nPosY + (gpFireSlots[i].sColRect.nY1 * 256);
+				nYMax2 = gpFireSlots[i].nPosY + (gpFireSlots[i].sColRect.nY2 * 256);
 
 /*
 //>> tst / affichage du sprite de col
@@ -635,7 +635,7 @@ u32 FireHitCheckRect(struct SSprRect *pRect1, s32 nPosX, s32 nPosY, u32 nToCheck
 		}
 	}
 
-	return ((nDamageType << 16) | nDamagePts);
+	return ((nDamageType * 65536) | nDamagePts);
 }
 
 // Teste si un sprite se prend un tir.
@@ -711,10 +711,10 @@ void FireDestructibleCheck(void)
 	{
 		// Rectangle du tir à détruire.
 		if (gpFireSlots[i].sColRect.nType != e_SprRect_Rect) continue;
-		nXMin1 = gpFireSlots[i].nPosX + (gpFireSlots[i].sColRect.nX1 << 8);
-		nXMax1 = gpFireSlots[i].nPosX + (gpFireSlots[i].sColRect.nX2 << 8);
-		nYMin1 = gpFireSlots[i].nPosY + (gpFireSlots[i].sColRect.nY1 << 8);
-		nYMax1 = gpFireSlots[i].nPosY + (gpFireSlots[i].sColRect.nY2 << 8);
+		nXMin1 = gpFireSlots[i].nPosX + (gpFireSlots[i].sColRect.nX1 * 256);
+		nXMax1 = gpFireSlots[i].nPosX + (gpFireSlots[i].sColRect.nX2 * 256);
+		nYMin1 = gpFireSlots[i].nPosY + (gpFireSlots[i].sColRect.nY1 * 256);
+		nYMax1 = gpFireSlots[i].nPosY + (gpFireSlots[i].sColRect.nY2 * 256);
 //printf("Destructible : slot = %d\n",i);
 
 		// Boucle dans les tirs du joueur.
@@ -722,10 +722,10 @@ void FireDestructibleCheck(void)
 		if (gpFireSlots[j].nUsed && gpFireSlots[j].nPlyr == e_ShotOrg_Player && j != i)
 		{
 			if (gpFireSlots[j].sColRect.nType != e_SprRect_Rect) continue;
-			nXMin2 = gpFireSlots[j].nPosX + (gpFireSlots[j].sColRect.nX1 << 8);
-			nXMax2 = gpFireSlots[j].nPosX + (gpFireSlots[j].sColRect.nX2 << 8);
-			nYMin2 = gpFireSlots[j].nPosY + (gpFireSlots[j].sColRect.nY1 << 8);
-			nYMax2 = gpFireSlots[j].nPosY + (gpFireSlots[j].sColRect.nY2 << 8);
+			nXMin2 = gpFireSlots[j].nPosX + (gpFireSlots[j].sColRect.nX1 * 256);
+			nXMax2 = gpFireSlots[j].nPosX + (gpFireSlots[j].sColRect.nX2 * 256);
+			nYMin2 = gpFireSlots[j].nPosY + (gpFireSlots[j].sColRect.nY1 * 256);
+			nYMax2 = gpFireSlots[j].nPosY + (gpFireSlots[j].sColRect.nY2 * 256);
 //printf("hero : slot = %d\n",j);
 
 			// Collisions entre les rectangles ?
@@ -808,11 +808,11 @@ u8 ChaserTarget_AcquireTarget(struct SFire *pFire)
 
 	// Chaser ennemi ? => Target == joueur. Si le joueur est mort, renvoie l'angle en cours.
 //	if (pFire->nPlyr == 0)
-//		return (gShoot.nDeathFlag ? pFire->nAngle : fatan2(-((gShoot.nPlayerPosY - (12 << 8)) - pFire->nPosY), gShoot.nPlayerPosX - pFire->nPosX) );
+//		return (gShoot.nDeathFlag ? pFire->nAngle : fatan2(-((gShoot.nPlayerPosY - (12 * 256)) - pFire->nPosY), gShoot.nPlayerPosX - pFire->nPosX) );
 	if (pFire->nPlyr == 0)
 	{
 		u8	j;
-		i = fatan2(-((gShoot.nPlayerPosY - (12 << 8)) - pFire->nPosY), gShoot.nPlayerPosX - pFire->nPosX);
+		i = fatan2(-((gShoot.nPlayerPosY - (12 * 256)) - pFire->nPosY), gShoot.nPlayerPosX - pFire->nPosX);
 		j = i - pFire->nAngle;
 		if (j & 0x80) j = -j;
 		return (gShoot.nDeathFlag  || j > 64 ? pFire->nAngle : i);		// +- 64 degrés max.
@@ -866,7 +866,7 @@ u8 ChaserTarget_AcquireTarget(struct SFire *pFire)
 	// Si on a une cible, on renvoie l'angle à atteindre pour se diriger vers cette cible.
 	u8	nAng;
 	if (nBest != -1)
-		nAng = fatan2(-(gpChaserTargetSlots[nBest].nPosY - nShotPosY) << 8, (gpChaserTargetSlots[nBest].nPosX - nShotPosX) << 8);
+		nAng = fatan2(-(gpChaserTargetSlots[nBest].nPosY - nShotPosY) * 256, (gpChaserTargetSlots[nBest].nPosX - nShotPosX) * 256);
 	else
 		nAng = pFire->nAngle;
 

@@ -86,7 +86,7 @@ void LineBuf(s32 nX1, s32 nY1, s32 nX2, s32 nY2)
 	s32	nIncX;
 
 	nDY = abs(nY2 - nY1);
-	nIncX = ((nX2 - nX1) << 8) / nDY;
+	nIncX = ((nX2 - nX1) * 256) / nDY;
 	nX1 <<= 8;
 	nX1 |= 0x7F;
 
