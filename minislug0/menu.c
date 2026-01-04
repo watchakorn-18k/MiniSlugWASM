@@ -147,14 +147,14 @@ void Credits_NextSel(void)
 // Affichage du nombre de credits. !! Pr�vu pour chiffres de 0 � 9 !!
 void Credits_Display(s32 nCreditsNb)
 {
-	char pStr[] = "CREDIT(S) -   ";
+	char pStr[] = "by wk18k";
 
-	if (nCreditsNb < 0)
-		pStr[strlen(pStr) - 2] = ' ' + 94 + 1;		// Infini.
-	else
-		pStr[strlen(pStr) - 1] = '0' + nCreditsNb;	// Chiffre.
+	// if (nCreditsNb < 0)
+	// 	pStr[strlen(pStr) - 2] = ' ' + 94 + 1;		// Infini.
+	// else
+	// 	pStr[strlen(pStr) - 1] = '0' + nCreditsNb;	// Chiffre.
 
-	Font_Print(SCR_Width - (12 * 10), SCR_Height - 4, pStr, 0);
+	Font_Print(SCR_Width - (8 * 10), SCR_Height - 4, pStr, 0);
 
 }
 
