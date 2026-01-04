@@ -1,7 +1,8 @@
 # Makefile for WebAssembly build using Emscripten
 # This will be copied to minislug0/ during build
 
-TARGET = index.html
+TARGET = minislug.html
+
 OBJECTS = main.o anims.o animspr.o blkanim.o blkbkg.o boss.o dust.o fire.o font.o frame.o game.o gif.o interface.o loader.o menu.o monsters00.o monsters10.o monsters20.o monsters30.o monsters40.o monsters50.o mst.o preca.o psd.o scroll.o sfx.o sprites.o sprcache.o sprrz.o transit2d.o ymlib_dummy.o
 
 # Emscripten compiler
@@ -14,7 +15,7 @@ CFLAGS = -O2 -Wall -DNDEBUG -s USE_SDL=2
 
 # Linker flags for Emscripten
 LDFLAGS = -s USE_SDL=2 \
-          --shell-file ../wasm/index.html \
+          --shell-file ../wasm/shell.html \
           -s ALLOW_MEMORY_GROWTH=1 \
           -s TOTAL_MEMORY=67108864 \
           -s WASM=1 \
@@ -53,8 +54,8 @@ all: $(BUILD_DIR) $(BUILD_DIR)/$(TARGET)
 $(BUILD_DIR):
 	mkdir -p $(BUILD_DIR)
 
-$(BUILD_DIR)/$(TARGET): $(OBJECTS) ../wasm/index.html
-	$(LINKER) $(CFLAGS) $(LDFLAGS) -o $@ $^ $(LIBS)
+$(BUILD_DIR)/$(TARGET): $(OBJECTS) ../wasm/shell.html
+	$(LINKER) $(CFLAGS) $(LDFLAGS) -o $@ $(OBJECTS) $(LIBS)
 	@echo ""
 	@echo "=========================================="
 	@echo "  WASM Build Complete!"
