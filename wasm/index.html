@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MiniSlug - WebAssembly</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        background: linear-gradient(
+          135deg,
+          #1a1a2e 0%,
+          #16213e 50%,
+          #0f3460 100%
+        );
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        color: #e94560;
+      }
+
+      h1 {
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+        text-shadow: 0 0 20px rgba(233, 69, 96, 0.5);
+        animation: glow 2s ease-in-out infinite alternate;
+      }
+
+      @keyframes glow {
+        from {
+          text-shadow: 0 0 20px rgba(233, 69, 96, 0.5);
+        }
+        to {
+          text-shadow: 0 0 30px rgba(233, 69, 96, 0.8),
+            0 0 40px rgba(233, 69, 96, 0.4);
+        }
+      }
+
+      .game-container {
+        background: rgba(0, 0, 0, 0.7);
+        border-radius: 16px;
+        padding: 20px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5),
+          inset 0 0 0 1px rgba(233, 69, 96, 0.2);
+      }
+
+      canvas {
+        display: block;
+        border-radius: 8px;
+        image-rendering: pixelated;
+        image-rendering: crisp-edges;
+      }
+
+      .controls {
+        margin-top: 1.5rem;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+        color: #a0a0a0;
+        font-size: 0.9rem;
+      }
+
+      .control-group {
+        background: rgba(255, 255, 255, 0.05);
+        padding: 1rem;
+        border-radius: 8px;
+      }
+
+      .control-group h3 {
+        color: #e94560;
+        margin-bottom: 0.5rem;
+        font-size: 1rem;
+      }
+
+      .control-group p {
+        line-height: 1.6;
+      }
+
+      kbd {
+        background: linear-gradient(180deg, #3a3a3a, #2a2a2a);
+        border: 1px solid #4a4a4a;
+        border-radius: 4px;
+        padding: 2px 6px;
+        font-family: monospace;
+        font-size: 0.85em;
+        box-shadow: 0 2px 0 #1a1a1a;
+      }
+
+      .loading {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: #e94560;
+        font-size: 1.2rem;
+      }
+
+      .loading-spinner {
+        width: 40px;
+        height: 40px;
+        border: 4px solid rgba(233, 69, 96, 0.2);
+        border-top-color: #e94560;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin: 0 auto 1rem;
+      }
+
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      #status {
+        margin-top: 1rem;
+        text-align: center;
+        color: #a0a0a0;
+        font-size: 0.85rem;
+      }
+
+      .fullscreen-btn {
+        margin-top: 1rem;
+        padding: 0.75rem 1.5rem;
+        background: linear-gradient(135deg, #e94560, #c73e54);
+        border: none;
+        border-radius: 8px;
+        color: white;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: transform 0.2s, box-shadow 0.2s;
+      }
+
+      .fullscreen-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 20px rgba(233, 69, 96, 0.4);
+      }
+    </style>
+  </head>
+  <body>
+    <h1>🎮 MiniSlug</h1>
+
+    <div class="game-container">
+      <div id="loading" class="loading">
+        <div class="loading-spinner"></div>
+        <p>Loading game...</p>
+      </div>
+      <canvas id="canvas" width="640" height="448"></canvas>
+    </div>
+
+    <div id="status"></div>
+
+    <button class="fullscreen-btn" onclick="toggleFullscreen()">
+      ⛶ Fullscreen
+    </button>
+
+    <div class="controls">
+      <div class="control-group">
+        <h3>Movement</h3>
+        <p><kbd>←</kbd> <kbd>→</kbd> <kbd>↑</kbd> <kbd>↓</kbd> Arrow keys</p>
+      </div>
+      <div class="control-group">
+        <h3>Actions</h3>
+        <p>
+          <kbd>V</kbd> Shoot &nbsp; <kbd>C</kbd> Jump &nbsp;
+          <kbd>X</kbd> Grenade
+        </p>
+      </div>
+    </div>
+
+    <script>
+      var Module = {
+        canvas: (function () {
+          var canvas = document.getElementById("canvas");
+          return canvas;
+        })(),
+        onRuntimeInitialized: function () {
+          document.getElementById("loading").style.display = "none";
+        },
+        setStatus: function (text) {
+          document.getElementById("status").textContent = text;
+        },
+        totalDependencies: 0,
+        monitorRunDependencies: function (left) {
+          this.totalDependencies = Math.max(this.totalDependencies, left);
+          this.setStatus(
+            left
+              ? "Loading... (" +
+                  (this.totalDependencies - left) +
+                  "/" +
+                  this.totalDependencies +
+                  ")"
+              : "Ready!"
+          );
+        },
+      };
+
+      function toggleFullscreen() {
+        var canvas = document.getElementById("canvas");
+        if (canvas.requestFullscreen) {
+          canvas.requestFullscreen();
+        } else if (canvas.webkitRequestFullscreen) {
+          canvas.webkitRequestFullscreen();
+        } else if (canvas.mozRequestFullScreen) {
+          canvas.mozRequestFullScreen();
+        }
+      }
+
+      window.onerror = function (event) {
+        Module.setStatus("Exception thrown, see JavaScript console");
+      };
+    </script>
+    <script async src="minislug.js"></script>
+  </body>
+</html>

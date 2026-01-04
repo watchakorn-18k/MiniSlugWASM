@@ -1,0 +1,79 @@
+# Makefile for WebAssembly build using Emscripten
+# This will be copied to minislug0/ during build
+
+TARGET = minislug.html
+OBJECTS = main.o anims.o animspr.o blkanim.o blkbkg.o boss.o dust.o fire.o font.o frame.o game.o gif.o interface.o loader.o menu.o monsters00.o monsters10.o monsters20.o monsters30.o monsters40.o monsters50.o mst.o preca.o psd.o scroll.o sfx.o sprites.o sprcache.o sprrz.o transit2d.o ymlib_dummy.o
+
+# Emscripten compiler
+CC = emcc
+CXX = em++
+LINKER = em++
+
+# Compiler flags
+CFLAGS = -O2 -Wall -DNDEBUG -s USE_SDL=2
+
+# Linker flags for Emscripten
+LDFLAGS = -s USE_SDL=2 \
+          -s USE_SDL_MIXER=2 \
+          -s ALLOW_MEMORY_GROWTH=1 \
+          -s TOTAL_MEMORY=67108864 \
+          -s WASM=1 \
+          -s ASYNCIFY \
+          --preload-file gfx \
+          --preload-file sfx \
+          --preload-file lev1 \
+          --preload-file lev2 \
+          --preload-file lev3 \
+          --preload-file lev4 \
+          --preload-file lev5 \
+          --preload-file lev6 \
+          --preload-file lev7 \
+          --preload-file lev8 \
+          --preload-file lev9 \
+          --preload-file lev10 \
+          --preload-file lev11 \
+          --preload-file lev12 \
+          --preload-file lev13 \
+          --preload-file lev14 \
+          --preload-file lev15 \
+          --preload-file lev16 \
+          --preload-file lev17 \
+          --preload-file high.scr \
+          --preload-file cmd.txt
+
+# YM Library (needs to be compiled with emcc too)
+# LIBS = libymlib_wasm.a
+LIBS =
+
+# Build output directory
+BUILD_DIR = ../wasm/build
+
+all: $(BUILD_DIR) $(BUILD_DIR)/$(TARGET)
+
+$(BUILD_DIR):
+	mkdir -p $(BUILD_DIR)
+
+$(BUILD_DIR)/$(TARGET): $(OBJECTS)
+	$(LINKER) $(CFLAGS) $(LDFLAGS) -o $@ $^ $(LIBS)
+	@echo ""
+	@echo "=========================================="
+	@echo "  WASM Build Complete!"
+	@echo "=========================================="
+	@echo "Output files:"
+	@echo "  - $(BUILD_DIR)/minislug.html"
+	@echo "  - $(BUILD_DIR)/minislug.js"
+	@echo "  - $(BUILD_DIR)/minislug.wasm"
+	@echo "  - $(BUILD_DIR)/minislug.data"
+	@echo ""
+	@echo "To test, run a local server:"
+	@echo "  cd $(BUILD_DIR) && python3 -m http.server 8080"
+	@echo "  Open: http://localhost:8080/minislug.html"
+
+%.o: %.c
+	$(CC) $(CFLAGS) -c -o $@ $<
+
+clean:
+	rm -f $(OBJECTS)
+	rm -rf $(BUILD_DIR)
+
+.PHONY: all clean

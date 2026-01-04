@@ -999,7 +999,7 @@ printf("Path: (%d, %d) Blk:%d.\n", (int)pPathBlk->nPosX, (int)pPathBlk->nPosY, (
 				fprintf(stderr, "LoadLevel(): Couldn't load picture: %s\n", SDL_GetError());
 				exit(1);
 			}
-			gMap.ppPlanesGfx[gMap.nPlanesNb] = SDL_ConvertSurface(pGfx2, gVar.pScreen->format, SDL_SWSURFACE);
+			gMap.ppPlanesGfx[gMap.nPlanesNb] = SDL_ConvertSurface(pGfx2, gVar.pScreen->format, 0);
 			if (gMap.ppPlanesGfx[gMap.nPlanesNb] == NULL)
 			{
 				fprintf(stderr, "LoadLevel(): '%s': 16 bits conversion failed.\n", pFilename);
@@ -1015,7 +1015,7 @@ printf("Path: (%d, %d) Blk:%d.\n", (int)pPathBlk->nPosX, (int)pPathBlk->nPosY, (
 			struct SPSDPicture	*pPlanche = NULL;
 
 			// On regarde l'extension du fichier.
-			if (stricmp(pFilename + strlen(pFilename) - 3, "bmp") == 0)
+			if (strcasecmp(pFilename + strlen(pFilename) - 3, "bmp") == 0)
 			{
 				// BMP.
 				pGfx2 = SDL_LoadBMP(pFilename);
@@ -1025,7 +1025,7 @@ printf("Path: (%d, %d) Blk:%d.\n", (int)pPathBlk->nPosX, (int)pPathBlk->nPosY, (
 				}
 			}
 			else
-			if (stricmp(pFilename + strlen(pFilename) - 3, "psd") == 0)
+			if (strcasecmp(pFilename + strlen(pFilename) - 3, "psd") == 0)
 			{
 				// PSD.
 				pPlanche = PSDLoad(pFilename);
@@ -1041,7 +1041,7 @@ printf("Path: (%d, %d) Blk:%d.\n", (int)pPathBlk->nPosX, (int)pPathBlk->nPosY, (
 					exit(1);
 				}
 				// Recopie de la palette.
-				SDL_SetColors(pGfx2, pPlanche->pColors, 0, 256);
+				SDL_SetPaletteColors(pGfx2->format->palette, pPlanche->pColors, 0, 256);
 				// Recopie du premier plan.
 				SDL_LockSurface(pGfx2);
 //sans pitch				memcpy((u8 *)pGfx2->pixels, pPlanche->pPlanes, pPlanche->nWidth * pPlanche->nHeight);
@@ -1069,7 +1069,7 @@ printf("Path: (%d, %d) Blk:%d.\n", (int)pPathBlk->nPosX, (int)pPathBlk->nPosY, (
 			}
 
 			// Conversion de l'image en 16 bits.
-			gMap.ppPlanesGfx[gMap.nPlanesNb] = SDL_ConvertSurface(pGfx2, gVar.pScreen->format, SDL_SWSURFACE);
+			gMap.ppPlanesGfx[gMap.nPlanesNb] = SDL_ConvertSurface(pGfx2, gVar.pScreen->format, 0);
 			SDL_FreeSurface(pGfx2);
 			if (gMap.ppPlanesGfx[gMap.nPlanesNb] == NULL)
 			{

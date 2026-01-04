@@ -16,12 +16,11 @@
 
 //#define DEBUG_KEYS	1		// A commenter.
 
-// Variables générales.
+// Variables gï¿½nï¿½rales.
 struct SGene gVar;
 
 //=====================================
 
-#define	RENDER_BPP	1
 
 enum
 {
@@ -32,23 +31,7 @@ enum
 	e_RenderMode_MAX
 };
 
-// Paramètres de rendu.
-struct SRender
-{
-	// Note : Je laisse le pointeur pScreen dans gVar.
-	// On fait dans tous les cas le rendu "normal" dans pScreen. Si on a un post-effect à faire, on redirige pScreen dans un buffer secondaire, qu'on recopiera avec l'effet voulu dans l'écran réel une fois le tracé du jeu fini.
-
-	SDL_Surface *pScreen2x;		// En modes 2x, ptr sur la surface écran réelle.
-	SDL_Surface *pScreenBuf2;	// Buffer de rendu pour le jeu en modes 2x (à la place de la surface écran réelle).
-
-	u8	nRenderMode;			// Mode en cours : normal / 2x / TV2x.
-	u8	nFullscreenMode;		// Fullscreen ou pas.
-
-#ifdef	RENDER_BPP
-	u8	nRenderBPP;		// 0 = 16 bits / 1 = 32 bits.
-#endif
-
-};
+// Paramï¿½tres de rendu.
 struct SRender	gRender;
 
 // Scaling 2x.
@@ -154,9 +137,9 @@ void R2x_32_CalculateCLUT(void)
 	SDL_Surface *pSrc;
 	SDL_Surface *pDst;
 /*
-//> *** BPP Solution 1. > Sur Mac, pose problème à cause des masques des surfaces et écran qui sont différents.
-	pSrc = SDL_CreateRGBSurface(SDL_SWSURFACE, SCR_Width, SCR_Height, 16, 0, 0, 0, 0);
-	pDst = SDL_CreateRGBSurface(SDL_SWSURFACE, SCR_Width, SCR_Height, 32, 0, 0, 0, 0);
+//> *** BPP Solution 1. > Sur Mac, pose problï¿½me ï¿½ cause des masques des surfaces et ï¿½cran qui sont diffï¿½rents.
+	pSrc = SDL_CreateRGBSurface(0, SCR_Width, SCR_Height, 32, 0, 0, 0, 0);
+	pDst = SDL_CreateRGBSurface(0, SCR_Width, SCR_Height, 32, 0, 0, 0, 0);
 //<
 */
 
@@ -182,15 +165,15 @@ void R2x_32_CalculateCLUT(void)
 	int mask32b = 0x00FF0000;
 	int mask32a = 0xFF000000;
 #endif
-	pSrc = SDL_CreateRGBSurface(SDL_SWSURFACE, SCR_Width, SCR_Height, 16, mask16r, mask16g, mask16b, mask16a);
-	pDst = SDL_CreateRGBSurface(SDL_SWSURFACE, SCR_Width, SCR_Height, 32, mask32r, mask32g, mask32b, mask32a);
+	pSrc = SDL_CreateRGBSurface(0, SCR_Width, SCR_Height, 16, mask16r, mask16g, mask16b, mask16a);
+	pDst = SDL_CreateRGBSurface(0, SCR_Width, SCR_Height, 32, mask32r, mask32g, mask32b, mask32a);
 //< Modif Pouet pour Mac.
 //<
 */
 
-//> *** BPP Solution 3. Ok partout, mais la manip dans InitVideo n'est pas très jolie...
-	pSrc = SDL_CreateRGBSurface(SDL_SWSURFACE, SCR_Width, SCR_Height, 16, gRender.pScreenBuf2->format->Rmask, gRender.pScreenBuf2->format->Gmask, gRender.pScreenBuf2->format->Bmask, 0);
-	pDst = SDL_CreateRGBSurface(SDL_SWSURFACE, SCR_Width, SCR_Height, 32, gVar.pScreen->format->Rmask, gVar.pScreen->format->Gmask, gVar.pScreen->format->Bmask, 0);
+//> *** BPP Solution 3. Ok partout, mais la manip dans InitVideo n'est pas trï¿½s jolie...
+	pSrc = SDL_CreateRGBSurface(0, SCR_Width, SCR_Height, 16, gRender.pScreenBuf2->format->Rmask, gRender.pScreenBuf2->format->Gmask, gRender.pScreenBuf2->format->Bmask, 0);
+	pDst = SDL_CreateRGBSurface(0, SCR_Width, SCR_Height, 32, gVar.pScreen->format->Rmask, gVar.pScreen->format->Gmask, gVar.pScreen->format->Bmask, 0);
 //<
 	if (pSrc == NULL || pDst == NULL)
 	{
@@ -302,7 +285,7 @@ void RenderFlip(u32 nSync)
 	static pRenderFct	pFctTb[e_RenderMode_MAX] = { NULL, Render_Scale2x, Render_TV2x };
 #endif
 
-	// Frames loupées ? => Pas de Rendu/Flip.
+	// Frames loupï¿½es ? => Pas de Rendu/Flip.
 	if (nSync && gnFrameMissed)
 	{
 		FrameWait();
@@ -315,7 +298,7 @@ void RenderFlip(u32 nSync)
 	if (pFctTb[gRender.nRenderMode] != NULL) pFctTb[gRender.nRenderMode](gVar.pScreen, gRender.pScreen2x);
 #endif
 	if (nSync) FrameWait();
-	SDL_Flip(gRender.nRenderMode == e_RenderMode_Normal ? gVar.pScreen : gRender.pScreen2x);
+	{ SDL_Surface *pReal = SDL_GetWindowSurface(gVar.pWindow); SDL_Surface *pS = (gRender.nRenderMode != 0 && gRender.pScreen2x) ? gRender.pScreen2x : gVar.pScreen; if(pReal) SDL_BlitSurface(pS, NULL, pReal, NULL); } SDL_UpdateWindowSurface(gVar.pWindow);
 
 }
 
@@ -328,15 +311,29 @@ SDL_Surface * VideoModeSet(u32 nScrWidth, u32 nScrHeight, u32 nSDL_Flags)
 {
 	SDL_Surface *pSurf;
 
-#ifdef	RENDER_BPP
-	pSurf = SDL_SetVideoMode(nScrWidth, nScrHeight, nBPP, SDL_SWSURFACE | nSDL_Flags);
-#else
-	pSurf = SDL_SetVideoMode(nScrWidth, nScrHeight, 16, SDL_SWSURFACE | nSDL_Flags);
-#endif
+	// Create or recreate window if needed
+	if (gVar.pWindow == NULL)
+	{
+		gVar.pWindow = SDL_CreateWindow("Mini Slug Project by 17o2!!",
+			SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+			nScrWidth, nScrHeight, nSDL_Flags);
+		if (gVar.pWindow == NULL)
+		{
+			fprintf(stderr, "VideoModeSet(): Couldn't create window: %s\n", SDL_GetError());
+			return NULL;
+		}
+	}
+	else
+	{
+		// Update existing window
+		SDL_SetWindowSize(gVar.pWindow, nScrWidth, nScrHeight);
+		SDL_SetWindowFullscreen(gVar.pWindow, nSDL_Flags);
+	}
+
+	pSurf = SDL_CreateRGBSurface(0, nScrWidth, nScrHeight, 16, 0xF800, 0x07E0, 0x001F, 0);
 	if (pSurf == NULL)
 	{
-		fprintf(stderr, "VideoModeSet(): Couldn't set video mode: %sn",SDL_GetError());
-		//exit(1);
+		fprintf(stderr, "VideoModeSet(): Couldn't get window surface: %s\n", SDL_GetError());
 	}
 	return (pSurf);
 }
@@ -349,9 +346,9 @@ void Render_SetVideoMode(void)
 	case e_RenderMode_Scale2x:
 	case e_RenderMode_TV2x:
 #ifdef	RENDER_BPP
-		gRender.pScreen2x = VideoModeSet(SCR_Width * 2, SCR_Height * 2, 16 << gRender.nRenderBPP, (gRender.nFullscreenMode ? SDL_FULLSCREEN : 0));
+		gRender.pScreen2x = VideoModeSet(SCR_Width * 2, SCR_Height * 2, 16 << gRender.nRenderBPP, (gRender.nFullscreenMode ? SDL_WINDOW_FULLSCREEN : 0));
 #else
-		gRender.pScreen2x = VideoModeSet(SCR_Width * 2, SCR_Height * 2, (gRender.nFullscreenMode ? SDL_FULLSCREEN : 0));
+		gRender.pScreen2x = VideoModeSet(SCR_Width * 2, SCR_Height * 2, (gRender.nFullscreenMode ? SDL_WINDOW_FULLSCREEN : 0));
 #endif
 		gVar.pScreen = gRender.pScreenBuf2;
 		if (gRender.pScreen2x != NULL) return;		// Ok.
@@ -362,9 +359,9 @@ void Render_SetVideoMode(void)
 	case e_RenderMode_Normal:
 	default:
 #ifdef	RENDER_BPP
-		gVar.pScreen = VideoModeSet(SCR_Width, SCR_Height, 16, (gRender.nFullscreenMode ? SDL_FULLSCREEN : 0));
+		gVar.pScreen = VideoModeSet(SCR_Width, SCR_Height, 16, (gRender.nFullscreenMode ? SDL_WINDOW_FULLSCREEN : 0));
 #else
-		gVar.pScreen = VideoModeSet(SCR_Width, SCR_Height, (gRender.nFullscreenMode ? SDL_FULLSCREEN : 0));
+		gVar.pScreen = VideoModeSet(SCR_Width, SCR_Height, (gRender.nFullscreenMode ? SDL_WINDOW_FULLSCREEN : 0));
 #endif
 		gRender.pScreen2x = NULL;
 		if (gVar.pScreen == NULL) exit(1);	// Message d'erreur dans VideoModeSet.
@@ -373,25 +370,25 @@ void Render_SetVideoMode(void)
 
 }
 
-// Init de la vidéo.
+// Init de la vidï¿½o.
 void Render_InitVideo(void)
 {
 	gRender.nRenderMode = e_RenderMode_Normal;
 	gRender.nFullscreenMode = 0;
 
-	gRender.pScreen2x = NULL;		// En mode 2x, ptr sur la surface écran.
-	gRender.pScreenBuf2 = NULL;		// Buffer de rendu pour le jeu en mode 2x (à la place de la surface écran réelle).
+	gRender.pScreen2x = NULL;		// En mode 2x, ptr sur la surface ï¿½cran.
+	gRender.pScreenBuf2 = NULL;		// Buffer de rendu pour le jeu en mode 2x (ï¿½ la place de la surface ï¿½cran rï¿½elle).
 
-	// On initialise d'abord un écran en mode e_RenderMode_Normal. Important, car on fait un CreateRGBSurface à partir de cette surface.
+	// On initialise d'abord un ï¿½cran en mode e_RenderMode_Normal. Important, car on fait un CreateRGBSurface ï¿½ partir de cette surface.
 #ifdef	RENDER_BPP
-	gVar.pScreen = VideoModeSet(SCR_Width, SCR_Height, 16, gRender.nFullscreenMode ? SDL_FULLSCREEN : 0);
+	gVar.pScreen = VideoModeSet(SCR_Width, SCR_Height, 16, gRender.nFullscreenMode ? SDL_WINDOW_FULLSCREEN : 0);
 #else
-	gVar.pScreen = VideoModeSet(SCR_Width, SCR_Height, gRender.nFullscreenMode ? SDL_FULLSCREEN : 0);
+	gVar.pScreen = VideoModeSet(SCR_Width, SCR_Height, gRender.nFullscreenMode ? SDL_WINDOW_FULLSCREEN : 0);
 #endif
 	if (gVar.pScreen == NULL) exit(1);
-	// On créé un buffer de la taille de l'écran.
-	// => En mode 2x, on switche le ptr pScreen sur cette surface, les rendus du jeu se font donc dedans. Puis on fait le scale/filtre du buffer vers la vraie surface écran.
-	gRender.pScreenBuf2 = SDL_CreateRGBSurface(SDL_SWSURFACE, SCR_Width, SCR_Height, 16, gVar.pScreen->format->Rmask, gVar.pScreen->format->Gmask, gVar.pScreen->format->Bmask, 0);
+	// On crï¿½ï¿½ un buffer de la taille de l'ï¿½cran.
+	// => En mode 2x, on switche le ptr pScreen sur cette surface, les rendus du jeu se font donc dedans. Puis on fait le scale/filtre du buffer vers la vraie surface ï¿½cran.
+	gRender.pScreenBuf2 = SDL_CreateRGBSurface(0, SCR_Width, SCR_Height, 32, 0, 0, 0, 0);
 	if (gRender.pScreenBuf2 == NULL)
 	{
 		fprintf(stderr, "Render_InitVideo(): Unable to allocate SDL surface: %s\n", SDL_GetError());
@@ -406,20 +403,20 @@ void Render_InitVideo(void)
 	{
 /*
 //> *** BPP Solution 1.
-		R2x_32_CalculateCLUT();
+		//R2x_32_CalculateCLUT();
 //<
 */
 //> *** BPP Solution 3.
-		gVar.pScreen = VideoModeSet(SCR_Width, SCR_Height, 32, gRender.nFullscreenMode ? SDL_FULLSCREEN : 0);
-		R2x_32_CalculateCLUT();
-		gVar.pScreen = VideoModeSet(SCR_Width, SCR_Height, 16, gRender.nFullscreenMode ? SDL_FULLSCREEN : 0);
+		gVar.pScreen = VideoModeSet(SCR_Width, SCR_Height, 32, gRender.nFullscreenMode ? SDL_WINDOW_FULLSCREEN : 0);
+		//R2x_32_CalculateCLUT();
+		gVar.pScreen = VideoModeSet(SCR_Width, SCR_Height, 16, gRender.nFullscreenMode ? SDL_WINDOW_FULLSCREEN : 0);
 //<
 	}
 #endif
 
 }
 
-// Libère les ressources du rendu. (1 fois !).
+// Libï¿½re les ressources du rendu. (1 fois !).
 void RenderRelease(void)
 {
 	SDL_FreeSurface(gRender.pScreenBuf2);
@@ -444,13 +441,13 @@ void CheatCodes_Counter(void)
 	if (--gCCodes.nCnt == 0) CheatCodes_Reset();
 }
 
-// Les codes en version non lisible avec un éditeur hexa. (Chr majuscules : 0x40 > 0x5F).
+// Les codes en version non lisible avec un ï¿½diteur hexa. (Chr majuscules : 0x40 > 0x5F).
 u8 gpCodes[CHEATCODES_NB][CHEATCODES_TBSZMAX + 1] =
 {
 	{ 'S' ^ 0x1F, 'E' ^ 0x2E, 'L' ^ 0x3D, 'E' ^ 0x0C, 'C' ^ 0x1B, 'T' ^ 0x2A, 0, 0, 0, 0, 0 },				// Weapon select.
 	{ 'U' ^ 0x1F, 'N' ^ 0x2E, 'L' ^ 0x3D, 'I' ^ 0x0C, 'M' ^ 0x1B, 'I' ^ 0x2A, 'T' ^ 0x39, 'E' ^ 0x08, 'D' ^ 0x17, 0, 0 },		// Weapon unlimited.
 	{ 'I' ^ 0x1F, 'N' ^ 0x2E, 'F' ^ 0x3D, 'I' ^ 0x0C, 'N' ^ 0x1B, 'I' ^ 0x2A, 'T' ^ 0x39, 'E' ^ 0x08, 0, 0, 0 },		// Vies infinies.
-	{ 'M' ^ 0x1F, 'O' ^ 0x2E, 'R' ^ 0x3D, 'D' ^ 0x0C, 'E' ^ 0x1B, 'N' ^ 0x2A, 0, 0, 0, 0, 0 },				// Invulnérabilité.
+	{ 'M' ^ 0x1F, 'O' ^ 0x2E, 'R' ^ 0x3D, 'D' ^ 0x0C, 'E' ^ 0x1B, 'N' ^ 0x2A, 0, 0, 0, 0, 0 },				// Invulnï¿½rabilitï¿½.
 	{ 'L' ^ 0x1F, 'E' ^ 0x2E, 'V' ^ 0x3D, 'E' ^ 0x0C, 'L' ^ 0x1B, 'S' ^ 0x2A, 0, 0, 0, 0, 0 },				// Level select.
 	{ 'N' ^ 0x1F, 'X' ^ 0x2E, 'T' ^ 0x3D, 'L' ^ 0x0C, 'V' ^ 0x1B, 'L' ^ 0x2A, 0, 0, 0, 0, 0 },				// Next level.
 	{ 'K' ^ 0x1F, 'U' ^ 0x2E, 'R' ^ 0x3D, 'E' ^ 0x0C, 'M' ^ 0x1B, 'O' ^ 0x2A, 'N' ^ 0x39, 0, 0, 0, 0 },		// God mode = Tous les cheats.
@@ -458,25 +455,25 @@ u8 gpCodes[CHEATCODES_NB][CHEATCODES_TBSZMAX + 1] =
 u8 gpCodesOR[CHEATCODES_NB] =
 { e_Cheat_WeaponSelect, e_Cheat_WeaponUnlimited, e_Cheat_InfiniteLives, e_Cheat_Invulnerability, e_Cheat_LevelSelect, e_Cheat_LevelNext, e_Cheat_GodMode };
 
-// Cheat codes - Touche pressée.
+// Cheat codes - Touche pressï¿½e.
 void CheatCodes_KeyPressed(u32 nSdlKey)
 {
 
-	// On est en mode entrée de cheat ?
+	// On est en mode entrï¿½e de cheat ?
 	if (gCCodes.nEnter == 0)
 	{	// Non. On y passe ?
-		if (nSdlKey == SDLK_F5) gCCodes.nEnter = 1;
+		if (nSdlKey == SDL_SCANCODE_F5) gCCodes.nEnter = 1;
 		return;
 	}
 	gVar.pKeys[nSdlKey] = 0;	// RAZ touche.
 
 	// Appui.
 	if (gCCodes.nIdx >= CHEATCODES_TBSZMAX - 1) return;
-	if (nSdlKey < SDLK_a || nSdlKey > SDLK_z) return;
-	nSdlKey -= SDLK_a;
+	if (nSdlKey < SDL_SCANCODE_A || nSdlKey > SDL_SCANCODE_Z) return;
+	nSdlKey -= SDL_SCANCODE_A;
 	nSdlKey += 'A';
 	gCCodes.nTb[gCCodes.nIdx++] = (char)nSdlKey;
-	gCCodes.nTb[gCCodes.nIdx] = 0;		// Arrête la chaîne au suivant.
+	gCCodes.nTb[gCCodes.nIdx] = 0;		// Arrï¿½te la chaï¿½ne au suivant.
 	gCCodes.nCnt = CHEATCODES_TIMER;	// Timer.
 
 	// Test du code.
@@ -484,7 +481,7 @@ void CheatCodes_KeyPressed(u32 nSdlKey)
 	char	pToTest[CHEATCODES_TBSZMAX + 1];
 	for (i = 0; i < CHEATCODES_NB; i++)
 	{
-		// Recopie et décodage du code.
+		// Recopie et dï¿½codage du code.
 		k = 0x1F;
 		t = 0;
 		while (gpCodes[i][t])
@@ -496,8 +493,8 @@ void CheatCodes_KeyPressed(u32 nSdlKey)
 			t++;
 		}
 		pToTest[t] = 0;
-		// Le code entré correspond ?
-		if (t == gCCodes.nIdx)	// (taille des chaînes)
+		// Le code entrï¿½ correspond ?
+		if (t == gCCodes.nIdx)	// (taille des chaï¿½nes)
 		if (strcmp(gCCodes.nTb, pToTest) == 0)
 		{
 			gCCodes.nCheat |= gpCodesOR[i];
@@ -538,7 +535,7 @@ void CheatCodes_Display(void)
 
 void MenuTimer_Reset(void);
 
-// Gestionnaire d'évènements.
+// Gestionnaire d'ï¿½vï¿½nements.
 int EventHandler(u32 nInGame)
 {
 	SDL_Event event;
@@ -548,39 +545,39 @@ int EventHandler(u32 nInGame)
 		switch (event.type)
 		{
 		case SDL_KEYDOWN:
-			gVar.pKeys[event.key.keysym.sym] = 1;
+			gVar.pKeys[event.key.keysym.scancode] = 1;
 
 			// Pas en cours de jeu ?
 			if (nInGame == 0)
 			{
-				CheatCodes_KeyPressed(event.key.keysym.sym);	// Test des cheat codes.
+				CheatCodes_KeyPressed(event.key.keysym.scancode);	// Test des cheat codes.
 				MenuTimer_Reset();		// RAZ du timer de time out pour les menus.
 			}
 
-// Sortir après la boucle ? => pas sûr.
+// Sortir aprï¿½s la boucle ? => pas sï¿½r.
 			// Toggle fullscreen/windowed.
-			if (gVar.pKeys[SDLK_F10])
+			if (gVar.pKeys[SDL_SCANCODE_F10])
 			{
 				gRender.nFullscreenMode ^= 1;
 				Render_SetVideoMode();
 			}
 			// Toggle render mode.
-			if (gVar.pKeys[SDLK_F9])
+			if (gVar.pKeys[SDL_SCANCODE_F9])
 			{
 				if (++gRender.nRenderMode >= e_RenderMode_MAX) gRender.nRenderMode = 0;
 				Render_SetVideoMode();
 			}
 
 #ifdef	DEBUG_KEYS
-			if (gVar.pKeys[SDLK_ESCAPE]) return (1);	// Emergency exit.
+			if (gVar.pKeys[SDL_SCANCODE_ESCAPE]) return (1);	// Emergency exit.
 #endif
 			break;
 
 		case SDL_KEYUP:
-			gVar.pKeys[event.key.keysym.sym] = 0;
+			gVar.pKeys[event.key.keysym.scancode] = 0;
 			break;
 
-		case SDL_QUIT:		// Fermeture de la fenêtre.
+		case SDL_QUIT:		// Fermeture de la fenï¿½tre.
 			exit(0);
 			break;
 		}
@@ -622,7 +619,6 @@ int EventHandler(u32 nInGame)
 		if (nVal & pHatMsk[i])
 		{
 			gVar.pKeys[gMSCfg.pKeys[pKeyVal[i]]] = (nHat & pHatMsk[i] ? 1 : 0);
-			gVar.pKeysSDL[gMSCfg.pKeys[pKeyVal[i]]] = (nHat & pHatMsk[i] ? 1 : 0);
 		}
 
 		// Pas en cours de jeu ?
@@ -634,13 +630,13 @@ int EventHandler(u32 nInGame)
 }
 
 
-// Le Menu (générique).
+// Le Menu (gï¿½nï¿½rique).
 u32 Menu(void (*pFctInit)(void), u32 (*pFctMain)(void))
 {
 	u32	nMenuVal = MENU_Null;
 
-	gVar.pBackground = gVar.pBkg[0];		// Décor par défaut.
-//	gVar.pBkgRect = NULL;					// Par défaut, NULL (toute la surface).
+	gVar.pBackground = gVar.pBkg[0];		// Dï¿½cor par dï¿½faut.
+//	gVar.pBkgRect = NULL;					// Par dï¿½faut, NULL (toute la surface).
 
 	Transit2D_Reset();
 	CheatCodes_Reset();
@@ -655,7 +651,7 @@ u32 Menu(void (*pFctInit)(void), u32 (*pFctMain)(void))
 	#endif
 	while (nMenuVal == MENU_Null)
 	{
-		// Gestion des évenements.
+		// Gestion des ï¿½venements.
 #ifdef	DEBUG_KEYS
 		if (EventHandler(0) != 0) { nMenuVal = MENU_Quit; break; }
 #else
@@ -670,7 +666,7 @@ u32 Menu(void (*pFctInit)(void), u32 (*pFctMain)(void))
 
 #ifdef	DEBUG_KEYS
 //>> test pour ralentir l'affichage.
-if (gVar.pKeys[SDLK_y]) { FrameWait(); FrameWait(); FrameWait(); FrameWait(); FrameWait(); FrameWait(); }
+if (gVar.pKeys[SDL_SCANCODE_Y]) { FrameWait(); FrameWait(); FrameWait(); FrameWait(); FrameWait(); FrameWait(); }
 #endif
 
 		// Affichage de la transition.
@@ -689,7 +685,7 @@ if (gVar.pKeys[SDLK_y]) { FrameWait(); FrameWait(); FrameWait(); FrameWait(); Fr
 #if defined (PAUSE_MENU)
 
 #define	PAUSE_TXT_NB	(3)
-#define	PAUSE_KEY	(SDLK_F12)
+#define	PAUSE_KEY	(SDL_SCANCODE_F12)
 #define	PAUSE_TXT_LNHT	(12)
 #define	PAUSE_TXT_LNPOSY(nLn)	( (SCR_Height / 2) - (((PAUSE_TXT_NB + 1) * PAUSE_TXT_LNHT) / 2) + 10 + ((nLn) * PAUSE_TXT_LNHT) )
 #define	PAUSE_CLOSEFX_LG	(8)		// !!! Divisible par 4 !!!
@@ -725,7 +721,7 @@ u32 Pause(void)
 	SDL_Surface	*pBkg;
 
 	// Surface to store currently displayed picture.
-	pBkg = SDL_CreateRGBSurface(SDL_SWSURFACE, gVar.pScreen->w, gVar.pScreen->h, gVar.pScreen->format->BitsPerPixel,
+	pBkg = SDL_CreateRGBSurface(0, gVar.pScreen->w, gVar.pScreen->h, gVar.pScreen->format->BitsPerPixel,
 		gVar.pScreen->format->Rmask, gVar.pScreen->format->Gmask, gVar.pScreen->format->Bmask, gVar.pScreen->format->Amask);
 	if (pBkg == NULL) return (0);	// Failed.
 
@@ -819,7 +815,7 @@ u32 Pause(void)
 		}
 
 		// Button A.
-		if (gVar.pKeys[SDLK_RETURN] || gVar.pKeys[SDLK_SPACE] || gVar.pKeys[gMSCfg.pKeys[e_CfgKey_ButtonA]])
+		if (gVar.pKeys[SDL_SCANCODE_RETURN] || gVar.pKeys[SDL_SCANCODE_SPACE] || gVar.pKeys[gMSCfg.pKeys[e_CfgKey_ButtonA]])
 		{
 //			Sfx_PlaySfx(FX_Menu_Clic, e_SfxPrio_10);    // Sfx.
 			gVar.pKeys[gMSCfg.pKeys[e_CfgKey_ButtonA]] = 0;
@@ -875,7 +871,7 @@ u32 Pause(void)
 }
 #endif
 
-// Game loop. Externalisé pour jeu, how to play, credits...
+// Game loop. Externalisï¿½ pour jeu, how to play, credits...
 void GameLoop(u32 nMissionTbOffset)
 {
 	ExgPlatformerInit(gVar.nCreditsToUse, nMissionTbOffset);
@@ -889,7 +885,7 @@ void GameLoop(u32 nMissionTbOffset)
 	#endif
 	while (gGameVar.nExitCode == 0)
 	{
-		// Gestion des évenements.
+		// Gestion des ï¿½venements.
 #ifdef	DEBUG_KEYS
 		if (EventHandler(1) != 0) { LevelRelease(); gGameVar.nExitCode = e_Game_Aborted; break; }
 #else
@@ -900,9 +896,9 @@ void GameLoop(u32 nMissionTbOffset)
 
 #ifdef	DEBUG_KEYS
 //>> test pour ralentir l'affichage.
-if (gVar.pKeys[SDLK_y]) { FrameWait(); FrameWait(); FrameWait(); FrameWait(); FrameWait(); FrameWait(); }
-//if (gVar.pKeys[SDLK_y]) { FrameWait(); FrameWait(); FrameWait(); FrameWait(); FrameWait(); FrameWait(); }
-//if (gVar.pKeys[SDLK_y]) { FrameWait(); FrameWait(); FrameWait(); FrameWait(); FrameWait(); FrameWait(); }
+if (gVar.pKeys[SDL_SCANCODE_Y]) { FrameWait(); FrameWait(); FrameWait(); FrameWait(); FrameWait(); FrameWait(); }
+//if (gVar.pKeys[SDL_SCANCODE_Y]) { FrameWait(); FrameWait(); FrameWait(); FrameWait(); FrameWait(); FrameWait(); }
+//if (gVar.pKeys[SDL_SCANCODE_Y]) { FrameWait(); FrameWait(); FrameWait(); FrameWait(); FrameWait(); FrameWait(); }
 #endif
 
 		// Affichage de la transition.
@@ -910,7 +906,7 @@ if (gVar.pKeys[SDLK_y]) { FrameWait(); FrameWait(); FrameWait(); FrameWait(); Fr
 		// Wait for frame, Flip.
 //		RenderFlip(1);
 #ifdef	DEBUG_KEYS
-		RenderFlip(gVar.pKeys[SDLK_u] ? 0 : 1);
+		RenderFlip(gVar.pKeys[SDL_SCANCODE_U] ? 0 : 1);
 #else
 		RenderFlip(1);
 #endif
@@ -936,10 +932,10 @@ void Game(void)
 	// Jeu.
 	GameLoop(MISSIONOFFS_LEVELS + ((gCCodes.nCheat & e_Cheat_LevelSelect) ? gCCodes.nLevel : 0));
 
-	// Si jeu abandonné, pas de game over, pas de high score, pas de crédits.
+	// Si jeu abandonnï¿½, pas de game over, pas de high score, pas de crï¿½dits.
 	if (gGameVar.nExitCode == e_Game_Aborted) return;
 
-	// Credits si jeu terminé.
+	// Credits si jeu terminï¿½.
 	if (gGameVar.nExitCode == e_Game_AllClear)
 	{
 		u32	nPlayerScore_sav = gGameVar.nBestScore;
@@ -1034,14 +1030,14 @@ void SpritesLoad(void)
 	SDL_Rect	rRct;
 	SDL_Surface	*pBkg;
 
-	// Blitte l'image de la disquette à l'écran.
+	// Blitte l'image de la disquette ï¿½ l'ï¿½cran.
 	if ((pBkg = SDL_LoadBMP("gfx/bkg_disk.bmp")) == NULL) {
 		fprintf(stderr, "Couldn't load picture 'bkg_disk.bmp': %s\n", SDL_GetError());
 		exit(1);
 	}
 	SDL_BlitSurface(pBkg, NULL, gVar.pScreen, NULL);
 	SDL_FreeSurface(pBkg);
-	// Préparation des prm fixes de l'indicateur.
+	// Prï¿½paration des prm fixes de l'indicateur.
 	rRct.x = SLBAR_X;
 	rRct.y = SLBAR_Y;
 	rRct.h = SLBAR_H;
@@ -1071,7 +1067,7 @@ void SpritesLoad(void)
 }
 
 
-//NDEBUG	// Définir pour supprimer les asserts !
+//NDEBUG	// Dï¿½finir pour supprimer les asserts !
 //gcc -DNDEBUG
 
 #ifndef NDEBUG
@@ -1090,7 +1086,7 @@ u32 ChecksumCalc(u8 *pBuf, u32 nSz);
 //#define	EXE_CHECKSUM	1		// Commenter la ligne pour virer le test.
 
 #ifdef EXE_CHECKSUM
-// Recherche d'une chaîne dans un buffer binaire.
+// Recherche d'une chaï¿½ne dans un buffer binaire.
 u8 * StrFind(u8 *pToFind, u32 nToFindSz, u8 *pToSearch, u32 nToSearchSz)
 {
 	if (nToFindSz > nToSearchSz) return (NULL);
@@ -1117,7 +1113,7 @@ void ExeChecksumTst(char *pFilename)
 		fprintf(stderr, "Error opening file '%s'.\n", pFilename);
 		goto _err_exit1;
 	}
-	// Récupération de la taille du fichier.
+	// Rï¿½cupï¿½ration de la taille du fichier.
 	s32	nFileSzToLoad, nSz;
 	fseek(fPt, 0L, SEEK_END);
 	nFileSzToLoad = ftell(fPt);
@@ -1138,8 +1134,8 @@ void ExeChecksumTst(char *pFilename)
 	}
 	fclose(fPt); fPt = NULL;
 
-	// Recherche de la chaîne qui va bien.
-	static char	*pStrToFind = "CC\x17\x02****";		// !!! Attention à bien laisser les 4 étoiles pour poke externe du checksum !!!
+	// Recherche de la chaï¿½ne qui va bien.
+	static char	*pStrToFind = "CC\x17\x02****";		// !!! Attention ï¿½ bien laisser les 4 ï¿½toiles pour poke externe du checksum !!!
 	u8	*pPtr;
 
 	pPtr = StrFind((u8 *)pStrToFind, 4, pBuf, nFileSzToLoad);
@@ -1175,7 +1171,7 @@ _err_exit1:
 #endif
 
 
-// Point d'entrée.
+// Point d'entrï¿½e.
 int main(int argc, char *argv[])
 {
 	u32	nLoop;
@@ -1183,7 +1179,7 @@ int main(int argc, char *argv[])
 	u32	i;
 
 #ifndef NDEBUG
-	// Debug : Vérifie la taille des structures spécifiques des monstres.
+	// Debug : Vï¿½rifie la taille des structures spï¿½cifiques des monstres.
 	Mst00CheckStructSizes();
 	Mst10CheckStructSizes();
 	Mst20CheckStructSizes();
@@ -1194,10 +1190,10 @@ int main(int argc, char *argv[])
 #endif
 
 #ifdef EXE_CHECKSUM
-	// Test d'intégrité sur l'exe.
+	// Test d'intï¿½gritï¿½ sur l'exe.
 	ExeChecksumTst(argv[0]);
 #endif
-	// Test d'intégrité sur les fichiers EDT.
+	// Test d'intï¿½gritï¿½ sur les fichiers EDT.
 	ChecksumVerify(Level_RealNumber(MISSIONOFFS_HOWTOPLAY));
 	ChecksumVerify(Level_RealNumber(MISSIONOFFS_CREDITS));
 	i = 0;
@@ -1215,26 +1211,34 @@ int main(int argc, char *argv[])
 		fprintf(stderr, "Unable to init SDL: %s\n", SDL_GetError());
 		exit(1);
 	}
-	// atexit : Quand on quittera (exit, return...), SDL_Quit() sera appelée.
+	// atexit : Quand on quittera (exit, return...), SDL_Quit() sera appelï¿½e.
 	atexit(SDL_Quit);
 
 #ifdef	RENDER_BPP
-	const SDL_VideoInfo *pVideoInfo = SDL_GetVideoInfo();
-	gRender.nRenderBPP = (pVideoInfo->vfmt->BitsPerPixel > 16 ? 1 : 0);
-//printf("bits pp = %d / v=%d\n", pVideoInfo->vfmt->BitsPerPixel, gRender.nRenderBPP);
-//printf("bytes pp = %d\n", pVideoInfo->vfmt->BytesPerPixel);
+	SDL_DisplayMode displayMode;
+	if (SDL_GetCurrentDisplayMode(0, &displayMode) == 0)
+	{
+		int bpp = SDL_BITSPERPIXEL(displayMode.format);
+		gRender.nRenderBPP = (bpp > 16 ? 1 : 0);
+//printf("bits pp = %d / v=%d\n", bpp, gRender.nRenderBPP);
+	}
+	else
+	{
+		fprintf(stderr, "SDL_GetCurrentDisplayMode failed: %s\n", SDL_GetError());
+		gRender.nRenderBPP = 1;  // Default to high quality
+	}
 #endif
 
 	// Video mode init.
 	Render_InitVideo();
-	SDL_WM_SetCaption("Mini Slug Project by 17o2!!", NULL);	// Nom de la fenêtre.
+	// Window title is set in SDL_CreateWindow (VideoModeSet function)
 
 	// Lecture du fichier de conf.
 	CfgLoad();
 	// Passe dans le mode video de la conf.
 	if (gMSCfg.nVideoMode != gRender.nRenderMode)
 	{
-		gRender.nRenderMode = gMSCfg.nVideoMode;
+		gRender.nRenderMode = e_RenderMode_Normal; // Forced for WASM
 		Render_SetVideoMode();
 	}
 
@@ -1276,8 +1280,8 @@ _JoyOff:
 
 	gnFrame = 0;	// RAZ compteur de frames.
 	// Init du clavier.
-	gVar.pKeysSDL = SDL_GetKeyState(NULL);
-	memset(gVar.pKeys, 0, SDLK_LAST);
+	gVar.pKeysSDL = SDL_GetKeyboardState(NULL);
+	memset(gVar.pKeys, 0, SDL_NUM_SCANCODES);
 	// Allocation des buffers de scroll.
 	ScrollAllocate();
 
@@ -1302,17 +1306,17 @@ _JoyOff:
 	}
 	// Conversion en 16 bits de bkg1.
 	SDL_Surface	*pConv1;
-	pConv1 = SDL_ConvertSurface(gVar.pBkg[0], gVar.pScreen->format, SDL_SWSURFACE);
+	pConv1 = SDL_ConvertSurface(gVar.pBkg[0], gRender.pScreenBuf2->format, 0);
 	if (pConv1 == NULL)
 	{
 		fprintf(stderr, "bkg: 16 bits conversion failed.\n");
 		exit(1);
 	}
-	SDL_FreeSurface(gVar.pBkg[0]);	// Libère le gfx 8 bits.
+	SDL_FreeSurface(gVar.pBkg[0]);	// Libï¿½re le gfx 8 bits.
 	gVar.pBkg[0] = pConv1;
 	//
 	gVar.pBackground = gVar.pBkg[0];
-	// Lecture du GIF animé de présentation.
+	// Lecture du GIF animï¿½ de prï¿½sentation.
 	if ((gVar.pGif = GIF_Load("gfx/ms0.gif")) == NULL)
 	{
 		fprintf(stderr, "main(): FATAL: GIF_Load() returned NULL.\n");
@@ -1333,7 +1337,7 @@ _JoyOff:
 	//
 	MenuInit();
 	Scr_Load();				// Lecture de la table des high-scores.
-	Credits_NextSel();		// Init du nb de crédits à utiliser dans une partie.
+	Credits_NextSel();		// Init du nb de crï¿½dits ï¿½ utiliser dans une partie.
 
 //	SDL_ShowCursor(SDL_DISABLE);	// Cache le pointeur de la souris.
 
@@ -1344,7 +1348,7 @@ _JoyOff:
 //SDL_Event	ev;
 //while (SDL_PollEvent(&ev));
 //if (SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(1))
-//if (gVar.pKeysSDL[SDLK_RETURN])
+//if (gVar.pKeysSDL[SDL_SCANCODE_RETURN])
 //	printf("hidden part!!!\n");
 
 
@@ -1383,26 +1387,26 @@ _JoyOff:
 	}
 
 
-	SDL_ShowCursor(SDL_ENABLE);		// Réautorise l'affichage du curseur de la souris.
+	SDL_ShowCursor(SDL_ENABLE);		// Rï¿½autorise l'affichage du curseur de la souris.
 
 	if (gVar.pJoystick != NULL) SDL_JoystickClose(gVar.pJoystick);
 
 	Sfx_SoundOff();	// Stops playback.
-	Sfx_FreeWavFiles();	// Libère les ressources des fx.
-	Sfx_FreeYMFiles();	// Libère les ressources des YMs.
+	Sfx_FreeWavFiles();	// Libï¿½re les ressources des fx.
+	Sfx_FreeYMFiles();	// Libï¿½re les ressources des YMs.
 
-	// Libère les ressources des sprites.
+	// Libï¿½re les ressources des sprites.
 	SprRelease();
-	// Libère les buffers de scroll.
+	// Libï¿½re les buffers de scroll.
 	ScrollRelease();
 	// Free the allocated surfaces.
 	for (i = 0; i < MENU_NbBkg; i++)
 	{
 		SDL_FreeSurface(gVar.pBkg[i]);
 	}
-	// Libère les ressources de rendu.
+	// Libï¿½re les ressources de rendu.
 	RenderRelease();
-	// Libère le Gif.
+	// Libï¿½re le Gif.
 	GIF_Free(gVar.pGif);
 
 	return (0);

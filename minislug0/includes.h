@@ -2,7 +2,7 @@
 // Includes.
 #include <stdlib.h>
 #include <unistd.h>
-#include "SDL.h"
+#include <SDL2/SDL.h>
 #include <math.h>
 #include <time.h>
 #include <assert.h>
@@ -60,6 +60,7 @@
 // Types de variables.
 struct SGene
 {
+	SDL_Window *pWindow;   // SDL2 Window handle.
 	SDL_Surface *pScreen;	// Ptr sur le buffer écran.
 
 	SDL_Surface *pBackground;		// Ptr sur l'image de fond des menus.
@@ -68,8 +69,8 @@ struct SGene
 	SDL_Surface *pBkg[MENU_NbBkg];	// Les images de fond.
 	struct SGIFFile	*pGif;			// Gif animé (Présentation).
 
-	u8	*pKeysSDL;			// Pointeur sur le buffer clavier de la SDL.
-	u8	pKeys[SDLK_LAST];	// Buffer clavier.
+	const Uint8 *pKeysSDL;			// Pointeur sur le buffer clavier de la SDL.
+	u8	pKeys[SDL_NUM_SCANCODES];	// Buffer clavier.
 
 	SDL_Joystick	*pJoystick;
 	u16	nJoystickState;		// 8 bits pour la croix (la fct de Hat renvoie un u8) et les boutons sur les 8 bits de poids fort.
@@ -122,3 +123,15 @@ extern struct SGene gVar;
 extern struct SCheatCodes	gCCodes;
 
 
+
+#define RENDER_BPP 1
+struct SRender {
+    SDL_Surface *pScreen2x;
+    SDL_Surface *pScreenBuf2;
+    u8 nRenderMode;
+    u8 nFullscreenMode;
+#ifdef RENDER_BPP
+    u8 nRenderBPP;
+#endif
+};
+extern struct SRender gRender;

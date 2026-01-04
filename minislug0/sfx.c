@@ -9,6 +9,7 @@ struct SSfxGene
 
 	SDL_AudioSpec	sAudioSpec;
     SDL_AudioCVT	pCvt[e_Sfx_LAST];
+SDL_AudioDeviceID nDevId;
 
 	YMMUSIC *ppMusic[e_YmMusic_MAX];
 	s32	nMusicNo;	// e_YmMusic_NoMusic (-1) = Pas de musique.
@@ -117,7 +118,7 @@ void Sfx_MixAudio(void *unused, u8 *stream, int len)
         {
             amount = len;
         }
-        SDL_MixAudio(stream, &gpSounds[i].pData[gpSounds[i].nDPos], amount, SDL_MIX_MAXVOLUME);
+        SDL_MixAudioFormat(stream, &gpSounds[i].pData[gpSounds[i].nDPos], gSfx.sAudioSpec.format, amount, SDL_MIX_MAXVOLUME);
         gpSounds[i].nDPos += amount;
     }
 */
@@ -167,13 +168,13 @@ void Sfx_ClearChannels(void)
 {
 	u32	i;
 
-	SDL_LockAudio();
+	SDL_LockAudioDevice(gSfx.nDevId);
     for (i = 0; i < SFX_MAX_SOUNDS; i++)
     {
 		gpSounds[i].nDPos = 0;
 		gpSounds[i].nDLen = 0;
 	}
-	SDL_UnlockAudio();
+	SDL_UnlockAudioDevice(gSfx.nDevId);
 
 }
 
@@ -227,7 +228,7 @@ void Sfx_SoundInit(void)
 	gSfx.sAudioSpec.userdata = NULL;
 
 	// Open the audio device and start playing sound!
-	if (SDL_OpenAudio(&gSfx.sAudioSpec, NULL) < 0)
+	if ((gSfx.nDevId = SDL_OpenAudioDevice(NULL, 0, &gSfx.sAudioSpec, NULL, 0)) == 0)
 	{
 		//fprintf(stderr, "Unable to open audio: %s\n", SDL_GetError());
 		//exit(1);
@@ -247,7 +248,7 @@ void Sfx_SoundInit(void)
 void Sfx_SoundOn(void)
 {
 	if (!gSfx.nInit) return;
-	SDL_PauseAudio(0);
+	SDL_PauseAudioDevice(gSfx.nDevId, 0);
 
 }
 
@@ -255,7 +256,7 @@ void Sfx_SoundOn(void)
 void Sfx_SoundOff(void)
 {
 	if (!gSfx.nInit) return;
-	SDL_CloseAudio();
+	SDL_CloseAudioDevice(gSfx.nDevId);
 
 }
 
@@ -467,13 +468,13 @@ void Sfx_PlaySfx(u32 nSfxNo, u32 nSfxPrio)
 	}
 
 	// Put the sound data in the slot (it starts playing immediately).
-	SDL_LockAudio();
+	SDL_LockAudioDevice(gSfx.nDevId);
 	gpSounds[index].pData = gSfx.pCvt[nSfxNo].buf;
 	gpSounds[index].nDLen = gSfx.pCvt[nSfxNo].len_cvt;
 	gpSounds[index].nDPos = 0;
 	gpSounds[index].nPrio = (u8)nSfxPrio;
 	gpSounds[index].nSfxNo = (u8)nSfxNo;
-	SDL_UnlockAudio();
+	SDL_UnlockAudioDevice(gSfx.nDevId);
 
 }
 
@@ -489,10 +490,10 @@ void Sfx_StopSfx(u32 nSfxNo)
 	{
 		if (gpSounds[i].nSfxNo == nSfxNo)
 		{
-			SDL_LockAudio();
+			SDL_LockAudioDevice(gSfx.nDevId);
 			gpSounds[i].nDPos = 0;
 			gpSounds[i].nDLen = 0;
-			SDL_UnlockAudio();
+			SDL_UnlockAudioDevice(gSfx.nDevId);
 		}
 	}
 
@@ -530,6 +531,7 @@ void _PlaySound(char *file)
     Uint8 *data;
     Uint32 dlen;
     SDL_AudioCVT cvt;
+SDL_AudioDeviceID nDevId;
 
     // Look for an empty (or finished) sound slot
     for ( index=0; index<SFX_MAX_SOUNDS; ++index ) {
@@ -557,11 +559,11 @@ void _PlaySound(char *file)
     if ( sounds[index].data ) {
         free(sounds[index].data);
     }
-    SDL_LockAudio();
+    SDL_LockAudioDevice(gSfx.nDevId);
     sounds[index].data = cvt.buf;
     sounds[index].dlen = cvt.len_cvt;
     sounds[index].dpos = 0;
-    SDL_UnlockAudio();
+    SDL_UnlockAudioDevice(gSfx.nDevId);
 }
 */
 
@@ -586,11 +588,11 @@ void _PlaySound(char *file)
         fprintf(stderr, "Unable to open audio: %s\n", SDL_GetError());
         exit(1);
     }
-    SDL_PauseAudio(0);
+    SDL_PauseAudioDevice(gSfx.nDevId, 0);
 
     ...
 
-    SDL_CloseAudio();
+    SDL_CloseAudioDevice(gSfx.nDevId);
 }
 
 
@@ -623,6 +625,7 @@ void PlaySound(char *file)
     Uint8 *data;
     Uint32 dlen;
     SDL_AudioCVT cvt;
+SDL_AudioDeviceID nDevId;
 
     // Look for an empty (or finished) sound slot
     for ( index=0; index<NUM_SOUNDS; ++index ) {
@@ -650,11 +653,11 @@ void PlaySound(char *file)
     if ( sounds[index].data ) {
         free(sounds[index].data);
     }
-    SDL_LockAudio();
+    SDL_LockAudioDevice(gSfx.nDevId);
     sounds[index].data = cvt.buf;
     sounds[index].dlen = cvt.len_cvt;
     sounds[index].dpos = 0;
-    SDL_UnlockAudio();
+    SDL_UnlockAudioDevice(gSfx.nDevId);
 }
 
 */

@@ -321,7 +321,7 @@ SDL_Surface * PSDLoadToSDLSurf(char *pPSDFilename)
 	else
 	{
 		// Recopie de la palette.
-		SDL_SetColors(pSDLSurf, pPic->pColors, 0, 256);
+		SDL_SetPaletteColors(pSDLSurf->format->palette, pPic->pColors, 0, 256);
 		// Recopie du premier plan.
 		SDL_LockSurface(pSDLSurf);
 		for (i = 0; i < pPic->nHeight; i++)
