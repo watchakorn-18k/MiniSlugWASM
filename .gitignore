@@ -11,7 +11,6 @@ minislug
 *.exe
 
 # WASM Build Output
-wasm/build/
 # Keep gitignore/readme if they exist in build folder (optional, but usually build dir is purely generated)
 
 # Logs and Temporaries
