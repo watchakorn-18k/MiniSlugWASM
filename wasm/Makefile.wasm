@@ -14,6 +14,7 @@ CFLAGS = -O2 -Wall -DNDEBUG -s USE_SDL=2
 
 # Linker flags for Emscripten
 LDFLAGS = -s USE_SDL=2 \
+          --shell-file ../wasm/index.html \
           -s ALLOW_MEMORY_GROWTH=1 \
           -s TOTAL_MEMORY=67108864 \
           -s WASM=1 \
