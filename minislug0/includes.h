@@ -39,6 +39,7 @@
 #include "blkbkg.h"
 #include "transit2d.h"
 #include "interface.h"
+#include "roguelike.h"
 
 //=====================================
 

@@ -124,6 +124,7 @@ void MstManage(void)
 //printf("%d(%d) ", gpMstSlots[i].nMstNo, gpMstSlots[i].nLoadIdx);
 			if ((nRetVal = gpMstSlots[i].pFctMain(&gpMstSlots[i])) != e_MstState_Managed)
 			{
+                                if (nRetVal == e_MstState_Dead && gRogue.nActive) Roguelike_ComboRegisterKill();
 				// Update de la table de status.
 				if (gpMstSlots[i].nLoadIdx >= 0) *(gLoadedMst.pMstState + gpMstSlots[i].nLoadIdx) = nRetVal;
 				// Compte des monstres par type.

@@ -293,3 +293,280 @@ python3 -m http.server 8080
 - [SDL2 Keyboard Scancodes](https://wiki.libsdl.org/SDL2/SDL_Scancode)
 - [Emscripten SDL2 Documentation](https://emscripten.org/docs/porting/multimedia_and_graphics/SDL.html)
 - [Emscripten Main Loop](https://emscripten.org/docs/porting/emscripten-runtime-environment.html#browser-main-loop)
+
+---
+
+## 🎮 Phase 9: Roguelike Mode
+
+### 🎯 แนวคิดหลัก
+**โหมด Roguelike** จะใช้ **ด่าน 1 (lev1 - Desert)** เป็นฐาน โดยผู้เล่นจะเดินไปมาได้อิสระในด่าน มอนสเตอร์จะสุ่มเกิดขึ้นมาเรื่อยๆ (ไม่จำกัดเฉพาะมอนด่านนี้) และไอเทมจะ drop ลงมาเรื่อยๆ เพื่อให้ผู้เล่นอยู่รอดได้นานที่สุด!
+
+---
+
+### 9.1 Gameplay Mechanics 🕹️
+
+#### ผู้เล่น (Player)
+- [X] เปิดใช้ `e_ScrollType_Free` (เดินไปมาได้อิสระทั้งซ้าย-ขวา)
+- [X] ไม่มี `e_Mst13_NextLevel` (ไม่มีจุดจบด่าน)
+- [X] ชีวิตเหลือ 1 ชีวิต (Permadeath - ตายจบเกม)
+- [X] เริ่มต้นด้วยอาวุธ Gun ธรรมดา + ระเบิด 5 ลูก
+- [X] ไม่มี Continue (เมื่อตายต้องเริ่มใหม่)
+
+#### ระบบ Wave (คลื่นศัตรู)
+- [X] Wave 1-5: ศัตรูพื้นฐาน (e_Mst2_Enemy1, e_Mst7_Zombie1)
+- [X] Wave 6-10: เพิ่ม e_Mst14_RebelSoldier0, e_Mst6_RShobu
+- [X] Wave 11-15: เพิ่ม e_Mst25_RocketDiver0, e_Mst26_Girida0
+- [X] Wave 16-20: เพิ่ม e_Mst28_Masknell0, e_Mst43_FlyingTara0
+- [X] Wave 21+: เพิ่ม Mini-Boss ทุก 5 Wave (e_Mst27_HalfBoss)
+- [X] ทุกๆ 10 Wave จะมี Boss ใหญ่ (e_Mst20_Boss)
+
+#### ความยาก (Difficulty Scaling)
+- [X] จำนวนศัตรูเพิ่มขึ้นตาม Wave (+1 ตัวทุก 3 Wave, สูงสุด 15 ตัว)
+- [X] ความเร็วศัตรูเพิ่ม 5% ทุก 5 Wave
+- [X] พลังโจมตีศัตรูเพิ่มขึ้นหลัง Wave 10
+
+---
+
+### 9.2 Monster Spawn System 👾
+
+#### โครงสร้างใหม่
+```c
+struct SRoguelikeWave {
+    u32 nWaveNo;           // หมายเลข Wave
+    u32 nMonstersLeft;     // จำนวนศัตรูที่เหลือใน Wave นี้
+    u32 nMonstersMax;      // จำนวนศัตรูสูงสุดใน Wave
+    u32 nSpawnTimer;       // Timer สำหรับ spawn มอน
+    u32 nSpawnInterval;    // ความถี่ในการ spawn (frames)
+    u8  nDifficulty;       // ระดับความยาก 0-10
+};
+```
+
+#### ไฟล์ที่ต้องสร้าง/แก้ไข
+- [X] สร้าง `roguelike.c` และ `roguelike.h`
+- [X] เพิ่ม Monster Pool Table สำหรับแต่ละช่วง Wave
+- [X] เพิ่ม Random Spawn Function
+
+#### Spawn Logic
+```c
+// Monster Pool ตาม Difficulty
+u8 gpMonsterPool_Easy[] = { e_Mst2_Enemy1, e_Mst7_Zombie1 };
+u8 gpMonsterPool_Medium[] = { e_Mst14_RebelSoldier0, e_Mst6_RShobu, e_Mst25_RocketDiver0 };
+u8 gpMonsterPool_Hard[] = { e_Mst26_Girida0, e_Mst28_Masknell0, e_Mst43_FlyingTara0 };
+```
+
+---
+
+### 9.3 Item Drop System 📦
+
+#### ประเภท Drop
+| Item | ความถี่ | ผลกระทบ |
+|------|---------|---------|
+| **Ammo Box** | ทุก 45 วินาที | เติมกระสุนอาวุธปัจจุบัน |
+| **Bomb Box** | ทุก 60 วินาที | +5 ระเบิด |
+| **Health (หากมี)** | ทุก 90 วินาที | ฟื้น HP |
+| **Weapon Capsule** | เมื่อจบ Wave | อาวุธสุ่ม |
+| **Score Bonus** | สุ่ม 10% ต่อศัตรูที่ตาย | +500-2000 คะแนน |
+| **1UP** | Wave 10, 25, 50 | +1 ชีวิต (พิเศษ) |
+
+#### Item Spawn Area
+- [X] Drop จากท้องฟ้า (เหมือน POW ปัจจุบัน)
+- [X] ตำแหน่งสุ่มใน X range ที่ผู้เล่นมองเห็น
+- [ ] มี Parachute animation ตกลงมา
+
+---
+
+### 9.4 Power-Up System ⚡ (Roguelike Perks)
+
+#### Permanent Upgrades (เก็บตลอดทั้ง Run)
+- [X] **Speed Boost**: เพิ่มความเร็วผู้เล่น +10%
+- [X] **Damage Up**: เพิ่มพลังโจมตี +15%
+- [X] **Lucky Drop**: เพิ่มโอกาส Item Drop +20%
+- [X] **Armor**: ลด damage ที่ได้รับ 10%
+- [X] **Extended Clip**: เพิ่มกระสุนสูงสุด +25%
+
+#### Temporary Power-Ups (30 วินาที)
+- [ ] **Invincibility Star**: อมตะชั่วคราว
+- [ ] **Double Damage**: x2 damage
+- [ ] **Rapid Fire**: +50% อัตราการยิง
+
+#### เลือก Perk ทุก 5 Wave
+- [X] แสดง 3 Perks สุ่มให้เลือก 1
+- [X] UI คล้าย Card Selection
+
+---
+
+### 9.5 Score & Combo System 🏆
+
+#### Score Multiplier
+- [X] ฆ่ามอนต่อเนื่องภายใน 3 วินาที = Combo x1.5, x2, x3...
+- [X] Combo สูงสุด x10
+- [X] Combo หายถ้าไม่มี kill ใน 5 วินาที
+
+#### Leaderboard (Local)
+- [X] บันทึก Top 10 Roguelike Scores
+- [X] แยกจาก High Score ปกติ
+- [X] เก็บ: Score, Wave สูงสุด, เวลารอด, วันที่
+
+---
+
+### 9.6 UI Requirements 🖥️
+
+#### HUD ใหม่สำหรับ Roguelike
+```
+╔════════════════════════════════════════════╗
+║ WAVE: 12   KILLS: 47   COMBO: x3           ║
+║                                            ║
+║ [Perks: ⚡ 🛡️ 💨]              TIME: 05:32 ║
+╚════════════════════════════════════════════╝
+```
+
+- [X] Wave Counter (กลาง-บน)
+- [X] Kill Counter
+- [X] Combo Indicator (สีเปลี่ยนตามระดับ)
+- [X] รายการ Active Perks (ไอคอน)
+- [X] Survival Time
+
+#### Wave Transition Screen
+- [X] "WAVE X COMPLETE!"
+- [X] สรุป: Kills, Time, Bonus Points
+- [X] Perk Selection (ถ้าถึง milestone)
+- [X] 5 วินาทีพัก ก่อน Wave ถัดไป
+
+#### Game Over Screen (Roguelike)
+```
+╔═══════════════════════════════════════╗
+║           SURVIVAL ENDED              ║
+╠═══════════════════════════════════════╣
+║  Final Wave:     15                   ║
+║  Total Kills:    127                  ║
+║  Survival Time:  08:45                ║
+║  Final Score:    45,780               ║
+║                                       ║
+║  [NEW HIGH SCORE!]                    ║
+║                                       ║
+║  [RETRY]     [MAIN MENU]              ║
+╚═══════════════════════════════════════╝
+```
+
+---
+
+### 9.7 Menu Integration 📋
+
+#### Main Menu Update
+```c
+// menu.c - เพิ่มตัวเลือกใหม่
+struct SMenuItm gpMenuItems_Main[] = {
+    { MENU_Game, 0, "STORY MODE" },        // เปลี่ยนจาก START
+    { MENU_Roguelike, 0, "ROGUELIKE" },    // ใหม่!
+    { MENU_HallOfFame, 0, "HALL OF FAME" },
+    { MENU_Sound, 0, "SOUND SETTINGS" },
+    { MENU_Quit, 0, "QUIT" },
+};
+```
+
+- [X] เพิ่มตัวเลือก "ROGUELIKE" ใน Main Menu
+- [ ] เพิ่มหน้า Hall of Fame แยกสำหรับ Roguelike
+
+---
+
+### 9.8 Technical Implementation 🔧
+
+#### ไฟล์ใหม่ที่ต้องสร้าง
+| ไฟล์ | จุดประสงค์ |
+|------|-----------|
+| `roguelike.c` | Core logic สำหรับ Roguelike mode |
+| `roguelike.h` | Headers และ structs |
+| `roguelike_spawn.c` | Monster spawn system |
+| `roguelike_ui.c` | UI elements สำหรับ mode นี้ |
+
+#### แก้ไขไฟล์เดิม
+| ไฟล์ | การแก้ไข |
+|------|---------|
+| `menu.c` | เพิ่ม Roguelike menu option |
+| `menu.h` | เพิ่ม MENU_Roguelike constant |
+| `game.c` | เพิ่ม Roguelike game phase handling |
+| `game.h` | เพิ่ม e_Game_Roguelike enum |
+| `includes.h` | Include roguelike.h |
+| `Makefile` | เพิ่ม roguelike object files |
+| `Makefile.wasm` | เพิ่ม roguelike object files |
+
+#### Key Functions
+```c
+// roguelike.c
+void Roguelike_Init(void);              // เริ่มต้น mode
+void Roguelike_Main(void);              // Main loop
+void Roguelike_WaveStart(u32 nWave);    // เริ่ม Wave ใหม่
+void Roguelike_SpawnMonster(void);      // Spawn มอนสุ่ม
+void Roguelike_DropItem(void);          // Drop ไอเทม
+void Roguelike_CheckWaveComplete(void); // เช็คจบ Wave
+void Roguelike_ShowPerkSelection(void); // แสดง Perk เลือก
+void Roguelike_GameOver(void);          // จบเกม
+u32  Roguelike_GetRandomMonster(u8 nDifficulty); // สุ่มมอน
+```
+
+---
+
+### 9.9 Implementation Phases 📆
+
+#### Phase 9A: Core Foundation
+- [X] สร้าง roguelike.c / roguelike.h
+- [X] Implement Roguelike_Init() - โหลด lev1 แบบ Free scroll
+- [X] Implement basic Wave system (counter + timer)
+- [X] สร้าง Monster Pool arrays
+
+#### Phase 9B: Spawn System
+- [X] Implement Roguelike_SpawnMonster() ด้วยตำแหน่งสุ่ม
+- [X] Implement difficulty scaling
+- [X] ทดสอบ spawn หลายๆ wave
+
+#### Phase 9C: Item Drops
+- [X] Implement Item drop timer
+- [X] เพิ่มประเภท drop ตาม Wave milestone
+- [ ] สร้าง drop animation (ใช้ parachute ที่มีอยู่)
+
+#### Phase 9D: UI & HUD
+- [X] สร้าง Roguelike HUD (Fixed overlapping issues)
+- [X] สร้าง Wave transition screen
+- [X] สร้าง Game Over screen พร้อมสถิติ
+
+#### Phase 9E: Perks & Scoring
+- [X] Implement Perk system (Selection UI implemented)
+- [X] Implement Combo system (Fixed Kill count hook)
+- [X] Implement Roguelike leaderboard (Integrated in Game Over)
+
+#### Phase 9F: Menu Integration
+- [X] เพิ่มตัวเลือกใน Main Menu
+- [X] สร้าง Roguelike Hall of Fame page (Shown at Game Over)
+- [ ] ทดสอบ flow ทั้งหมด
+
+#### Phase 9G: Polish & Balance
+- [ ] ปรับ balance ความยาก
+- [ ] ปรับ spawn rate
+- [ ] ปรับ item drop rate
+- [ ] ทดสอบหาบัค
+- [ ] เพิ่ม HP bar system 
+
+---
+
+### 9.10 Optional Enhancements 🌟
+
+#### Meta-Progression (ถ้ามีเวลา)
+- [ ] สะสม "Coins" จากการเล่น
+- [ ] ปลดล็อค Starting Perks
+- [ ] ปลดล็อค Starting Weapons
+
+#### Daily/Weekly Challenge
+- [ ] Seed-based random สำหรับ leaderboard เปรียบเทียบ
+- [ ] โหมดพิเศษ (เช่น Zombie-only, Boss Rush)
+
+#### Multiplayer Support (อนาคต)
+- [ ] Co-op 2 players
+- [ ] VS mode (แข่งกันอยู่รอด)
+
+---
+
+### 📝 Notes
+- ใช้ `lev1` เพราะเป็นด่านที่ flat เหมาะกับการเดินไปมา
+- ระวังเรื่อง memory เมื่อ spawn มอนเยอะ (จำกัด 20 ตัวพร้อมกัน)
+- ใช้ existing monster types ที่มีอยู่แล้ว ไม่ต้องสร้างใหม่
+- Item drop ใช้ระบบ `e_Mst3_POW` และ `e_Mst4_WeaponCapsule` ที่มีอยู่

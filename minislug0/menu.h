@@ -6,9 +6,11 @@ enum
 	MENU_Null = 0,
 	MENU_Main,
 	MENU_Game,
+        MENU_Roguelike,
 	MENU_HallOfFame,
 	MENU_HowToPlay,
 	MENU_Sound,
+	MENU_RoguelikeHallOfFame,
 	MENU_Quit,
 
 };
@@ -40,6 +42,8 @@ void Credits_Display(s32 nCreditsNb);
 s32 Scr_CheckHighSc(u32 nScorePrm);
 void Scr_Load(void);
 void Scr_Save(void);
+
+void Bkg1Scroll(u32 nOffsetX, u32 nOffsetY);
 
 
 

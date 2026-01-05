@@ -325,8 +325,10 @@ void Bkg1Scroll(u32 nOffsetX, u32 nOffsetY)
 
 struct SMenuItm gpMenuItems_Main[] =
 {
-	{ MENU_Game, 0, "START" },
+	{ MENU_Game, 0, "STORY MODE" },
+	{ MENU_Roguelike, 0, "ROGUELIKE (BETA)" },
 	{ MENU_HallOfFame, 0, "HALL OF FAME" },
+	{ MENU_RoguelikeHallOfFame, 0, "ROGUELIKE FAME" },
 	{ MENU_Sound, 0, "SOUND SETTINGS" },
 	{ MENU_Quit, 0, "QUIT" },
 };

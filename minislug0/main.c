@@ -1368,6 +1368,16 @@ _JoyOff:
 			nMenuVal = MENU_Main;
 			break;
 
+		case MENU_Roguelike:	// Roguelike mode.
+			RoguelikeGame();
+			nMenuVal = MENU_Main;
+			break;
+
+		case MENU_RoguelikeHallOfFame:
+			Roguelike_ShowLeaderboardLoop();
+			nMenuVal = MENU_Main;
+			break;
+
 		case MENU_HallOfFame:	// High scores.
 			Menu(MenuHighScores_Init, MenuHighScores_Main);
 			nMenuVal = MENU_Main;
