@@ -17,6 +17,7 @@ minislug
 lint_report*.txt
 *.log
 tmp/
+scratch/
 
 # System Files
 .DS_Store

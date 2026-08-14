@@ -22,10 +22,10 @@ void Rumi_Reset(void)
 	gRumiGen.nCnt = 0;
 }
 
-// Teste s'il faut g�n�rer une Rumi chan.
+// Teste s'il faut gï¿½nï¿½rer une Rumi chan.
 void Rumi_Check(s32 nPosY, u32 nWeapon)
 {
-	// Si d�j� pr�sente, h�ros en v�hicule, le h�ros a d�j� une arme, une capsule est d�j� � l'�cran...
+	// Si dï¿½jï¿½ prï¿½sente, hï¿½ros en vï¿½hicule, le hï¿½ros a dï¿½jï¿½ une arme, une capsule est dï¿½jï¿½ ï¿½ l'ï¿½cran...
 	if (gRumiGen.nPres ||
 		gShoot.nVehicleType != e_HeroVehicle_None_Naked ||
 		gShoot.nWeapon != e_Player_Weapon_Gun ||
@@ -46,7 +46,7 @@ Font_Print(10, 160, pTb, 0);
 
 	if (++gRumiGen.nCnt >= RUMI_APPEAR_CNT)
 	{
-		// G�n�ration de la Rumi !
+		// Gï¿½nï¿½ration de la Rumi !
 		u32	nPrm = nWeapon - 1;
 		MstAdd(e_Mst50_AikawaRumi0, (gScrollPos.nPosX >> 8) - 48, nPosY, (u8 *)&nPrm, -1);
 	}
@@ -75,7 +75,7 @@ struct SMst50_AikawaRumi0
 {
 	s16	nCurSpd;
 	u16	nBlkPosXFin;
-	u8	nWeaponDrop;	// N� pour Mst4.
+	u8	nWeaponDrop;	// Nï¿½ pour Mst4.
 };
 
 void Mst50_Init_AikawaRumi0(struct SMstCommon *pMst, u8 *pData)
@@ -93,7 +93,7 @@ void Mst50_Init_AikawaRumi0(struct SMstCommon *pMst, u8 *pData)
 
 	pSpe->nBlkPosXFin = (gScrollPos.nPosX + ((SCR_Width / 3) * 256)) >> 12;	// Position finale.
 
-	gRumiGen.nPres = 1;		// Flag pr�sence.
+	gRumiGen.nPres = 1;		// Flag prï¿½sence.
 
 }
 
@@ -138,7 +138,7 @@ s32 Mst50_Main_AikawaRumi0(struct SMstCommon *pMst)
 			struct SSprRect rRect;
 			if (SprGetRect(nSpr, e_SprRectZone_ShotOrg, &rRect))
 			{
-				// On g�n�re un monstre Weapon Capsule.
+				// On gï¿½nï¿½re un monstre Weapon Capsule.
 				/*
 				[mst4] Weapon Capsule
 				Type = 0:3: S_Shotgun - H_Machinegun - F_Flamethrower - R_Rocket - Gas_Tank - Ammo_Box1
@@ -197,20 +197,20 @@ prm = 0:7:			; tmp
 struct SHTPRecord
 {
 	u8	nFrm;		// Nb de frames.
-	u8	nStick;		// Valeur du clavier. Si b7, les 6 autres donnent un code d'action sp�ciale.
+	u8	nStick;		// Valeur du clavier. Si b7, les 6 autres donnent un code d'action spï¿½ciale.
 	u8	nTxtFrm;	// Nb de frames pendant lesquelles on affiche le texte.
-	char *pTxt[2];		// Texte � afficher. NULL si rien.
+	char *pTxt[2];		// Texte ï¿½ afficher. NULL si rien.
 };
 
 struct SHTPRecord	gpHTPScript[] =
 {
 	{ 1, 0x80, 0, { NULL, NULL } },
-	{ 32, e_KbDir_Right, 128, { "Use the stick to move around.", NULL } },
+	{ 32, e_KbDir_Right, 128, { "ใช้ปุ่มลูกศรเพื่อเคลื่อนที่ไปรอบๆ", NULL } },
 	{ 64, e_KbDir_Left, 0, { NULL, NULL } },
 	{ 32, e_KbDir_Right, 0, { NULL, NULL } },
 	{ 32, 0, 0, { NULL, NULL } },
 
-	{ 1, e_KbDir_ButtonA, 128, { "Press X to fire", "the current weapon." } },
+	{ 1, e_KbDir_ButtonA, 128, { "กดปุ่ม X เพื่อยิง", "อาวุธที่ถืออยู่ในปัจจุบัน" } },
 	{ 30, 0, 0, { NULL, NULL } },
 	{ 1, e_KbDir_ButtonA, 0, { NULL, NULL } },
 	{ 30, 0, 0, { NULL, NULL } },
@@ -223,13 +223,13 @@ struct SHTPRecord	gpHTPScript[] =
 	{ 32, 0, 0, { NULL, NULL } },
 
 	{ 1, 0x80, 0, { NULL, NULL } },
-	{ 4, e_KbDir_Right, 128, { "Press Space to jump.", NULL } },
+	{ 4, e_KbDir_Right, 128, { "กดปุ่ม Space เพื่อกระโดด", NULL } },
 	{ 1, e_KbDir_Right | e_KbDir_ButtonB, 0, { NULL, NULL } },
 	{ 17, e_KbDir_Right, 0, { NULL, NULL } },
 	{ 32, 0, 0, { NULL, NULL } },
 
 	{ 1, e_KbDir_Left, 0, { NULL, NULL } },
-	{ 1, e_KbDir_ButtonC, 128, { "Press Z to throw a grenade.", NULL } },
+	{ 1, e_KbDir_ButtonC, 128, { "กดปุ่ม Z เพื่อขว้างลูกระเบิด", NULL } },
 	{ 63, 0, 0, { NULL, NULL } },
 	{ 1, e_KbDir_Right, 0, { NULL, NULL } },
 	{ 1, e_KbDir_ButtonC, 0, { NULL, NULL } },
@@ -237,37 +237,37 @@ struct SHTPRecord	gpHTPScript[] =
 	{ 32, 0, 0, { NULL, NULL } },
 
 	{ 1, 0x80, 0, { NULL, NULL } },
-	{ 32, 0, 128, { "Jump to get in!", NULL } },
+	{ 32, 0, 128, { "กระโดดขึ้นเพื่อขับยานเกราะ!", NULL } },
 	{ 1, e_KbDir_ButtonB, 0, { NULL, NULL } },
 	{ 64, 0, 0, { NULL, NULL } },
 	{ 32, 0, 0, { NULL, NULL } },
 
-	{ 32, e_KbDir_ButtonA, 128, { "Press X to fire the vulcan", "cannon, use the stick to aim." } },
+	{ 32, e_KbDir_ButtonA, 128, { "กด X เพื่อยิงปืนวัลแคน", "ใช้ปุ่มลูกศรเพื่อเล็งเป้าหมาย" } },
 	{ 32, e_KbDir_Up | e_KbDir_ButtonA, 0, { NULL, NULL } },
 	{ 16, e_KbDir_Left | e_KbDir_ButtonA, 0, { NULL, NULL } },
 	{ 48, e_KbDir_Right | e_KbDir_Up | e_KbDir_ButtonA, 0, { NULL, NULL } },
 	{ 4, e_KbDir_Right | e_KbDir_Up, 0, { NULL, NULL } },
 
 	{ 48, e_KbDir_Right, 0, { NULL, NULL } },
-	{ 16, 0, 128, { "Press Z to fire", "the vehicle's main cannon." } },
+	{ 16, 0, 128, { "กด Z เพื่อยิงปืนใหญ่", "ของยานพาหนะ" } },
 	{ 1, e_KbDir_ButtonC, 0, { NULL, NULL } },
 	{ 15, 0, 0, { NULL, NULL } },
 	{ 15, e_KbDir_Right, 0, { NULL, NULL } },
 	{ 1, e_KbDir_Right | e_KbDir_ButtonC, 0, { NULL, NULL } },
 
 	{ 1, 0x80, 0, { NULL, NULL } },
-	{ 32, 0, 128, { "Press Down + Space to get out.", NULL } },
+	{ 32, 0, 128, { "กดปุ่ม ลง + Space เพื่อออกจากยาน", NULL } },
 	{ 1, e_KbDir_Down | e_KbDir_ButtonB, 0, { NULL, NULL } },
 	{ 96, 0, 0, { NULL, NULL } },
 
 	{ 1, 0x80, 0, { NULL, NULL } },
 	{ 16, 0, 0, { NULL, NULL } },
-	{ 1, e_KbDir_ButtonA, 128, { "Free the hostages.", "Some might release items." } },
+	{ 1, e_KbDir_ButtonA, 128, { "ช่วยเหลือตัวประกัน", "บางคนจะมอบไอเทมพิเศษให้!" } },
 	{ 127+32, 0, 0, { NULL, NULL } },
 
 	{ 1, 0x80, 0, { NULL, NULL } },
 	{ 32, 0, 0, { NULL, NULL } },
-	{ 32, e_KbDir_ButtonA, 128, { "Enjoy some full automatic weapons!", NULL } },
+	{ 32, e_KbDir_ButtonA, 128, { "ใช้อาวุธปืนกลอัตโนมัติเต็มพิกัด!", NULL } },
 	{ 32+16, e_KbDir_ButtonA | e_KbDir_Left, 0, { NULL, NULL } },
 	{ 32+16, e_KbDir_ButtonA | e_KbDir_Right, 0, { NULL, NULL } },
 	{ 48, e_KbDir_Right, 0, { NULL, NULL } },
@@ -275,7 +275,7 @@ struct SHTPRecord	gpHTPScript[] =
 	{ 1, 0x80, 0, { NULL, NULL } },
 	{ 16, 0, 0, { NULL, NULL } },
 	{ 16, e_KbDir_Down, 0, { NULL, NULL } },
-	{ 1, e_KbDir_Down | e_KbDir_ButtonA, 128, { "Ammo boxes contains useful items too.", NULL } },
+	{ 1, e_KbDir_Down | e_KbDir_ButtonA, 128, { "กล่องกระสุนก็มีไอเทมที่มีประโยชน์เช่นกัน", NULL } },
 	{ 16, e_KbDir_Down, 0, { NULL, NULL } },
 
 	{ 1, 0x80, 0, { NULL, NULL } },
@@ -285,7 +285,7 @@ struct SHTPRecord	gpHTPScript[] =
 	{ 48, e_KbDir_Right, 0, { NULL, NULL } },
 
 	{ 1, 0x80, 0, { NULL, NULL } },
-	{ 1, 0, 128, { "That's about it for the basic moves.", "Now let's go and kick some ass!" } },
+	{ 1, 0, 128, { "นี่คือพื้นฐานทั้งหมดสำหรับการเล่น", "พร้อมแล้วไปลุยกำจัดศัตรูกันเลย!" } },
 	{ 127+16, 0, 0, { NULL, NULL } },
 
 	{ 1, 0x80, 0, { NULL, NULL } },	// Vers la sortie.
@@ -323,7 +323,7 @@ struct SHTPVar
 	u8	nTxtLines;	// Nb de lignes.
 	s16	pTxtLg[2];	// Largeur de chaque ligne.
 
-	s32	nLastBlkX, nLastBlkY;	// Pour recherche de positions particuli�res.
+	s32	nLastBlkX, nLastBlkY;	// Pour recherche de positions particuliï¿½res.
 
 	struct SHTPTitle	pTitle[HTP_TITLE_SZ];
 	u8	nTitleNb;	// Nb de lettres dans le titre.
@@ -334,10 +334,10 @@ struct SHTPVar
 };
 struct SHTPVar	gHTPVar;
 
-// Initialise l'it�ration suivante du script.
+// Initialise l'itï¿½ration suivante du script.
 void HTPScript_NextIter(void)
 {
-	// Script termin� ?
+	// Script terminï¿½ ?
 	if (gpHTPScript[gHTPVar.nIdx].nFrm == 0)
 	{
 		gHTPVar.nFrm = 1;
@@ -347,10 +347,10 @@ void HTPScript_NextIter(void)
 		return;
 	}
 
-	// Stick & 0x80 => Action sp�ciale.
+	// Stick & 0x80 => Action spï¿½ciale.
 	if (gpHTPScript[gHTPVar.nIdx].nStick & 0x80)
 	{
-		// Commande 0 : Avance vers la droite jusqu'au prochain bloc de chemin gnd n�16.
+		// Commande 0 : Avance vers la droite jusqu'au prochain bloc de chemin gnd nï¿½16.
 		gShoot.nVehicleAutoPilot = e_KbDir_Right | 0x80;	// Vers la droite.
 
 		s32	nNewBlkX, nNewBlkY, nRes;
@@ -359,7 +359,7 @@ void HTPScript_NextIter(void)
 		if (gHTPVar.nLastBlkX != nNewBlkX || gHTPVar.nLastBlkY != nNewBlkY)
 		{
 			if ((nRes = Map_PathGndGetBlock(nNewBlkX, nNewBlkY)) != -1)
-			if (nRes == 16) gHTPVar.nIdx++;		// Ok, on passera � la suite au prochain tour.
+			if (nRes == 16) gHTPVar.nIdx++;		// Ok, on passera ï¿½ la suite au prochain tour.
 		}
 		gHTPVar.nFrm = 1;
 		return;		// On quitte sans avancer le ptr.
@@ -441,7 +441,7 @@ s32 Mst51_Main_HowToPlay0(struct SMstCommon *pMst)
 	// Titre.
 	for (i = 0; i < gHTPVar.nTitleNb; i++)
 	{
-		// Arriv�e.
+		// Arrivï¿½e.
 		if (gHTPVar.pTitle[i].nSpdMax)
 		{
 			// Spd.
@@ -455,7 +455,7 @@ s32 Mst51_Main_HowToPlay0(struct SMstCommon *pMst)
 				gHTPVar.pTitle[i].nSpd -= M51_TITLE_ACC;
 				if (gHTPVar.pTitle[i].nSpd <= gHTPVar.pTitle[i].nSpdMax) gHTPVar.pTitle[i].nSpd = gHTPVar.pTitle[i].nSpdMax;
 			}
-			// D�placement.
+			// Dï¿½placement.
 			v = gHTPVar.pTitle[i].nPosY;
 			gHTPVar.pTitle[i].nPosY += gHTPVar.pTitle[i].nSpd;
 			// Changement de sens ?
@@ -467,9 +467,18 @@ s32 Mst51_Main_HowToPlay0(struct SMstCommon *pMst)
 			}
 		}
 		// Affichage.
-		SprDisplayAbsolute(gHTPVar.pTitle[i].nSpr, gHTPVar.pTitle[i].nPosX, (gHTPVar.pTitle[i].nPosY >> 8) + HTP_TITLE_POSY, e_Prio_HUD);
+		// Sprite title replaced by Thai Kanit Font
 	}
-	// Red�marre le truc de temps en temps.
+	// Affichage du titre en thaï avec la police Kanit
+	{
+		s32 nBounceY = (gHTPVar.pTitle[0].nPosY >> 8) + HTP_TITLE_POSY;
+		if (nBounceY < 16) nBounceY = 16;
+		if (nBounceY > 40) nBounceY = 40;
+		char *pThaiHTPTitle = "- วิธีเล่น (HOW TO PLAY) -";
+		u32 nHTPTitleLg = Font_Print(0, 0, pThaiHTPTitle, FONT_NoDisp);
+		Font_Print((SCR_Width - nHTPTitleLg) / 2, nBounceY, pThaiHTPTitle, FONT_Highlight);
+	}
+	// Redï¿½marre le truc de temps en temps.
 	gHTPVar.nTitleCnt--;
 	if ((gHTPVar.nTitleCnt & 3) == 0)
 	if (gHTPVar.nTitleCnt >> 2 <= gHTPVar.nTitleNb)
@@ -517,7 +526,7 @@ s32 Mst51_Main_HowToPlay0(struct SMstCommon *pMst)
 		if (i == 0)
 		{
 			if (gShoot.nVehicleAutoPilot & (e_KbDir_Up | e_KbDir_Right | e_KbDir_Down | e_KbDir_Left))
-			{	// On va donner la priorit� � la premi�re direction valide (je n'ai pas les sprites des diagonales).
+			{	// On va donner la prioritï¿½ ï¿½ la premiï¿½re direction valide (je n'ai pas les sprites des diagonales).
 				static	u8	pnStickMask[4] = { e_KbDir_Right, e_KbDir_Left, e_KbDir_Up, e_KbDir_Down };
 				static	u8	pnStickAdd[4] = { 2, 4, 1, 3 };
 				u32	j;
@@ -541,6 +550,9 @@ s32 Mst51_Main_HowToPlay0(struct SMstCommon *pMst)
 
 		// Affichage.
 		SprDisplayAbsolute(pnBtSpr[i] + gHTPVar.pButtons[i].nAdd, pnBtPosX[i], SCR_Height - 21, 0x100 + e_Prio_HUD);
+		static char *pBtThaiLabels[HTP_BUTTON_NB] = { "เดิน", "ยิง[X]", "โดด[Space]", "ระเบิด[Z]" };
+		u32 nBtLg = Font_Print(0, 0, pBtThaiLabels[i], FONT_NoDisp);
+		Font_Print(pnBtPosX[i] + 12 - (nBtLg / 2), SCR_Height - 31, pBtThaiLabels[i], (gHTPVar.pButtons[i].nAdd ? FONT_Highlight : 0));
 	}
 
 
@@ -550,7 +562,7 @@ s32 Mst51_Main_HowToPlay0(struct SMstCommon *pMst)
 		gVar.pKeysSDL[gMSCfg.pKeys[e_CfgKey_ButtonA]] || gVar.pKeysSDL[gMSCfg.pKeys[e_CfgKey_ButtonB]] || gVar.pKeysSDL[gMSCfg.pKeys[e_CfgKey_ButtonC]])
 	if (Transit2D_CheckEnd())	// Pas pendant l'ouverture !
 	{
-		gpMstQuestItems[MST_QUEST_ITEM_NEXT_LEVEL] |= 1;	// Item de qu�te : Fin de niveau.
+		gpMstQuestItems[MST_QUEST_ITEM_NEXT_LEVEL] |= 1;	// Item de quï¿½te : Fin de niveau.
 	}
 
 	return (e_MstState_Managed);
@@ -558,7 +570,7 @@ s32 Mst51_Main_HowToPlay0(struct SMstCommon *pMst)
 
 //=============================================================================
 // Mst 52 : Credits.
-// Note : On utilise le lev2. Si c'est pour les cr�dits, scroll bloqu�, cr�dits. Sinon lev normal.
+// Note : On utilise le lev2. Si c'est pour les crï¿½dits, scroll bloquï¿½, crï¿½dits. Sinon lev normal.
 
 /*
 [mst52] Credits
@@ -597,12 +609,12 @@ void Mst52_Init_Credits0(struct SMstCommon *pMst, u8 *pData)
 	struct SMst52_Credits0	*pSpe = (struct SMst52_Credits0 *)pMst->pData;
 
 	if (gGameVar.nGenLevel != MISSIONOFFS_CREDITS)
-	{	// Ce n'est pas le niveau pour les cr�dits.
+	{	// Ce n'est pas le niveau pour les crï¿½dits.
 		pMst->nPhase = e_Mst52_Death;
 		return;
 	}
 
-	// On est bien au moment des cr�dits.
+	// On est bien au moment des crï¿½dits.
 	pMst->nPhase = e_Mst52_NextLines;
 	gpMstQuestItems[MST_QUEST_ITEM_MST32]++;		// Scroll stop.
 
@@ -628,7 +640,7 @@ static struct SCreditRecord gpCredits[] =
 {
 	{
 		4, MST52_TIMER, {
-"- The Mini Slug Project -",
+"- โปรเจกต์ Mini Slug -",
 "",
 "A humble tribute to",
 "the Metal Slug series",
@@ -728,7 +740,7 @@ static struct SCreditRecord gpCredits[] =
 
 	{
 		1, MST52_TIMER * 2, {
-"Thank you for playing!",
+"ขอบคุณที่ร่วมสนุกและเล่นเกมนี้!",
 "",
 "",
 "",
@@ -770,11 +782,11 @@ s32 Mst52_Main_Credits0(struct SMstCommon *pMst)
 	u32	i;
 	u32	nPrint = 0;
 
-	if (pMst->nPhase == e_Mst52_Death) return (e_MstState_Dead);		// Ce n'est pas le niveau des cr�dits.
+	if (pMst->nPhase == e_Mst52_Death) return (e_MstState_Dead);		// Ce n'est pas le niveau des crï¿½dits.
 
 	switch (pMst->nPhase)
 	{
-	case e_Mst52_Wait:		// Attente avec le texte affich� sur l'�cran.
+	case e_Mst52_Wait:		// Attente avec le texte affichï¿½ sur l'ï¿½cran.
 		nPrint = 1;
 
 		if (pSpe->nTimer) pSpe->nTimer--;
@@ -782,8 +794,8 @@ s32 Mst52_Main_Credits0(struct SMstCommon *pMst)
 		if (pSpe->nTimer == 0)
 		{
 			if (pSpe->nCurIdx + 1 >= NBELEM(gpCredits))
-			{	// Fin, avec le dernier texte � l'�cran.
-				gpMstQuestItems[MST_QUEST_ITEM_NEXT_LEVEL] |= 1;	// Item de qu�te : Fin de niveau.
+			{	// Fin, avec le dernier texte ï¿½ l'ï¿½cran.
+				gpMstQuestItems[MST_QUEST_ITEM_NEXT_LEVEL] |= 1;	// Item de quï¿½te : Fin de niveau.
 			}
 			else
 			{	// Le texte s'en va.
@@ -796,7 +808,7 @@ if (gVar.pKeys[gMSCfg.pKeys[e_CfgKey_ButtonA]])
 */
 		break;
 
-	case e_Mst52_NextLines:			// Pr�paration du bloc suivant.
+	case e_Mst52_NextLines:			// Prï¿½paration du bloc suivant.
 		if (Transit2D_CheckEnd() == 0) break;	// Pas pendant l'ouverture !
 
 		M52_Prepare(pMst);
@@ -806,14 +818,14 @@ if (gVar.pKeys[gMSCfg.pKeys[e_CfgKey_ButtonA]])
 	case e_Mst52_TxtComeIn:			// Le texte arrive.
 		nPrint = 1;
 
-		// D�cr�mentation des sin idx des lignes.
+		// Dï¿½crï¿½mentation des sin idx des lignes.
 		for (i = 0; i < gpCredits[pSpe->nCurIdx].nLines; i++)
 		{
 			if (i == 0 || pSpe->pnSinIdx[i - 1] < MST52_SINIDX - 4)
 				if (pSpe->pnSinIdx[i]) pSpe->pnSinIdx[i]--;
 		}
 
-		// Derni�re ligne arriv�e ?
+		// Derniï¿½re ligne arrivï¿½e ?
 		if (pSpe->pnSinIdx[gpCredits[pSpe->nCurIdx].nLines - 1] == 0)
 		{
 			pMst->nPhase = e_Mst52_Wait;
@@ -821,13 +833,13 @@ if (gVar.pKeys[gMSCfg.pKeys[e_CfgKey_ButtonA]])
 		break;
 
 	case e_Mst52_TxtGoOut:			// Le texte repart.
-		// Derni�re ligne arriv�e ?
+		// Derniï¿½re ligne arrivï¿½e ?
 		if (pSpe->pnSinIdx[gpCredits[pSpe->nCurIdx].nLines - 1] >= MST52_SINIDX)
 		{
-			if (pSpe->nCurIdx + 1 >= NBELEM(gpCredits))		// Laiss� pour s�curit�.
+			if (pSpe->nCurIdx + 1 >= NBELEM(gpCredits))		// Laissï¿½ pour sï¿½curitï¿½.
 			{
 				// Fin.
-				gpMstQuestItems[MST_QUEST_ITEM_NEXT_LEVEL] |= 1;	// Item de qu�te : Fin de niveau.
+				gpMstQuestItems[MST_QUEST_ITEM_NEXT_LEVEL] |= 1;	// Item de quï¿½te : Fin de niveau.
 			}
 			else
 			{
@@ -838,7 +850,7 @@ if (gVar.pKeys[gMSCfg.pKeys[e_CfgKey_ButtonA]])
 		}
 		else
 		{
-			// Incr�mentation des sin idx des lignes.
+			// Incrï¿½mentation des sin idx des lignes.
 			for (i = 0; i < gpCredits[pSpe->nCurIdx].nLines; i++)
 			{
 				if (i == 0 || pSpe->pnSinIdx[i - 1] > 4)
@@ -868,7 +880,7 @@ if (gVar.pKeys[gMSCfg.pKeys[e_CfgKey_ButtonA]])
 			Font_Print((SCR_Width / 2) - (pSpe->pnLnSz[i] / 2) + nOffset, 10 + nCtr + (MST52_INTERLN * i), gpCredits[pSpe->nCurIdx].gpTxt[i], 0);
 		}
 
-		// Position de l'h�lico.
+		// Position de l'hï¿½lico.
 		gShoot.nVehicleAutoPilot = 0x80;
 		// Y.
 		nOffset = gScrollPos.nPosY >> 8;
@@ -932,7 +944,7 @@ assert(sizeof(struct SAAF) < MST_COMMON_DATA_SZ);
 */
 
 #ifndef NDEBUG
-// Debug, v�rification de la taille des structures.
+// Debug, vï¿½rification de la taille des structures.
 void Mst50CheckStructSizes(void)
 {
 	assert(sizeof(struct SMst50_AikawaRumi0) < MST_COMMON_DATA_SZ);

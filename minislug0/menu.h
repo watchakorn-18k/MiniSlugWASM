@@ -29,6 +29,8 @@ void MenuMain_Init(void);
 u32 MenuMain_Main(void);
 void MenuHighScores_Init(void);
 u32 MenuHighScores_Main(void);
+void MenuRoguelikeHighScores_Init(void);
+u32 MenuRoguelikeHighScores_Main(void);
 void MenuGetName_Init(void);
 u32 MenuGetName_Main(void);
 void MenuGameOver_Init(void);

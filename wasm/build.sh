@@ -19,7 +19,9 @@ podman build -t ${IMAGE_NAME} -f "$SCRIPT_DIR/Dockerfile.build" "$PROJECT_ROOT"
 # Copy Makefile.wasm to minislug0
 echo "[2/4] Preparing build files..."
 cp "$SCRIPT_DIR/Makefile.wasm" "$PROJECT_ROOT/minislug0/"
+mkdir -p "$SCRIPT_DIR/build"
 cp "$SCRIPT_DIR/favicon.svg" "$SCRIPT_DIR/build/"
+cp "$SCRIPT_DIR/index.html" "$SCRIPT_DIR/build/"
 
 # Run WASM build inside container
 echo "[3/4] Compiling to WebAssembly..."

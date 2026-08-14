@@ -1,33 +1,42 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="th">
   <head>
     <meta charset="UTF-8" />
     <meta
       name="viewport"
       content="width=device-width, initial-scale=1.0, user-scalable=no"
     />
-    <title>Mini Slug - HTML Port</title>
+    <title>Mini Slug (มินิ สลัก) - เกมตะลุยด่านย้อนยุคบนเว็บ</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Black+Ops+One&family=Roboto+Mono:wght@400;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,700&family=Black+Ops+One&display=swap"
       rel="stylesheet"
     />
     <style>
+      * {
+        font-family: "Kanit", sans-serif;
+      }
+      .font-arcade {
+        font-family: "Black Ops One", "Kanit", cursive, sans-serif;
+      }
       body,
       html {
         margin: 0;
         padding: 0;
         width: 100%;
         height: 100%;
-        background-color: black;
-        overflow: hidden;
-      }
-      #landing-page {
-        z-index: 50;
+        background-color: #0b0f19;
+        overflow-x: hidden;
       }
       .clip-path-polygon {
-        clip-path: polygon(10% 0, 100% 0, 100% 70%, 90% 100%, 0 100%, 0 30%);
+        clip-path: polygon(8% 0, 100% 0, 100% 72%, 92% 100%, 0 100%, 0 28%);
       }
       @keyframes fadeInUp {
         from {
@@ -40,107 +49,127 @@
         }
       }
       .animate-fade-in-up {
-        animation: fadeInUp 0.5s ease-out forwards;
+        animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      }
+      @keyframes pulseGlow {
+        0%, 100% {
+          box-shadow: 0 0 20px rgba(239, 68, 68, 0.4), inset 0 0 15px rgba(239, 68, 68, 0.2);
+        }
+        50% {
+          box-shadow: 0 0 35px rgba(239, 68, 68, 0.7), inset 0 0 25px rgba(239, 68, 68, 0.4);
+        }
+      }
+      .pulse-glow {
+        animation: pulseGlow 2.5s infinite;
       }
     </style>
   </head>
-  <body>
-    <!-- Landing Page -->
+  <body class="bg-gray-950 text-slate-100 flex min-h-screen flex-col items-center justify-center p-4 selection:bg-red-500 selection:text-white">
+    <!-- Background Decor -->
     <div
       id="landing-page"
-      class="fixed inset-0 flex flex-col items-center justify-center bg-gray-900 text-white"
+      class="fixed inset-0 flex flex-col items-center justify-center -z-10"
       style="
-        background-image: linear-gradient(
-            rgba(0, 0, 0, 0.85),
-            rgba(0, 0, 0, 0.85)
-          ),
-          radial-gradient(circle at center, #2a2a2a 0%, #000 100%);
+        background-image: radial-gradient(circle at 50% 30%, rgba(220, 38, 38, 0.15), transparent 60%),
+          radial-gradient(circle at 80% 80%, rgba(245, 158, 11, 0.08), transparent 50%),
+          linear-gradient(to bottom, #090d16, #030712);
       "
-    >
-      <div
-        id="game-menu"
-        class="max-w-4xl w-full p-4 md:p-8 text-center animate-fade-in-up"
+    ></div>
+
+    <main class="max-w-4xl w-full py-8 px-4 text-center animate-fade-in-up">
+      <!-- Badge Header -->
+      <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-red-950/60 border border-red-800/60 text-red-400 text-xs font-semibold tracking-wider uppercase mb-4 shadow-lg">
+        <span class="w-2 h-2 rounded-full bg-red-500 animate-ping"></span>
+        <span>ระบบพร้อมปฏิบัติการ • SDL2 + WebAssembly</span>
+      </div>
+
+      <!-- Main Game Title -->
+      <h1
+        class="text-6xl sm:text-7xl md:text-8xl font-black text-transparent bg-clip-text bg-gradient-to-b from-red-400 via-red-600 to-red-900 mb-2 uppercase tracking-wider drop-shadow-[0_8px_12px_rgba(0,0,0,0.8)] font-arcade"
+        style="-webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.25);"
       >
-        <h1
-          class="text-6xl md:text-8xl font-black text-transparent bg-clip-text bg-gradient-to-b from-red-500 to-red-900 mb-8 uppercase tracking-widest drop-shadow-[0_5px_5px_rgba(0,0,0,0.5)] transform -skew-x-6"
-          style="
-            font-family: 'Black Ops One', cursive;
-            -webkit-text-stroke: 1px rgba(255, 255, 255, 0.3);
-          "
-        >
-          MINI SLUG
-        </h1>
+        MINI SLUG
+      </h1>
+      <p class="text-lg md:text-xl font-medium text-red-200/90 tracking-wide mb-8">
+        มินิ สลัก — สงครามตะลุยด่านย้อนยุคสไตล์อาร์เคด
+      </p>
 
+      <!-- Mission & Controls Container -->
+      <div
+        class="bg-slate-900/80 border border-slate-700/70 p-6 md:p-8 rounded-2xl max-w-3xl mx-auto shadow-2xl backdrop-blur-xl relative overflow-hidden"
+      >
         <div
-          class="bg-black/60 border border-gray-700 p-6 md:p-8 rounded-xl max-w-3xl mx-auto shadow-2xl backdrop-blur-md relative overflow-hidden"
-        >
-          <div
-            class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-red-600 to-transparent"
-          ></div>
+          class="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-transparent via-red-500 to-transparent"
+        ></div>
 
-          <div
-            class="grid grid-cols-1 md:grid-cols-2 gap-8 text-left font-mono"
-          >
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-left">
+          <!-- Controls Column -->
+          <div>
+            <h3
+              class="text-red-400 font-bold text-lg mb-4 border-b border-slate-700 pb-2 flex items-center tracking-wide gap-2"
+            >
+              <svg
+                class="w-5 h-5 text-red-500"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122"
+                ></path>
+              </svg>
+              ปุ่มควบคุมการเล่น (CONTROLS)
+            </h3>
+            <ul class="space-y-2.5 text-sm text-slate-300">
+              <li
+                class="flex justify-between items-center bg-slate-800/70 hover:bg-slate-800 p-2.5 rounded-lg border border-slate-700/60 transition-colors"
+              >
+                <span class="text-slate-300 font-medium">เดิน / บังคับทิศทาง</span>
+                <span class="font-bold text-slate-100 bg-slate-700/80 px-2.5 py-1 rounded text-xs border border-slate-600 shadow-sm"
+                  >ปุ่มลูกศร (ARROWS)</span
+                >
+              </li>
+              <li
+                class="flex justify-between items-center bg-slate-800/70 hover:bg-slate-800 p-2.5 rounded-lg border border-slate-700/60 transition-colors"
+              >
+                <span class="text-slate-300 font-medium">ยิงปืนโจมตี</span>
+                <span class="font-bold text-red-300 bg-red-950/80 px-3 py-1 rounded text-xs border border-red-700/60 shadow-sm"
+                  >X</span
+                >
+              </li>
+              <li
+                class="flex justify-between items-center bg-slate-800/70 hover:bg-slate-800 p-2.5 rounded-lg border border-slate-700/60 transition-colors"
+              >
+                <span class="text-slate-300 font-medium">กระโดด</span>
+                <span class="font-bold text-emerald-300 bg-emerald-950/80 px-3 py-1 rounded text-xs border border-emerald-700/60 shadow-sm"
+                  >SPACE (เว้นวรรค)</span
+                >
+              </li>
+              <li
+                class="flex justify-between items-center bg-slate-800/70 hover:bg-slate-800 p-2.5 rounded-lg border border-slate-700/60 transition-colors"
+              >
+                <span class="text-slate-300 font-medium">ขว้างระเบิด</span>
+                <span class="font-bold text-amber-300 bg-amber-950/80 px-3 py-1 rounded text-xs border border-amber-700/60 shadow-sm"
+                  >Z</span
+                >
+              </li>
+            </ul>
+            <p class="text-xs text-slate-400 mt-3 italic">
+              * บนมือถือ/แท็บเล็ตจะมีปุ่มจำลองบนหน้าจอระบบสัมผัส (Touch Controls)
+            </p>
+          </div>
+
+          <!-- Mission Column -->
+          <div class="flex flex-col justify-between">
             <div>
               <h3
-                class="text-red-500 font-bold mb-4 border-b border-gray-700 pb-2 flex items-center tracking-wider"
+                class="text-emerald-400 font-bold text-lg mb-4 border-b border-slate-700 pb-2 flex items-center tracking-wide gap-2"
               >
                 <svg
-                  class="w-5 h-5 mr-2"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M11 19l-9-9 9-9m8 11a4 4 0 00-4-4l-4-4"
-                  ></path>
-                </svg>
-                CONTROLS
-              </h3>
-              <ul class="space-y-3 text-sm text-gray-300">
-                <li
-                  class="flex justify-between items-center bg-gray-800/50 p-2 rounded border border-gray-700"
-                >
-                  <span class="text-gray-400">MOVE</span>
-                  <span class="font-bold text-white bg-gray-700 px-2 rounded"
-                    >ARROWS</span
-                  >
-                </li>
-                <li
-                  class="flex justify-between items-center bg-gray-800/50 p-2 rounded border border-gray-700"
-                >
-                  <span class="text-gray-400">SHOOT</span>
-                  <span class="font-bold text-white bg-gray-700 px-2 rounded"
-                    >X</span
-                  >
-                </li>
-                <li
-                  class="flex justify-between items-center bg-gray-800/50 p-2 rounded border border-gray-700"
-                >
-                  <span class="text-gray-400">JUMP</span>
-                  <span class="font-bold text-white bg-gray-700 px-2 rounded"
-                    >SPACE</span
-                  >
-                </li>
-                <li
-                  class="flex justify-between items-center bg-gray-800/50 p-2 rounded border border-gray-700"
-                >
-                  <span class="text-gray-400">GRENADE</span>
-                  <span class="font-bold text-white bg-gray-700 px-2 rounded"
-                    >Z</span
-                  >
-                </li>
-              </ul>
-            </div>
-            <div>
-              <h3
-                class="text-green-500 font-bold mb-4 border-b border-gray-700 pb-2 flex items-center tracking-wider"
-              >
-                <svg
-                  class="w-5 h-5 mr-2"
+                  class="w-5 h-5 text-emerald-500"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -152,30 +181,40 @@
                     d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
                   ></path>
                 </svg>
-                MISSION
+                บรีฟภารกิจ (MISSION BRIEF)
               </h3>
-              <p class="text-sm text-gray-400 leading-relaxed mb-4">
-                Infiltrate the enemy stronghold. Neutralize all hostile targets.
+              <p class="text-sm text-slate-300 leading-relaxed mb-4">
+                บุกทะลวงฐานทัพและเขตแดนของศัตรู กำจัดกองกำลังฝ่ายตรงข้าม ทำลายยานรบ และพิชิตบอสประจำด่านเพื่อคว้าชัยชนะ!
               </p>
-              <div class="bg-yellow-900/20 border-l-4 border-yellow-600 p-3">
-                <p class="text-xs text-yellow-500 font-bold">WARNING</p>
-                <p class="text-xs text-yellow-200">
-                  Heavy resistance expected in Sector 7.
-                </p>
+            </div>
+
+            <!-- Warning Card -->
+            <div class="bg-amber-950/30 border-l-4 border-amber-500 p-3.5 rounded-r-lg mt-auto shadow-inner">
+              <div class="flex items-center gap-1.5 text-amber-400 font-bold text-xs mb-1">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                </svg>
+                คำเตือนสนามรบ
               </div>
+              <p class="text-xs text-amber-200/90 leading-normal">
+                ระวังการซุ่มโจมตีของปืนใหญ่ ป้อมปราการ และการตอบโต้อย่างหนักหน่วงในเขต Sector 7
+              </p>
             </div>
           </div>
         </div>
+      </div>
 
+      <!-- Action Button -->
+      <div class="mt-8 flex flex-col items-center gap-4">
         <a
           href="minislug.html"
           id="start-btn"
-          class="mt-10 group relative inline-flex items-center justify-center px-16 py-6 font-bold text-white transition-all duration-300 bg-red-700 font-mono text-2xl uppercase tracking-widest hover:bg-red-600 hover:shadow-[0_0_30px_rgba(220,38,38,0.6)] focus:outline-none ring-offset-4 ring-offset-black focus:ring-2 ring-red-500 clip-path-polygon transform hover:-translate-y-1"
+          class="group relative inline-flex items-center justify-center px-14 py-5 font-bold text-white transition-all duration-300 bg-gradient-to-r from-red-600 to-red-700 text-2xl uppercase tracking-wider hover:from-red-500 hover:to-red-600 pulse-glow focus:outline-none ring-offset-4 ring-offset-slate-950 focus:ring-2 ring-red-500 clip-path-polygon transform hover:-translate-y-1 active:translate-y-0 shadow-2xl"
         >
-          <span class="relative flex items-center z-10">
-            START MISSION
+          <span class="relative flex items-center z-10 gap-3 font-semibold">
+            เข้าสู่สมรภูมิรบ (START MISSION)
             <svg
-              class="w-8 h-8 ml-3 transform group-hover:translate-x-2 transition-transform"
+              class="w-7 h-7 transform group-hover:translate-x-2 transition-transform duration-200"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -183,28 +222,31 @@
               <path
                 stroke-linecap="round"
                 stroke-linejoin="round"
-                stroke-width="2"
+                stroke-width="2.5"
                 d="M13 5l7 7-7 7M5 5l7 7-7 7"
               ></path>
             </svg>
           </span>
-          <div
-            class="absolute inset-0 bg-gradient-to-r from-red-800 to-red-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-          ></div>
         </a>
-        <div class="mt-8 text-[10px] text-gray-600 font-mono tracking-widest">
-          SYSTEM READY // INSERT COIN
+
+        <!-- System & Developer Info in Thai -->
+        <div class="text-xs text-slate-400 font-medium tracking-wide flex items-center gap-2 mt-2">
+          <span class="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+          <span>ระบบพร้อมเริ่มเกม // กดปุ่มเพื่อเข้าเล่นได้ทันที</span>
         </div>
-        <div class="mt-2 text-[10px] text-gray-700 font-mono tracking-widest">
-          HTML Port by
+
+        <div class="text-xs text-slate-400 font-normal">
+          พอร์ต HTML5 & WebAssembly โดย
           <a
-            href="https://github.com/watchakorn-18k/"
+            href="https://github.com/watchakorn-18k/MiniSlugWASM"
             target="_blank"
-            class="text-red-800 hover:text-red-500 transition-colors"
-            >watchakorn-18k</a
+            rel="noopener noreferrer"
+            class="text-red-400 hover:text-red-300 font-semibold underline underline-offset-4 transition-colors"
           >
+            watchakorn-18k
+          </a>
         </div>
       </div>
-    </div>
+    </main>
   </body>
 </html>

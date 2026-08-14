@@ -24,6 +24,9 @@ struct SMstCommon
 
 };
 
+#define	MST_MAX_SLOTS	40
+extern	struct SMstCommon gpMstSlots[MST_MAX_SLOTS];
+
 #define	MSTPRIO_AND	31
 extern	u32	gnMstPrio;		// Pour priorité de l'affichage.
 

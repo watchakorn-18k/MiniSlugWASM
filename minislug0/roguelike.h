@@ -60,11 +60,15 @@ enum
 // Perk types
 enum
 {
-    e_Perk_SpeedBoost = 0,      // +10% player speed
-    e_Perk_DamageUp,            // +15% damage
-    e_Perk_LuckyDrop,           // +20% item drop chance
-    e_Perk_Armor,               // -10% damage taken
-    e_Perk_ExtendedClip,        // +25% max ammo
+    e_Perk_HeavyMachinegun = 0,    // HMG Weapon (+150 ammo)
+    e_Perk_Shotgun,                // Shotgun (+30 ammo)
+    e_Perk_RocketLauncher,         // Rocket Launcher (+25 ammo)
+    e_Perk_Flamethrower,           // Flamethrower (+40 ammo)
+    e_Perk_BombSupply,             // +10 Grenades
+    e_Perk_SpeedBoost,             // +25% Speed
+    e_Perk_DamageUp,               // +30% Damage & Score
+    e_Perk_Armor,                  // +1 Extra Life (1UP)
+    e_Perk_SupplyDrop,             // Supply drop
     e_Perk_MAX
 };
 
@@ -116,9 +120,9 @@ struct SRoguePerks
 {
     u8      nSpeedBoost;        // Speed boost level (0-3)
     u8      nDamageUp;          // Damage up level (0-3)
-    u8      nLuckyDrop;         // Lucky drop level (0-3)
     u8      nArmor;             // Armor level (0-3)
-    u8      nExtendedClip;      // Extended clip level (0-3)
+    u8      nBombSupply;        // Bomb packs taken
+    u8      nWeaponsTaken;      // Weapons collected
 };
 
 // Temporary power-up state
@@ -144,6 +148,7 @@ struct SRogueState
     // Offered perks for selection
     u8      nOfferedPerks[3];   // Types of perk currently offered
     u8      nSelectedPerkIdx;   // Currently highlighted perk index (0-2)
+    u8      bConfirmReady;      // Has confirm button been released before accepting press?
     
     u32     nItemDropTimerAmmo;     // Timer for ammo drops
     u32     nItemDropTimerBomb;     // Timer for bomb drops
@@ -201,7 +206,7 @@ void Roguelike_ShowLeaderboardLoop(void); // Hall of Fame loop
 
 
 // Leaderboard
-#define ROGUE_HISC_MAX 5
+#define ROGUE_HISC_MAX 10
 struct SRogueScoreEntry
 {
     char    pName[4];
@@ -225,5 +230,7 @@ void RoguelikeGame(void);
 u8   Roguelike_GetDifficulty(u32 nWave);
 u32  Roguelike_GetMonstersForWave(u32 nWave);
 u32  Roguelike_GetSpawnInterval(u32 nWave);
+void Roguelike_AutoAim_Update(void);
+extern s32 g_nRogueAimDir;
 
 #endif // ROGUELIKE_H

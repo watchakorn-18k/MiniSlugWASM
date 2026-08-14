@@ -48,17 +48,17 @@ struct SMenuGen
 	s16	nCursPos;		// Pour faire bouger le curseur.
 	s16	nCursAccel;
 
-	u32	nTimerGen;		// Timer pour changer d'�cran quand inactivit�.
+	u32	nTimerGen;		// Timer pour changer d'ï¿½cran quand inactivitï¿½.
 
 	// Variables pour saisie du nom.
-	u32	nScIdx;				// Pos dans la cha�ne. / Pas remis � 0 !
-	char	pScName[HISC_NameLg];	// Nom saisi. / Pas remis � 0 !
+	u32	nScIdx;				// Pos dans la chaï¿½ne. / Pas remis ï¿½ 0 !
+	char	pScName[HISC_NameLg];	// Nom saisi. / Pas remis ï¿½ 0 !
 	u8	nRank;
 	u8	nKeyDown;
 
-	u8	nHighScoreBlinkIdx;	// N� du score � faire clignoter.
+	u8	nHighScoreBlinkIdx;	// Nï¿½ du score ï¿½ faire clignoter.
 
-	u8	nHiSc_ArrivalType;	// Style d'arriv�e des scores.
+	u8	nHiSc_ArrivalType;	// Style d'arrivï¿½e des scores.
 	u8	nMain_Pos;			// Pour sauvegarde du curseur du main menu. Si plusieurs menus a choix, faire une table de Menu_Max cases.
 	u8	nMain_SinIdx;		// Pour bouffonerie sur le main.
 
@@ -69,13 +69,13 @@ struct SMenuGen	gMenu;
 
 //=============================================================================
 
-// Inits de trucs g�n�raux, appel� une fois en d�but de programme.
+// Inits de trucs gï¿½nï¿½raux, appelï¿½ une fois en dï¿½but de programme.
 void MenuInit(void)
 {
-	gMenu.nScIdx = 0;		// RAZ entr�e du nom pour High Score.
-	gMenu.nHighScoreBlinkIdx = -1;		// N� du score � faire clignoter. Reset.
+	gMenu.nScIdx = 0;		// RAZ entrï¿½e du nom pour High Score.
+	gMenu.nHighScoreBlinkIdx = -1;		// Nï¿½ du score ï¿½ faire clignoter. Reset.
 
-	gMenu.nHiSc_ArrivalType = 0;	// Style d'arriv�e des scores.
+	gMenu.nHiSc_ArrivalType = 0;	// Style d'arrivï¿½e des scores.
 	gMenu.nMain_Pos = 0;			// Pour sauvegarde du curseur du main menu. Si plusieurs menus a choix, faire une table de Menu_Max cases.
 
 }
@@ -87,10 +87,10 @@ void CursorInit(void)
 	gMenu.nCursAccel = CURS_Acc;
 }
 
-// Curseur - D�placement.
+// Curseur - Dï¿½placement.
 void CursorMove(void)
 {
-	gMenu.nCursAccel -= 0x20;		// Gravit�.
+	gMenu.nCursAccel -= 0x20;		// Gravitï¿½.
 	gMenu.nCursPos += gMenu.nCursAccel;
 	if (gMenu.nCursPos < 0) CursorInit();
 }
@@ -109,7 +109,7 @@ s32 CursorGetPos(void)
 void MenuTimer_Reset(void)
 {
 	if (gMenu.nState == MENU_State_FadeOut) return;		// Pas de reset pendant les fermetures.
-	gMenu.nTimerGen = 0;		// Timer pour changer d'�cran quand inactivit�.
+	gMenu.nTimerGen = 0;		// Timer pour changer d'ï¿½cran quand inactivitï¿½.
 }
 
 // Le compteur avance.
@@ -120,7 +120,7 @@ u32 MenuTimer_Cnt(u32 nMaxCnt)
 	return (0);
 }
 
-// Init du fader. Appel� dans les Init de chaque menu.
+// Init du fader. Appelï¿½ dans les Init de chaque menu.
 void MenuInitFade(void)
 {
 	// Fader.
@@ -133,29 +133,23 @@ void MenuInitFade(void)
 
 //=============================================================================
 
-// Selectionne le nb de cr�dits (1 / 3 / infini).
+// Selectionne le nb de crï¿½dits (1 / 3 / infini).
 void Credits_NextSel(void)
 {
 	static	u8	nCreditsSel = 0;		// Selecteur.
 	static	s8	pTb[] = { 1, 3, -1 };
 
 	if (++nCreditsSel >= sizeof(pTb)/sizeof(pTb[0])) nCreditsSel = 0;
-	gVar.nCreditsToUse = pTb[nCreditsSel];		// Nb de cr�dits � utiliser dans la partie.
+	gVar.nCreditsToUse = pTb[nCreditsSel];		// Nb de crï¿½dits ï¿½ utiliser dans la partie.
 
 }
 
-// Affichage du nombre de credits. !! Pr�vu pour chiffres de 0 � 9 !!
+// Affichage du nombre de credits. !! Prï¿½vu pour chiffres de 0 ï¿½ 9 !!
 void Credits_Display(s32 nCreditsNb)
 {
 	char pStr[] = "by wk18k";
-
-	// if (nCreditsNb < 0)
-	// 	pStr[strlen(pStr) - 2] = ' ' + 94 + 1;		// Infini.
-	// else
-	// 	pStr[strlen(pStr) - 1] = '0' + nCreditsNb;	// Chiffre.
-
-	Font_Print(SCR_Width - (8 * 10), SCR_Height - 4, pStr, 0);
-
+	u32 nLg = Font_Print(0, 0, pStr, FONT_NoDisp);
+	Font_Print(SCR_Width - nLg - 8, SCR_Height - 18, pStr, 0);
 }
 
 //=============================================================================
@@ -173,7 +167,7 @@ void GIF_Display(struct SGIFFile *pGif, u32 nBkgColor, s32 nPosX, s32 nPosY)
 	if (gnFrameMissed) return;
 	if (pGif == NULL || pGif->pLogicalScrDesc == NULL) return;
 
-	// Pr�paration.
+	// Prï¿½paration.
 	nXMin = nPosX;
 	nYMin = nPosY;
 	nXMax = nPosX + pGif->pLogicalScrDesc->nLogScrWidth - 1;
@@ -195,7 +189,7 @@ void GIF_Display(struct SGIFFile *pGif, u32 nBkgColor, s32 nPosX, s32 nPosY)
 		diff = nXMax - (SCR_Width - 1);
 		nSprXMax -= diff;
 	}
-	// Sprite compl�tement en dehors ?
+	// Sprite complï¿½tement en dehors ?
 	if (nSprXMin - nSprXMax >= 0) return;
 	//
 	if (nYMin < 0)
@@ -208,7 +202,7 @@ void GIF_Display(struct SGIFFile *pGif, u32 nBkgColor, s32 nPosX, s32 nPosY)
 		diff = nYMax - (SCR_Height - 1);
 		nSprYMax -= diff;
 	}
-	// Sprite compl�tement en dehors ?
+	// Sprite complï¿½tement en dehors ?
 	if (nSprYMin - nSprYMax >= 0) return;
 
 
@@ -235,7 +229,7 @@ nXMin, nXMax, nYMin, nYMax);
 */
 
 /*
-	// Version qui met une couleur � la place de la couleur de transparence. C'est le plus rapide, mais il faut un fond uni.
+	// Version qui met une couleur ï¿½ la place de la couleur de transparence. C'est le plus rapide, mais il faut un fond uni.
 	for (iy = nSprYMin; iy <= nSprYMax; iy++)
 	{
 		for (ix = nSprXMin; ix <= nSprXMax; ix++)
@@ -311,7 +305,7 @@ void Bkg1Scroll(u32 nOffsetX, u32 nOffsetY)
 		sSrc.y = 0;
 		sDst.y += sSrc.h;
 		sSrc.h = gVar.pBackground->h;
-		//if (sDst.y + sSrc.h >= SCR_Height) sSrc.h = SCR_Height - sDst.y;	// Test ok, mais autant laisser SDL clipper. Ou sinon il faut le faire en x aussi et � l'init.
+		//if (sDst.y + sSrc.h >= SCR_Height) sSrc.h = SCR_Height - sDst.y;	// Test ok, mais autant laisser SDL clipper. Ou sinon il faut le faire en x aussi et ï¿½ l'init.
 	}
 }
 
@@ -321,16 +315,16 @@ void Bkg1Scroll(u32 nOffsetX, u32 nOffsetY)
 #define	MENUMAIN_SIN_MAX	64
 #define	MENUMAIN_SIN_SPD	1
 
-#define	MENU_Main_StartLn	160
+#define	MENU_Main_StartLn	132
 
 struct SMenuItm gpMenuItems_Main[] =
 {
-	{ MENU_Game, 0, "STORY MODE" },
-	{ MENU_Roguelike, 0, "ROGUELIKE (BETA)" },
-	{ MENU_HallOfFame, 0, "HALL OF FAME" },
-	{ MENU_RoguelikeHallOfFame, 0, "ROGUELIKE FAME" },
-	{ MENU_Sound, 0, "SOUND SETTINGS" },
-	{ MENU_Quit, 0, "QUIT" },
+	{ MENU_Game, 0, "โหมดเนื้อเรื่อง (STORY)" },
+	{ MENU_Roguelike, 0, "โหมดโร้กไลก์ (ROGUELIKE)" },
+	{ MENU_HallOfFame, 0, "หอเกียรติยศ (HALL OF FAME)" },
+	{ MENU_RoguelikeHallOfFame, 0, "หอเกียรติยศโร้กไลก์" },
+	{ MENU_Sound, 0, "ตั้งค่าระบบเสียง (SOUND)" },
+	{ MENU_Quit, 0, "ออกจากเกม (QUIT)" },
 };
 
 // Menu main : Init.
@@ -339,12 +333,12 @@ void MenuMain_Init(void)
 	u32	i;
 
 	MenuInitFade();
-	// D�cor.
+	// Dï¿½cor.
 	gVar.pBackground = gVar.pBkg[0];
 
 	Transit2D_InitOpening(e_Transit_Menu);
 
-	// R�cup�re les longueurs des phrases.
+	// Rï¿½cupï¿½re les longueurs des phrases.
 	for (i = 0; i < NBELEM(gpMenuItems_Main); i++)
 	{
 		gpMenuItems_Main[i].nLg = Font_Print(0, 0, gpMenuItems_Main[i].pTxt, FONT_NoDisp);
@@ -374,7 +368,7 @@ u32 MenuMain_Main(void)
 	u32	nRetVal = MENU_Null;
 	u32	i;
 
-	// Selon l'�tat.
+	// Selon l'ï¿½tat.
 	switch (gMenu.nState)
 	{
 	case MENU_State_FadeIn:
@@ -419,7 +413,7 @@ u32 MenuMain_Main(void)
 				}
 			}
 
-			// D�placement du curseur.
+			// Dï¿½placement du curseur.
 //			u32	nLastChoix = gMenu.nChoix;
 			if (gVar.pKeys[gMSCfg.pKeys[e_CfgKey_Up]])
 			{
@@ -472,13 +466,13 @@ u32 MenuMain_Main(void)
 	// Bkg qui scrolle, image 128 x 128.
 	Bkg1Scroll(-gnFrame >> 1, -gnFrame >> 1);
 
-	// Image suivante dans le GIF anim�.
+	// Image suivante dans le GIF animï¿½.
 	if ((gMenu.nFrmCnt0++ & 3) == 0) GIF_GetNextImage(gVar.pGif);
 	// Affichage.
 //	GIF_Display(gVar.pGif, SDL_MapRGB(gVar.pScreen->format, MENUMAIN_BkgClr_R, MENUMAIN_BkgClr_G, MENUMAIN_BkgClr_B), 26, -33);
 	GIF_Display(gVar.pGif, SDL_MapRGB(gVar.pScreen->format, MENUMAIN_BkgClr_R, MENUMAIN_BkgClr_G, MENUMAIN_BkgClr_B), 26 + (255 + gVar.pSin[gMenu.nMain_SinIdx]), -33);
 
-	// Logo MS en haut � gauche.
+	// Logo MS en haut ï¿½ gauche.
 //	SprDisplayAbsolute(e_Spr_MS_Logo, 10, 10, 200);
 	SprDisplayAbsolute(e_Spr_MS_Logo, 10 - (255 + gVar.pSin[gMenu.nMain_SinIdx]), 10, 200);
 
@@ -491,14 +485,14 @@ u32 MenuMain_Main(void)
 		if (i == gMenu.nChoix)
 		{
 			nFontFlag = FONT_Highlight;
-//			Font_Print((SCR_Width / 2) - (gpMenuItems_Main[i].nLg / 2) - 18+4 - (gMenu.nCursPos >> 8), MENU_Main_StartLn + (i * 12), ">", nFontFlag);
-//			Font_Print((SCR_Width / 2) + (gpMenuItems_Main[i].nLg / 2) + 10-4 + (gMenu.nCursPos >> 8), MENU_Main_StartLn + (i * 12), "<", nFontFlag);
-			static char *pCursL = "\x81";	// ' ' + 94 + 3
-			static char *pCursR = "\x80";	// ' ' + 94 + 2
-			Font_Print((SCR_Width / 2) - (gpMenuItems_Main[i].nLg / 2) - 18+4 - (gMenu.nCursPos >> 8), MENU_Main_StartLn + (i * 12), pCursL, nFontFlag);
-			Font_Print((SCR_Width / 2) + (gpMenuItems_Main[i].nLg / 2) + 10-4 + (gMenu.nCursPos >> 8), MENU_Main_StartLn + (i * 12), pCursR, nFontFlag);
+//			Font_Print((SCR_Width / 2) - (gpMenuItems_Main[i].nLg / 2) - 18+4 - (gMenu.nCursPos >> 8), MENU_Main_StartLn + (i * 13), ">", nFontFlag);
+//			Font_Print((SCR_Width / 2) + (gpMenuItems_Main[i].nLg / 2) + 10-4 + (gMenu.nCursPos >> 8), MENU_Main_StartLn + (i * 13), "<", nFontFlag);
+			static char *pCursL = ">";	// ' ' + 94 + 3
+			static char *pCursR = "<";	// ' ' + 94 + 2
+			Font_Print((SCR_Width / 2) - (gpMenuItems_Main[i].nLg / 2) - 18+4 - (gMenu.nCursPos >> 8), MENU_Main_StartLn + (i * 13), pCursL, nFontFlag);
+			Font_Print((SCR_Width / 2) + (gpMenuItems_Main[i].nLg / 2) + 10-4 + (gMenu.nCursPos >> 8), MENU_Main_StartLn + (i * 13), pCursR, nFontFlag);
 		}
-		Font_Print((SCR_Width / 2) - (gpMenuItems_Main[i].nLg / 2), MENU_Main_StartLn + (i * 12), gpMenuItems_Main[i].pTxt, nFontFlag);
+		Font_Print((SCR_Width / 2) - (gpMenuItems_Main[i].nLg / 2), MENU_Main_StartLn + (i * 13), gpMenuItems_Main[i].pTxt, nFontFlag);
 	}
 
 	// Selecteur de level ?
@@ -571,7 +565,7 @@ void Pixelizer(SDL_Surface *pSurf8, u32 nPixSz)
 				nClr = pPal[*((u8 *)pSurf8->pixels + ((nOffsY) * pSurf8->pitch) + (nOffsX))];
 			}
 		}
-		pScr += nRemLn;		// Au cas o� le pitch soit plus grand que l'�cran.
+		pScr += nRemLn;		// Au cas oï¿½ le pitch soit plus grand que l'ï¿½cran.
 		nPosY += nZoom;
 		if (nPosY & ~0xFFF)
 		{
@@ -651,7 +645,7 @@ s32 Scr_CheckHighSc(u32 nScorePrm)
 
 }
 
-// Ins�re un nom dans la table.
+// Insï¿½re un nom dans la table.
 s32 Scr_PutNameInTable(char *pName, u32 nScore)
 {
 	s32	nRank = Scr_CheckHighSc(nScore);
@@ -659,13 +653,13 @@ s32 Scr_PutNameInTable(char *pName, u32 nScore)
 
 	if (nRank < 0) return (-1);		// Ne devrait pas arriver.
 
-	// D�calage de la table.
+	// Dï¿½calage de la table.
 	for (i = HISC_Nb - 2; i >= nRank; i--)
 	{
 		strcpy(gpHighScores[i + 1].pName, gpHighScores[i].pName);
 		gpHighScores[i + 1].nScore = gpHighScores[i].nScore;
 	}
-	// Le score � ins�rer.
+	// Le score ï¿½ insï¿½rer.
 	strcpy(gpHighScores[nRank].pName, pName);
 	gpHighScores[nRank].nScore = nScore;
 
@@ -794,7 +788,7 @@ void MenuHighScores_Init(void)
 	MenuInitFade();
 	AnmInitEngine();	// Pour monstres.
 
-	// D�cor.
+	// Dï¿½cor.
 	gVar.pBackground = gVar.pBkg[0];
 
 	// Init effet des lignes.
@@ -805,7 +799,7 @@ void MenuHighScores_Init(void)
 		gpBouf3[i].nPosYCur = SCR_Height + 16;
 	}
 
-	// Change le type d'arriv�e.
+	// Change le type d'arrivï¿½e.
 	gMenu.nHiSc_ArrivalType++;
 	gMenu.nHiSc_ArrivalType &= 3;
 
@@ -820,7 +814,7 @@ u32 MenuHighScores_Main(void)
 	u32	i;
 	s32 nPosX, nPosY;
 
-	// Selon l'�tat.
+	// Selon l'ï¿½tat.
 	switch (gMenu.nState)
 	{
 	case MENU_State_FadeIn:
@@ -831,14 +825,14 @@ u32 MenuHighScores_Main(void)
 		if (Transit2D_CheckEnd())
 		{
 			nRetVal = MENU_Main;			// Sortie.
-			gMenu.nHighScoreBlinkIdx = -1;	// N� du score � faire clignoter. Reset.
+			gMenu.nHighScoreBlinkIdx = -1;	// Nï¿½ du score ï¿½ faire clignoter. Reset.
 		}
 		break;
 
 	case MENU_State_Input:
 		{
 			// Validation ?
-			u32 nTimeOut = (gpBouf3[HISC_Nb - 1].nSinIdx == HiSc_SIN_MAX ? MenuTimer_Cnt(MENU_TIMER_GEN) : 0);	// TMP : on ne compte que quand l'effet est termin�.
+			u32 nTimeOut = (gpBouf3[HISC_Nb - 1].nSinIdx == HiSc_SIN_MAX ? MenuTimer_Cnt(MENU_TIMER_GEN) : 0);	// TMP : on ne compte que quand l'effet est terminï¿½.
 			if (gVar.pKeys[SDL_SCANCODE_RETURN] || gVar.pKeys[SDL_SCANCODE_SPACE] ||
 //				gVar.pKeys[KB_BUTTONA] || gVar.pKeys[KB_BUTTONB] || gVar.pKeys[KB_BUTTONC] ||
 				gVar.pKeys[gMSCfg.pKeys[e_CfgKey_ButtonA]] || gVar.pKeys[gMSCfg.pKeys[e_CfgKey_ButtonB]] || gVar.pKeys[gMSCfg.pKeys[e_CfgKey_ButtonC]] ||
@@ -879,7 +873,7 @@ u32 MenuHighScores_Main(void)
 	Bkg1Scroll(-gnFrame >> 1, -gnFrame >> 1);
 
 	// Titre.
-	char	pTitle[] = "- HALL OF FAME -";
+	char	pTitle[] = "- หอเกียรติยศ -";
 	u32	nLg = Font_Print(0, 8, pTitle, FONT_NoDisp);
 	Font_Print((SCR_Width - nLg) / 2, 24-7, pTitle, 0);
 
@@ -888,27 +882,27 @@ u32 MenuHighScores_Main(void)
 	{
 		char	pStr[8+1];// = "00000000";
 //		s32	nOfs;
-		u32	nFontFlags = ((i == gMenu.nHighScoreBlinkIdx) && (gnFrame & 8) ? FONT_Highlight : 0);	// Pour clignotement du score qui vient d'�tre entr�, si n�cessaire.
+		u32	nFontFlags = ((i == gMenu.nHighScoreBlinkIdx) && (gnFrame & 8) ? FONT_Highlight : 0);	// Pour clignotement du score qui vient d'ï¿½tre entrï¿½, si nï¿½cessaire.
 
 		// Pos x et y en fct de l'effet.
 		switch (gMenu.nHiSc_ArrivalType)
 		{
-		case 1:		// Arriv�e verticale.
+		case 1:		// Arrivï¿½e verticale.
 			nPosX = 16;
 			nPosY = gpBouf3[i].nPosYCur;
 			break;
 
-		case 2:		// Arriv�e horizontale entrelac�e.
+		case 2:		// Arrivï¿½e horizontale entrelacï¿½e.
 			nPosX = 16 + ((((256 + gVar.pSin[gpBouf3[i].nSinIdx]) * (i & 1 ? -1 : 1)) * 7) / 4);
 			nPosY = 41 + (i * MENU_HiSc_Interligne);
 			break;
 
-		case 3:		// Arriv�e verticale + offset x entrelac�.
+		case 3:		// Arrivï¿½e verticale + offset x entrelacï¿½.
 			nPosX = 16 + (((256 + gVar.pSin[gpBouf3[i].nSinIdx]) * (i & 1 ? -1 : 1)) / 2);
 			nPosY = gpBouf3[i].nPosYCur;
 			break;
 
-		default:	// Arriv�e horizontale.
+		default:	// Arrivï¿½e horizontale.
 			nPosX = 16 + (((256 + gVar.pSin[gpBouf3[i].nSinIdx]) * 7) / 4);
 			nPosY = 41 + (i * MENU_HiSc_Interligne);
 			break;
@@ -951,16 +945,156 @@ u32 MenuHighScores_Main(void)
 
 }
 
+// Menu des high-scores Roguelike : Init.
+void MenuRoguelikeHighScores_Init(void)
+{
+	u32	i;
+
+	Roguelike_InitLeaderboard();
+	MenuInitFade();
+	AnmInitEngine();
+
+	// Décor.
+	gVar.pBackground = gVar.pBkg[0];
+
+	// Init effet des lignes.
+	for (i = 0; i < ROGUE_HISC_MAX; i++)
+	{
+		gpBouf3[i].nWait = i * 3;
+		gpBouf3[i].nSinIdx = HiSc_SIN_MIN;
+		gpBouf3[i].nPosYCur = SCR_Height + 16;
+	}
+
+	// Change le type d'arrivée.
+	gMenu.nHiSc_ArrivalType++;
+	gMenu.nHiSc_ArrivalType &= 3;
+
+	Transit2D_InitOpening(e_Transit_Menu);
+}
+
+// Menu des high-scores Roguelike : Main.
+u32 MenuRoguelikeHighScores_Main(void)
+{
+	u32	nRetVal = MENU_Null;
+	u32	i;
+	s32 nPosX, nPosY;
+
+	// Selon l'état.
+	switch (gMenu.nState)
+	{
+	case MENU_State_FadeIn:
+		if (Transit2D_CheckEnd()) gMenu.nState = MENU_State_Input;
+		break;
+
+	case MENU_State_FadeOut:
+		if (Transit2D_CheckEnd())
+		{
+			nRetVal = MENU_Main;			// Sortie.
+			gMenu.nHighScoreBlinkIdx = -1;	// N° du score à faire clignoter. Reset.
+		}
+		break;
+
+	case MENU_State_Input:
+		{
+			u32 nTimeOut = (gpBouf3[ROGUE_HISC_MAX - 1].nSinIdx == HiSc_SIN_MAX ? MenuTimer_Cnt(MENU_TIMER_GEN) : 0);
+			if (gVar.pKeys[SDL_SCANCODE_RETURN] || gVar.pKeys[SDL_SCANCODE_SPACE] ||
+				gVar.pKeys[gMSCfg.pKeys[e_CfgKey_ButtonA]] || gVar.pKeys[gMSCfg.pKeys[e_CfgKey_ButtonB]] || gVar.pKeys[gMSCfg.pKeys[e_CfgKey_ButtonC]] ||
+				nTimeOut)
+			{
+				gMenu.nState = MENU_State_FadeOut;
+				Transit2D_InitClosing(e_Transit_Menu);
+				Sfx_PlaySfx(FX_Menu_Clic, e_SfxPrio_10);
+			}
+		}
+		break;
+	}
+
+	// Effet des lignes.
+	if (gMenu.nState != MENU_State_FadeIn)
+	{
+		for (i = 0; i < ROGUE_HISC_MAX; i++)
+		{
+			if (gpBouf3[i].nWait == 0)
+			{
+				if (gpBouf3[i].nSinIdx < HiSc_SIN_MAX) gpBouf3[i].nSinIdx += HiSc_SIN_SPD;
+				gpBouf3[i].nPosYCur = 41 + (i * 18) + (256 + gVar.pSin[gpBouf3[i].nSinIdx]);
+			}
+			else
+				gpBouf3[i].nWait--;
+		}
+	}
+
+	// Bkg qui scrolle, image 128 x 128.
+	Bkg1Scroll(-gnFrame >> 1, -gnFrame >> 1);
+
+	// Titre.
+	char	pTitle[] = "- หอเกียรติยศ (ROGUELIKE) -";
+	u32	nLg = Font_Print(0, 8, pTitle, FONT_NoDisp);
+	Font_Print((SCR_Width - nLg) / 2, 24-7, pTitle, 0);
+
+	// Affichage des lignes.
+	for (i = 0; i < ROGUE_HISC_MAX; i++)
+	{
+		char	pStr[16];
+		u32	nFontFlags = ((i == gMenu.nHighScoreBlinkIdx) && (gnFrame & 8) ? FONT_Highlight : 0);
+
+		// Pos x et y en fct de l'effet.
+		switch (gMenu.nHiSc_ArrivalType)
+		{
+		case 1:		// Arrivée verticale.
+			nPosX = 16;
+			nPosY = gpBouf3[i].nPosYCur;
+			break;
+
+		case 2:		// Arrivée horizontale entrelacée.
+			nPosX = 16 + ((((256 + gVar.pSin[gpBouf3[i].nSinIdx]) * (i & 1 ? -1 : 1)) * 7) / 4);
+			nPosY = 41 + (i * 18);
+			break;
+
+		case 3:		// Arrivée verticale + offset x entrelacé.
+			nPosX = 16 + (((256 + gVar.pSin[gpBouf3[i].nSinIdx]) * (i & 1 ? -1 : 1)) / 2);
+			nPosY = gpBouf3[i].nPosYCur;
+			break;
+
+		default:	// Arrivée horizontale.
+			nPosX = 16 + (((256 + gVar.pSin[gpBouf3[i].nSinIdx]) * 7) / 4);
+			nPosY = 41 + (i * 18);
+			break;
+		}
+
+		// Rank.
+		strcpy(pStr, "00");
+		MyItoA(i + 1, pStr);
+		Font_PrintSpc(nPosX, nPosY, pStr, nFontFlags, MENU_HiSc_FigureSpc);
+
+		// Name.
+		Font_Print(nPosX + 28, nPosY, gRogueHighScores[i].pName, nFontFlags);
+
+		// Wave & Kills.
+		char pWaveStr[32];
+		snprintf(pWaveStr, sizeof(pWaveStr), "เวฟ %02d (%d ตัว)", gRogueHighScores[i].nWave, gRogueHighScores[i].nKills);
+		Font_Print(nPosX + 68, nPosY, pWaveStr, nFontFlags);
+
+		// Score.
+		strcpy(pStr, "00000000");
+		MyItoA(gRogueHighScores[i].nScore, pStr);
+		Font_PrintSpc(nPosX + 210, nPosY, pStr, nFontFlags, MENU_HiSc_FigureSpc);
+	}
+
+	gVar.nFadeVal = gMenu.nFadeVal;
+	return (nRetVal);
+}
+
 //=============================================================================
 
-#define	HIGN_OFFS1STLN	58		// D�calage de la premi�re ligne affich�e.
+#define	HIGN_OFFS1STLN	58		// Dï¿½calage de la premiï¿½re ligne affichï¿½e.
 
 #define	HIGN_RANK_LN	1
 struct SMenuItm gpMenuItems_GetName[] =
 {
-	{ 0, 0, "Congratulations!" },
-	{ 0, 0, "You ranked #0@" },
-	{ 0, 0, "Enter your name:" },
+	{ 0, 0, "ยินดีด้วย! คุณทำสถิติได้" },
+	{ 0, 0, "คุณได้อันดับที่" },
+	{ 0, 0, "กรอกชื่อของคุณ:" },
 };
 
 // Init.
@@ -976,7 +1110,7 @@ void MenuGetName_Init(void)
 	// Rank atteint.
 //s	gMenu.nRank = Scr_CheckHighSc(gShoot.nPlayerScore);
 	gMenu.nRank = Scr_CheckHighSc(gGameVar.nBestScore);
-	// Calcul de la longueur des cha�nes.
+	// Calcul de la longueur des chaï¿½nes.
 	for (i = 0; i < NBELEM(gpMenuItems_GetName); i++)
 	{
 		gpMenuItems_GetName[i].nLg = Font_Print(0, 8, gpMenuItems_GetName[i].pTxt, FONT_NoDisp);
@@ -994,7 +1128,7 @@ u32 MenuGetName_Main(void)
 	u32	nRet = MENU_Null;
 	u32	i;
 
-	// Selon l'�tat.
+	// Selon l'ï¿½tat.
 	switch (gMenu.nState)
 	{
 	case MENU_State_FadeIn:
@@ -1008,9 +1142,9 @@ u32 MenuGetName_Main(void)
 
 			// Si pas de nom, mettre John Doe.
 			static char	pDefName[HISC_NameLg] = "John DOE";
-//			if (gMenu.nScIdx == 0 || MenuTimer_Cnt(MENU_TIMER_GEN)) pCurStr = pDefName;		// Fonctionne, mais bof. // Note on se fiche de l'incr�mentation du timer � ce niveau. Soit on est pass� avec return et �a passe de 0 � 1, soit on est au del� de la limite et c'est ce qu'on veut tester.
+//			if (gMenu.nScIdx == 0 || MenuTimer_Cnt(MENU_TIMER_GEN)) pCurStr = pDefName;		// Fonctionne, mais bof. // Note on se fiche de l'incrï¿½mentation du timer ï¿½ ce niveau. Soit on est passï¿½ avec return et ï¿½a passe de 0 ï¿½ 1, soit on est au delï¿½ de la limite et c'est ce qu'on veut tester.
 			if (gMenu.nScIdx == 0) pCurStr = pDefName;
-			// Rajoute le nom dans les High-scores + note la ligne � faire clignoter pour l'affichage des high-scores qui va suivre.
+			// Rajoute le nom dans les High-scores + note la ligne ï¿½ faire clignoter pour l'affichage des high-scores qui va suivre.
 //s			gMenu.nHighScoreBlinkIdx = Scr_PutNameInTable(pCurStr, gGameVar.nMissionNo, gGameVar.nContinueUsed + 1, gShoot.nPlayerScore);
 			gMenu.nHighScoreBlinkIdx = Scr_PutNameInTable(pCurStr, gGameVar.nBestScore);
 			Scr_Save();				// Sauvegarde du fichier des scores.
@@ -1032,7 +1166,7 @@ u32 MenuGetName_Main(void)
 				break;
 			}
 
-			// On regarde quelle touche est enfonc�e.
+			// On regarde quelle touche est enfoncï¿½e.
 			u32	nChr = 0;
 			// a-z.
 			for (i = SDL_SCANCODE_A; i <= SDL_SCANCODE_Z; i++)
@@ -1067,7 +1201,7 @@ u32 MenuGetName_Main(void)
 			}
 			// Backspace.
 			if (gVar.pKeys[SDL_SCANCODE_BACKSPACE]) nChr = SDL_SCANCODE_BACKSPACE;
-			// Touches sp�ciales.
+			// Touches spï¿½ciales.
 			static	u16 pKeysSpeToTest[] = { SDL_SCANCODE_SPACE, SDL_SCANCODE_SEMICOLON, SDL_SCANCODE_PERIOD, SDL_SCANCODE_COMMA, SDL_SCANCODE_SLASH, SDL_SCANCODE_RIGHTBRACKET, SDL_SCANCODE_LEFTBRACKET, SDL_SCANCODE_EQUALS, SDL_SCANCODE_MINUS,
 				SDL_SCANCODE_KP_DIVIDE, SDL_SCANCODE_KP_MULTIPLY, SDL_SCANCODE_KP_MINUS, SDL_SCANCODE_KP_PLUS, SDL_SCANCODE_KP_PERIOD };
 			static	char *pKeysSpeNorm  = " ;.,/][=-/*-+.";
@@ -1111,19 +1245,15 @@ u32 MenuGetName_Main(void)
 	Bkg1Scroll(-gnFrame >> 1, -gnFrame >> 1);
 
 	// On rajoute le rank dans sa ligne.
-	char pRank[30];
-	strcpy(pRank, gpMenuItems_GetName[HIGN_RANK_LN].pTxt);
-	char *pPtr = strchr(pRank, '@');
-	if (pPtr != NULL)
-	{
-		MyItoA(gMenu.nRank + 1, pPtr-1);
-	}
+	char pRank[128];
+	snprintf(pRank, sizeof(pRank), "คุณได้อันดับที่ #%02d", gMenu.nRank + 1);
+	u32 nRankLg = Font_Print(0, 8, pRank, FONT_NoDisp);
 
 	// Lignes.
 	for (i = 0; i < NBELEM(gpMenuItems_GetName); i++)
 	{
-//		Font_Print((SCR_Width - gpMenuItems_GetName[i].nLg) / 2, 80 + (i*32), (i == HIGN_RANK_LN ? pRank : gpMenuItems_GetName[i].pTxt), 0);
-		Font_Print((SCR_Width - gpMenuItems_GetName[i].nLg) / 2, HIGN_OFFS1STLN + (i*32), (i == HIGN_RANK_LN ? pRank : gpMenuItems_GetName[i].pTxt), 0);
+		u32 nLg = (i == HIGN_RANK_LN ? nRankLg : gpMenuItems_GetName[i].nLg);
+		Font_Print((SCR_Width - nLg) / 2, HIGN_OFFS1STLN + (i * 32), (i == HIGN_RANK_LN ? pRank : gpMenuItems_GetName[i].pTxt), 0);
 	}
 	// Nom en cours.
 	i = Font_Print(0, 0, gMenu.pScName, FONT_NoDisp);
@@ -1290,15 +1420,15 @@ u32 MenuSound_Main(void)
 	Bkg1Scroll(-gnFrame >> 1, -gnFrame >> 1);
 
     // Title
-    Font_Print((SCR_Width / 2) - (Font_Print(0,0,"SOUND SETTINGS",FONT_NoDisp)/2), 60, "SOUND SETTINGS", 0);
+    Font_Print((SCR_Width / 2) - (Font_Print(0,0,"ตั้งค่าระบบเสียง (SOUND)",FONT_NoDisp)/2), 60, "ตั้งค่าระบบเสียง (SOUND)", 0);
 
     // Volume
     nVol = Sfx_GetVolume();
-    sprintf(pStr, "< VOLUME : %d%% >", (int)nVol);
+    sprintf(pStr, "< ระดับเสียง : %d%% >", (int)nVol);
     Font_Print((SCR_Width / 2) - (Font_Print(0,0,pStr,FONT_NoDisp)/2), 120, pStr, FONT_Highlight);
     
     // Help
-    Font_Print((SCR_Width / 2) - (Font_Print(0,0,"PRESS BUTTON TO EXIT",FONT_NoDisp)/2), 180, "PRESS BUTTON TO EXIT", 0);
+    Font_Print((SCR_Width / 2) - (Font_Print(0,0,"กดปุ่มเพื่อย้อนกลับ (EXIT)",FONT_NoDisp)/2), 180, "กดปุ่มเพื่อย้อนกลับ (EXIT)", 0);
 
 	return (nRetVal);
 }

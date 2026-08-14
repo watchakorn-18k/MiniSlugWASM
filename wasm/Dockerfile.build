@@ -3,10 +3,11 @@
 
 FROM emscripten/emsdk:latest
 
-# Install additional tools
+# Install additional tools and pre-build SDL2 port
 RUN apt-get update && apt-get install -y \
     python3 \
-    && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/* && \
+    embuilder build sdl2
 
 # Set working directory
 WORKDIR /app

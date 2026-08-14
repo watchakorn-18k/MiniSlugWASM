@@ -3,8 +3,8 @@
 
 // Tank : Restriction : Le tank n'est pas fait pour les "marches" verticales.
 // 		J'ai fait un truc qui fonctionne pas mal et qui dans ce cas garde le tank dans son inclinaison.
-//		MAIS, il faut qu'en cas de "marche", la pente en haut et en bas de la "marche" soient les mï¿½mes,
-//		ï¿½ cause du dï¿½calage dï¿½ au rotozoom.
+//		MAIS, il faut qu'en cas de "marche", la pente en haut et en bas de la "marche" soient les mÃ¯Â¿Â½mes,
+//		Ã¯Â¿Â½ cause du dÃ¯Â¿Â½calage dÃ¯Â¿Â½ au rotozoom.
 
 //#define DEBUG_KEYS	1		// A commenter.
 
@@ -12,8 +12,8 @@
 #define	PLAYER_Lives_Max	9
 
 // En mettre au moins un des deux !
-#define	POW_RESET_EACH_CREDIT	1		// Reset du nombre de POW ï¿½ chaque crï¿½dit.
-//#define	POW_RESET_EACH_LIFE		1		// Reset du nombre de POW ï¿½ chaque vie (mode MS, mais c'est dur...).
+#define	POW_RESET_EACH_CREDIT	1		// Reset du nombre de POW Ã¯Â¿Â½ chaque crÃ¯Â¿Â½dit.
+//#define	POW_RESET_EACH_LIFE		1		// Reset du nombre de POW Ã¯Â¿Â½ chaque vie (mode MS, mais c'est dur...).
 #if !defined(POW_RESET_EACH_CREDIT) && !defined(POW_RESET_EACH_LIFE)
 #error POW: POW_RESET_EACH_CREDIT & POW_RESET_EACH_LIFE not defined!
 #endif
@@ -31,7 +31,7 @@
 #define PLYR_NAKED_SPDY_MAX	SPDY_MAX
 #define	PLYR_NAKED_ACCX		0x30
 #define	PLYR_NAKED_JUMP_VAL	0x600
-#define	PLYR_NAKED_REF_OFFSETX	0x700	// Dï¿½calage dte/gauche par rapport au point de ref pour collisions.
+#define	PLYR_NAKED_REF_OFFSETX	0x700	// DÃ¯Â¿Â½calage dte/gauche par rapport au point de ref pour collisions.
 #define	PLYR_NAKED_HEIGHT	40//48
 
 #define	PLYR_SWIM_SPDX_MAX	0x100
@@ -88,87 +88,87 @@ enum
 //	e_ScrollType_Free / e_ScrollType_RightOnly,
 struct SLevRecord	gMissionTb[] =
 {
-// How to play. !!! Mission nï¿½0 !!!
+// How to play. !!! Mission nÃ¯Â¿Â½0 !!!
 {  4, 0, e_HeroVehicle_None_Naked, e_ScrollType_RightOnly, "", e_YmMusic_NoMusic },
 { -1, 0, e_HeroVehicle_None_Naked, e_ScrollType_Free, "", e_YmMusic_NoMusic },
 
-// Credits. !!! Mission nï¿½0 !!!
+// Credits. !!! Mission nÃ¯Â¿Â½0 !!!
 {  2, 0, e_HeroVehicle_HelicopterNoExit, e_ScrollType_RightOnly, "", e_YmMusic_Credits },
 { -1, 0, e_HeroVehicle_None_Naked, e_ScrollType_Free, "", e_YmMusic_NoMusic },
 
 // Niveaux normaux.
 /*
 Mission 1:
-Lev 01 : Dï¿½sert.
-Lev 13 : Jungle + Boss. (Arrivï¿½e en parachute).
+Lev 01 : DÃ¯Â¿Â½sert.
+Lev 13 : Jungle + Boss. (ArrivÃ¯Â¿Â½e en parachute).
 
 Mission 2:
 Lev 07 : Underwater.
 Lev 15 : Transit Underwater > Base sous marine.
 Lev 05 : Base sous marine. (+slug tank ?)
 Lev 06 : Plateformes.
-Lev 16 : Transit vers hï¿½lico.
-Lev 02 : Hï¿½lico + Boss.
+Lev 16 : Transit vers hÃ¯Â¿Â½lico.
+Lev 02 : HÃ¯Â¿Â½lico + Boss.
 
 Mission 3:
-Lev 08 : Train. (Arrivï¿½e en parachute). (+slug tank & slug helico ?)
-Lev 09 : Transit Train > Fusï¿½e.
-Lev 11 : Fusï¿½e.
+Lev 08 : Train. (ArrivÃ¯Â¿Â½e en parachute). (+slug tank & slug helico ?)
+Lev 09 : Transit Train > FusÃ¯Â¿Â½e.
+Lev 11 : FusÃ¯Â¿Â½e.
 Lev 14 : Mothership.
 Lev 17 : Mothership core room. (Faux boss).
 
 How to play:
-Lev 04 : Ville dï¿½truite.
+Lev 04 : Ville dÃ¯Â¿Â½truite.
 
 Unused:
 Lev 10 : Test.
-Lev 12 : Transit Fusï¿½e > Factory.
+Lev 12 : Transit FusÃ¯Â¿Â½e > Factory.
 Lev 03 : Factory.
 
 */
 
 
 
-//{  1,  1, e_HeroVehicle_None_Parachute, e_ScrollType_Free, "M1-1 Desert" },
+//{  1,  1, e_HeroVehicle_None_Parachute, e_ScrollType_Free, "M1-1 ทะเลทราย (Desert)" },
 /*
-{ 16, 1, e_HeroVehicle_None_Naked, e_ScrollType_RightOnly, "M2-5 On The Roof" },
-{  2, 1, e_HeroVehicle_HelicopterNoExit, e_ScrollType_Free, "M2-6 Sky Battle" },
-{  5, -1, e_HeroVehicle_None_Naked, e_ScrollType_RightOnly, "M2-3 Docks" },
-{  7,  2, e_HeroVehicle_None_Swim, e_ScrollType_RightOnly, "M2-1 Underwater" },
+{ 16, 1, e_HeroVehicle_None_Naked, e_ScrollType_RightOnly, "M2-5 บนดาดฟ้า (On The Roof)" },
+{  2, 1, e_HeroVehicle_HelicopterNoExit, e_ScrollType_Free, "M2-6 ศึกเวหา (Sky Battle)" },
+{  5, -1, e_HeroVehicle_None_Naked, e_ScrollType_RightOnly, "M2-3 ท่าเรือ (Docks)" },
+{  7,  2, e_HeroVehicle_None_Swim, e_ScrollType_RightOnly, "M2-1 ใต้น้ำ (Underwater)" },
 */
 
 
 // Mission 1.
-{  1,  1, e_HeroVehicle_None_Parachute, e_ScrollType_RightOnly, "M1-1 Desert", e_YmMusic_Mission1 },
-{ 13, -1, e_HeroVehicle_None_Naked, e_ScrollType_RightOnly, "M1-2 Jungle", e_YmMusic_Mission1 },
+{  1,  1, e_HeroVehicle_None_Parachute, e_ScrollType_RightOnly, "M1-1 ทะเลทราย (Desert)", e_YmMusic_Mission1 },
+{ 13, -1, e_HeroVehicle_None_Naked, e_ScrollType_RightOnly, "M1-2 ป่าดงดิบ (Jungle)", e_YmMusic_Mission1 },
 
 //	{ -1,  0, e_HeroVehicle_None_Naked, e_ScrollType_Free, "", e_YmMusic_NoMusic },	// < Fin de la preview.
 
 // Mission 2.
-{  7,  2, e_HeroVehicle_None_Swim, e_ScrollType_RightOnly, "M2-1 Underwater", e_YmMusic_Mission2 },
-{ 15, -1, e_HeroVehicle_None_Naked, e_ScrollType_RightOnly, "M2-2 Docks Entrance", e_YmMusic_Mission2 },
-{  5, -1, e_HeroVehicle_None_Naked, e_ScrollType_RightOnly, "M2-3 Docks", e_YmMusic_Mission2 },
-{  6, -1, e_HeroVehicle_None_Naked, e_ScrollType_Free, "M2-4 Factory", e_YmMusic_Mission2 },
-{ 16, -1, e_HeroVehicle_None_Naked, e_ScrollType_RightOnly, "M2-5 On The Roof", e_YmMusic_Mission2 },
-{  2, -1, e_HeroVehicle_HelicopterNoExit, e_ScrollType_Free, "M2-6 Sky Battle", e_YmMusic_Mission2 },
+{  7,  2, e_HeroVehicle_None_Swim, e_ScrollType_RightOnly, "M2-1 ใต้น้ำ (Underwater)", e_YmMusic_Mission2 },
+{ 15, -1, e_HeroVehicle_None_Naked, e_ScrollType_RightOnly, "M2-2 ทางเข้าท่าเรือ (Docks Entrance)", e_YmMusic_Mission2 },
+{  5, -1, e_HeroVehicle_None_Naked, e_ScrollType_RightOnly, "M2-3 ท่าเรือ (Docks)", e_YmMusic_Mission2 },
+{  6, -1, e_HeroVehicle_None_Naked, e_ScrollType_Free, "M2-4 โรงงาน (Factory)", e_YmMusic_Mission2 },
+{ 16, -1, e_HeroVehicle_None_Naked, e_ScrollType_RightOnly, "M2-5 บนดาดฟ้า (On The Roof)", e_YmMusic_Mission2 },
+{  2, -1, e_HeroVehicle_HelicopterNoExit, e_ScrollType_Free, "M2-6 ศึกเวหา (Sky Battle)", e_YmMusic_Mission2 },
 
 // Mission 3.
-{  8,  3, e_HeroVehicle_None_Parachute, e_ScrollType_RightOnly, "M3-1 Rebel Train", e_YmMusic_Mission3 },
-{  9, -1, e_HeroVehicle_None_Naked, e_ScrollType_RightOnly, "M3-2 Spaceport", e_YmMusic_Mission3 },
-{ 11, -1, e_HeroVehicle_Rocket, e_ScrollType_Free, "M3-3 To Infinity...", e_YmMusic_Mission3 },
-{ 14, -1, e_HeroVehicle_None_Naked, e_ScrollType_RightOnly, "M3-4 Mothership", e_YmMusic_Mission3 },
-{ 17, -1, e_HeroVehicle_None_Naked, e_ScrollType_Free, "M3-5 Final Room", e_YmMusic_Mission3 },
+{  8,  3, e_HeroVehicle_None_Parachute, e_ScrollType_RightOnly, "M3-1 รถไฟกบฏ (Rebel Train)", e_YmMusic_Mission3 },
+{  9, -1, e_HeroVehicle_None_Naked, e_ScrollType_RightOnly, "M3-2 ฐานปล่อยจรวด (Spaceport)", e_YmMusic_Mission3 },
+{ 11, -1, e_HeroVehicle_Rocket, e_ScrollType_Free, "M3-3 สู่อวกาศ (To Infinity...)", e_YmMusic_Mission3 },
+{ 14, -1, e_HeroVehicle_None_Naked, e_ScrollType_RightOnly, "M3-4 ยานแม่ (Mothership)", e_YmMusic_Mission3 },
+{ 17, -1, e_HeroVehicle_None_Naked, e_ScrollType_Free, "M3-5 ห้องบอสสุดท้าย (Final Room)", e_YmMusic_Mission3 },
 
 { -1,  0, e_HeroVehicle_None_Naked, e_ScrollType_Free, "", e_YmMusic_NoMusic },	// Fin.
 
 };
 
-// Renvoie le nom du niveau (pour sï¿½lecteur de niveau).
+// Renvoie le nom du niveau (pour sÃ¯Â¿Â½lecteur de niveau).
 char * Level_NameGet(u32 nLevelNo)
 {
 	return (gMissionTb[nLevelNo].pMissionName);
 }
-// Renvoie le nï¿½ rï¿½el d'un niveau (pour checksum).
+// Renvoie le nÃ¯Â¿Â½ rÃ¯Â¿Â½el d'un niveau (pour checksum).
 s32 Level_RealNumber(u32 nLevelNo)
 {
 	return (gMissionTb[nLevelNo].nLevelNo);
@@ -198,7 +198,7 @@ void SlugDisplay_Helicopter(void);
 void SlugControl_Rocket(void);
 void SlugDisplay_Rocket(void);
 
-// Fonctions de contrï¿½le et d'affichage en fonction du vï¿½hicule.
+// Fonctions de contrÃ¯Â¿Â½le et d'affichage en fonction du vÃ¯Â¿Â½hicule.
 pFctCtrl gpFctCtrlTb[e_HeroVehicle_MAX] =
 	{ PlayerControl_Naked, PlayerControl_Swim, PlayerControl_Parachute, PlayerControl_SlugNoExit_Temp, SlugControl_Submarine, SlugControl_Tank, SlugControl_Helicopter, SlugControl_Helicopter, SlugControl_Rocket };
 pFctDisp gpFctDispTb[e_HeroVehicle_MAX] =
@@ -206,7 +206,7 @@ pFctDisp gpFctDispTb[e_HeroVehicle_MAX] =
 
 void Player_Control(void)
 {
-	gpFctCtrlTb[gShoot.nVehicleType]();	// La routine de contrï¿½le du nouveau vï¿½hicule.
+	gpFctCtrlTb[gShoot.nVehicleType]();	// La routine de contrÃ¯Â¿Â½le du nouveau vÃ¯Â¿Â½hicule.
 }
 
 void Game_Player_DeathSet(void);
@@ -222,7 +222,7 @@ void Gen_ButtonB_Check(s32 nJumpSpdY);
 void Slug_AutoPilot_NewDir(s32 nBlkX, s32 nBlkY);
 
 //=============================================================================
-struct SPlayerSav		// Structure pour sauvegarde de certaines donnï¿½es lors du passage d'un level ï¿½ l'autre.
+struct SPlayerSav		// Structure pour sauvegarde de certaines donnÃ¯Â¿Â½es lors du passage d'un level Ã¯Â¿Â½ l'autre.
 {
 /*
 	s32	nAmmo_Save;			// Sauvegarde pour changement naked > vehicule > naked.
@@ -246,14 +246,14 @@ struct SPlayerSav		// Structure pour sauvegarde de certaines donnï¿½es lors d
 	s32	nAmmo;			// Munitions pour l'arme de poing en cours.
 	u32	nBombAmmo;		// Nombre de grenades.
 
-	u32	nFreedPrisoners;	// Nb de prisonniers libï¿½rï¿½s.
+	u32	nFreedPrisoners;	// Nb de prisonniers libÃ¯Â¿Â½rÃ¯Â¿Â½s.
 
-	u32	nVehicleType;	// Vï¿½hicule pour Mst44.
+	u32	nVehicleType;	// VÃ¯Â¿Â½hicule pour Mst44.
 };
 struct SPlayerSav	gShootSav;
 
 // Sauvegarde les variables du joueur (inter-level).
-// !!! Attention, les datas peuvent aussi ï¿½tre initialisï¿½s dans ExgPlatformerInit() !!!
+// !!! Attention, les datas peuvent aussi Ã¯Â¿Â½tre initialisÃ¯Â¿Â½s dans ExgPlatformerInit() !!!
 void Player_LvlDataSave(void)
 {
 	gShootSav.nWeapon = gShoot.nWeapon;
@@ -262,19 +262,19 @@ void Player_LvlDataSave(void)
 
 	gShootSav.nFreedPrisoners = gShoot.nFreedPrisoners;
 
-	gShootSav.nVehicleType = gShoot.nVehicleType;	// Svg vï¿½hicule pour Mst44.
+	gShootSav.nVehicleType = gShoot.nVehicleType;	// Svg vÃ¯Â¿Â½hicule pour Mst44.
 
 }
 
 // Restore les variables du joueur (inter-level).
-// !!! Attention, les datas peuvent aussi ï¿½tre initialisï¿½s dans ExgPlatformerInit() !!!
+// !!! Attention, les datas peuvent aussi Ã¯Â¿Â½tre initialisÃ¯Â¿Â½s dans ExgPlatformerInit() !!!
 void Player_LvlDataRestore(void)
 {
 	Player_WeaponSet(gShootSav.nWeapon);
 	gShoot.nWeapon = gShootSav.nWeapon;			// Au cas ou passage dans slug. (A voir...)
 	gShoot.nAmmo = gShootSav.nAmmo;
 	gShoot.nBombAmmo = gShootSav.nBombAmmo;
-//	gShoot.nAmmo_Save = gShoot.nAmmo;			// Pour premier passage dans VehicleSet (appelï¿½e plus loin dans la fonction !).
+//	gShoot.nAmmo_Save = gShoot.nAmmo;			// Pour premier passage dans VehicleSet (appelÃ¯Â¿Â½e plus loin dans la fonction !).
 //	gShoot.nBombAmmo_Save = gShoot.nBombAmmo;
 
 	gShoot.nFreedPrisoners = gShootSav.nFreedPrisoners;
@@ -286,7 +286,7 @@ u32 LvlDataSave_GetVehicle(void) { return (gShootSav.nVehicleType); }
 
 //=============================================================================
 
-// On remet de l'ï¿½nergie au slug.
+// On remet de l'Ã¯Â¿Â½nergie au slug.
 void Player_SlugRefuel(u32 nEnergy)
 {
 	u32	nEnergyTemp;
@@ -305,7 +305,7 @@ s32	gpnArmsLoadMax[e_Player_Weapon_Max] = { -1, 25, 100, 100, 15 };
 u8 gpHeroShotClearKb[e_Player_Weapon_Max] = { 1, 1, 0, 0, 1 };	// Doit-on clearer la touche de tir, en fct de l'arme.
 
 // On recharge l'arme en cours.
-// (externalisï¿½ pour caisse de munitions).
+// (externalisÃ¯Â¿Â½ pour caisse de munitions).
 void Player_WeaponReload(u32 nBombsAdd)
 {
 //	static	s32	gpnArmsLoadMax[e_Player_Weapon_Max] = { -1, 100, 350, 350, 50 };
@@ -327,12 +327,12 @@ void Player_WeaponReload(u32 nBombsAdd)
 	}
 }
 
-// Changement d'arme. Si dans un vï¿½hicule on change l'arme de poing.
+// Changement d'arme. Si dans un vÃ¯Â¿Â½hicule on change l'arme de poing.
 void Player_WeaponSet(u32 nWeaponNo)
 {
 	assert(nWeaponNo < e_Player_Weapon_Max);
 
-	// Coupe une ï¿½ventuelle anim de tir.
+	// Coupe une Ã¯Â¿Â½ventuelle anim de tir.
 	if (gShoot.nPlayerAnmTop != -1)
 	{
 		AnmReleaseSlot(gShoot.nPlayerAnmTop);
@@ -344,7 +344,7 @@ void Player_WeaponSet(u32 nWeaponNo)
 	// On recharge.
 	Player_WeaponReload(0);
 
-	// Si on n'est pas dans un vï¿½hicule, on regarde s'il faut clearer ou pas le bouton de tir.
+	// Si on n'est pas dans un vÃ¯Â¿Â½hicule, on regarde s'il faut clearer ou pas le bouton de tir.
 	if (gShoot.nVehicleType < e_HeroVehicle_SlugBase)
 //	if (gVar.pKeys[KB_BUTTONA]) gVar.pKeys[KB_BUTTONA] = gpHeroShotClearKb[gShoot.nWeapon] ^ 1;
 	if (gVar.pKeys[gMSCfg.pKeys[e_CfgKey_ButtonA]]) gVar.pKeys[gMSCfg.pKeys[e_CfgKey_ButtonA]] = gpHeroShotClearKb[gShoot.nWeapon] ^ 1;
@@ -352,28 +352,28 @@ void Player_WeaponSet(u32 nWeaponNo)
 }
 
 
-// Sortie/rentrï¿½e des canons.
+// Sortie/rentrÃ¯Â¿Â½e des canons.
 // In: 1 = out / 0 = in.
 void Rocket_CannonsInOut(u32 nInOut)
 {
 	if (nInOut)
 	{
 		// Sortie.
-		if (gShoot.pnRocketSideWeaponsAnmLR[0] == -1) AnmSet(gAnm_SlugRocket_NoSprite, gShoot.pnRocketSideWeaponsSparkAnmLR[0]);	// RAZ ï¿½tincelle.
+		if (gShoot.pnRocketSideWeaponsAnmLR[0] == -1) AnmSet(gAnm_SlugRocket_NoSprite, gShoot.pnRocketSideWeaponsSparkAnmLR[0]);	// RAZ Ã¯Â¿Â½tincelle.
 		gShoot.pnRocketSideWeaponsAnmLR[0] = AnmSetIfNew(gAnm_SlugRocket_WeaponL_Out, gShoot.pnRocketSideWeaponsAnmLR[0]);
-		if (gShoot.pnRocketSideWeaponsAnmLR[1] == -1) AnmSet(gAnm_SlugRocket_NoSprite, gShoot.pnRocketSideWeaponsSparkAnmLR[1]);	// RAZ ï¿½tincelle.
+		if (gShoot.pnRocketSideWeaponsAnmLR[1] == -1) AnmSet(gAnm_SlugRocket_NoSprite, gShoot.pnRocketSideWeaponsSparkAnmLR[1]);	// RAZ Ã¯Â¿Â½tincelle.
 		gShoot.pnRocketSideWeaponsAnmLR[1] = AnmSetIfNew(gAnm_SlugRocket_WeaponR_Out, gShoot.pnRocketSideWeaponsAnmLR[1]);
 	}
 	else
 	{
-		// Rentrï¿½e.
+		// RentrÃ¯Â¿Â½e.
 		if (gShoot.pnRocketSideWeaponsAnmLR[0] != -1) AnmSetIfNew(gAnm_SlugRocket_WeaponL_In, gShoot.pnRocketSideWeaponsAnmLR[0]);
 		if (gShoot.pnRocketSideWeaponsAnmLR[1] != -1) AnmSetIfNew(gAnm_SlugRocket_WeaponR_In, gShoot.pnRocketSideWeaponsAnmLR[1]);
 	}
 
 }
 
-// Weapon set pour le slug fusï¿½e.
+// Weapon set pour le slug fusÃ¯Â¿Â½e.
 void Rocket_WeaponSet(u32 nWeaponNo)
 {
 	gShoot.nRocketWeapon = nWeaponNo;
@@ -383,11 +383,11 @@ void Rocket_WeaponSet(u32 nWeaponNo)
 }
 
 
-// Changement de vï¿½hicule.
+// Changement de vÃ¯Â¿Â½hicule.
 void Player_VehicleSet(u32 nVehicle, u32 nPosX, u32 nPosY, u32 nEnergy, u32 nVulcanAngle, u32 nBombs)
 {
 
-	// Position : On passe ï¿½ celle du vï¿½hicule.
+	// Position : On passe Ã¯Â¿Â½ celle du vÃ¯Â¿Â½hicule.
 	gShoot.nPlayerPosX = nPosX;
 	gShoot.nPlayerPosY = nPosY;
 	// RAZ vitesse.
@@ -399,7 +399,7 @@ void Player_VehicleSet(u32 nVehicle, u32 nPosX, u32 nPosY, u32 nEnergy, u32 nVul
 	//
 	gShoot.nPfAddress = 0;			// RAZ plateforme.
 	gShoot.nPlayerGndAng = 0;		// RAZ angle au sol.
-	gShoot.nInvulnerability = 0;	// RAZ invulnï¿½rabilitï¿½.
+	gShoot.nInvulnerability = 0;	// RAZ invulnÃ¯Â¿Â½rabilitÃ¯Â¿Â½.
 	gShoot.nDeathFlag = 0;			// RAZ flag mort.
 	gShoot.nVehicleHitCnt = 0;		// RAZ Compteur de hit.
 	gShoot.nBoredCnt = 0;			// RAZ compteur d'ennui.
@@ -417,7 +417,7 @@ void Player_VehicleSet(u32 nVehicle, u32 nPosX, u32 nPosY, u32 nEnergy, u32 nVul
 		gShoot.nParachuteAnm = -1;
 	}
 
-	// Fusï¿½e : Clear des anims si nï¿½cessaire.
+	// FusÃ¯Â¿Â½e : Clear des anims si nÃ¯Â¿Â½cessaire.
 	u32	i;
 	if (gShoot.nRocketMainThrusterAnm != -1) { AnmReleaseSlot(gShoot.nRocketMainThrusterAnm); gShoot.nRocketMainThrusterAnm = -1; }
 	if (gShoot.nRocketBodyWeaponSparkAnm != -1) { AnmReleaseSlot(gShoot.nRocketBodyWeaponSparkAnm); gShoot.nRocketBodyWeaponSparkAnm = -1; }
@@ -431,7 +431,7 @@ void Player_VehicleSet(u32 nVehicle, u32 nPosX, u32 nPosY, u32 nEnergy, u32 nVul
 
 	// Slug.
 	gShoot.nVehicleAutoPilot = 0;
-	if (gGameVar.nGenLevel == MISSIONOFFS_HOWTOPLAY) gShoot.nVehicleAutoPilot = 0x80;	// Un bon patch dï¿½gueulasse pour le how to play...
+	if (gGameVar.nGenLevel == MISSIONOFFS_HOWTOPLAY) gShoot.nVehicleAutoPilot = 0x80;	// Un bon patch dÃ¯Â¿Â½gueulasse pour le how to play...
 	if (nVehicle >= e_HeroVehicle_SlugBase)
 	{
 		gShoot.nVehicleAmmo = -1;			// Vulcan cannon, munitions infinies.
@@ -441,7 +441,7 @@ void Player_VehicleSet(u32 nVehicle, u32 nPosX, u32 nPosY, u32 nEnergy, u32 nVul
 	}
 	gShoot.nEngineCnt = -2;		// Pour bruit de moteur.
 
-	// Contrï¿½le sur l'ï¿½nergie max.
+	// ContrÃ¯Â¿Â½le sur l'Ã¯Â¿Â½nergie max.
 	if (nEnergy > SLUG_ENERGY_MAX) nEnergy = SLUG_ENERGY_MAX;
 
 	gShoot.nVehicleType = nVehicle;
@@ -465,7 +465,7 @@ void Player_VehicleSet(u32 nVehicle, u32 nPosX, u32 nPosY, u32 nEnergy, u32 nVul
 
 	case e_HeroVehicle_Tank:
 		AnmSet(gAnm_SlugTank_GetIn, gShoot.nVehicleAnim);			// Anim de fermeture pour le vehicule.
-		AnmSet(gAnm_Hero_SlugGetIn, gShoot.nPlayerAnimInOut);		// Anim du hï¿½ros en train de rentrer dans le slug.
+		AnmSet(gAnm_Hero_SlugGetIn, gShoot.nPlayerAnimInOut);		// Anim du hÃ¯Â¿Â½ros en train de rentrer dans le slug.
 		//
 		gShoot.nPlayerDir = 0;
 		gShoot.nVehicleOffsY = 0;
@@ -474,12 +474,12 @@ void Player_VehicleSet(u32 nVehicle, u32 nPosX, u32 nPosY, u32 nEnergy, u32 nVul
 		gShoot.nVulcanAngle = nVulcanAngle;
 		gShoot.nVehicleEnergy = nEnergy;
 
-		gShoot.nPlayerLastGnd = gShoot.nPlayerGnd = 1;		// Pour ï¿½viter le "plouf" quand on monte dans le tank.
+		gShoot.nPlayerLastGnd = gShoot.nPlayerGnd = 1;		// Pour Ã¯Â¿Â½viter le "plouf" quand on monte dans le tank.
 		break;
 
 	case e_HeroVehicle_Submarine:
 		AnmSet(gAnm_SlugSubmarine_GetIn, gShoot.nVehicleAnim);		// Anim de fermeture pour le vehicule.
-		AnmSet(gAnm_Hero_SlugGetIn, gShoot.nPlayerAnimInOut);		// Anim du hï¿½ros en train de rentrer dans le slug.
+		AnmSet(gAnm_Hero_SlugGetIn, gShoot.nPlayerAnimInOut);		// Anim du hÃ¯Â¿Â½ros en train de rentrer dans le slug.
 		//
 		gShoot.nPlayerDir = 0;
 		gShoot.nVehicleOffsY = 0;
@@ -492,7 +492,7 @@ void Player_VehicleSet(u32 nVehicle, u32 nPosX, u32 nPosY, u32 nEnergy, u32 nVul
 	case e_HeroVehicle_Helicopter:
 	case e_HeroVehicle_HelicopterNoExit:
 		AnmSet(gAnm_SlugCopter_GetIn, gShoot.nVehicleAnim);			// Anim de fermeture pour le vehicule.
-		AnmSet(gAnm_Hero_SlugGetIn, gShoot.nPlayerAnimInOut);		// Anim du hï¿½ros en train de rentrer dans le slug.
+		AnmSet(gAnm_Hero_SlugGetIn, gShoot.nPlayerAnimInOut);		// Anim du hÃ¯Â¿Â½ros en train de rentrer dans le slug.
 		//
 		gShoot.nPlayerDir = 0;
 		gShoot.nVehicleOffsY = 0;
@@ -506,15 +506,15 @@ void Player_VehicleSet(u32 nVehicle, u32 nPosX, u32 nPosY, u32 nEnergy, u32 nVul
 		gShoot.nRocketWeapon = e_Player_Weapon_Gun;
 
 		AnmSet(gAnm_SlugRocket_GetIn, gShoot.nVehicleAnim);			// Anim de fermeture pour le vehicule.
-		AnmSet(gAnm_Hero_SlugGetIn, gShoot.nPlayerAnimInOut);		// Anim du hï¿½ros en train de rentrer dans le slug.
+		AnmSet(gAnm_Hero_SlugGetIn, gShoot.nPlayerAnimInOut);		// Anim du hÃ¯Â¿Â½ros en train de rentrer dans le slug.
 		AnmSet(gAnm_HeroInSlug_Rocket_LookR, gShoot.nPlayerAnm);	// Anim du joueur dans le slug.
 
-		gShoot.nRocketMainThrusterAnm = AnmSet(gAnm_SlugRocket_MainThruster, gShoot.nRocketMainThrusterAnm);	// Anim du rï¿½acteur.
+		gShoot.nRocketMainThrusterAnm = AnmSet(gAnm_SlugRocket_MainThruster, gShoot.nRocketMainThrusterAnm);	// Anim du rÃ¯Â¿Â½acteur.
 
 		for (i = 0; i < 4; i++)
 			gShoot.pnRocketThrustersAnm[i] = AnmSet(gAnm_SlugRocket_ThrustEmpty, gShoot.pnRocketThrustersAnm[i]);	// Anims des thrusters.
 
-		// On rï¿½serve les slots pour les ï¿½tincelles des tirs.
+		// On rÃ¯Â¿Â½serve les slots pour les Ã¯Â¿Â½tincelles des tirs.
 		gShoot.nRocketBodyWeaponSparkAnm = AnmSet(gAnm_SlugRocket_NoSprite, gShoot.nRocketBodyWeaponSparkAnm);
 		gShoot.pnRocketSideWeaponsSparkAnmLR[0] = AnmSet(gAnm_SlugRocket_NoSprite, gShoot.pnRocketSideWeaponsSparkAnmLR[0]);
 		gShoot.pnRocketSideWeaponsSparkAnmLR[1] = AnmSet(gAnm_SlugRocket_NoSprite, gShoot.pnRocketSideWeaponsSparkAnmLR[1]);
@@ -532,29 +532,29 @@ void Player_VehicleSet(u32 nVehicle, u32 nPosX, u32 nPosY, u32 nEnergy, u32 nVul
 
 }
 
-// Inits au niveau du crï¿½dit.
+// Inits au niveau du crÃ¯Â¿Â½dit.
 void Player_InitCredit(void)
 {
-	gShoot.nPlayerLives = PLAYER_Lives_Start - 1;	// -1, car on utilise la premiï¿½re vie !
+	gShoot.nPlayerLives = PLAYER_Lives_Start - 1;	// -1, car on utilise la premiÃ¯Â¿Â½re vie !
 	gShoot.nHUDPlayerLivesBlink = 0;		// RAZ clignotement.
 	gShoot.nPlayerScore = 0;
 #ifdef POW_RESET_EACH_CREDIT
-	gShoot.nFreedPrisoners = 0;	// Nb de prisonniers libï¿½rï¿½s.
+	gShoot.nFreedPrisoners = 0;	// Nb de prisonniers libÃ¯Â¿Â½rÃ¯Â¿Â½s.
 #endif
 
 }
 
-// Init pour une partie, rï¿½cupï¿½re/initialise les paramï¿½tres de gExg.
+// Init pour une partie, rÃ¯Â¿Â½cupÃ¯Â¿Â½re/initialise les paramÃ¯Â¿Â½tres de gExg.
 void ExgPlatformerInit(s32 nCreditsNb, u32 nMissionTbOffset)
 {
 	gGameVar.nGenLevel = nMissionTbOffset;
 	gGameVar.nLevel = gMissionTb[gGameVar.nGenLevel].nLevelNo;	// Init nLevel pour premier passage dans ShootGame().
 
-	gGameVar.nCreditsNb = nCreditsNb;		// Nb de crï¿½dits pour la partie.
+	gGameVar.nCreditsNb = nCreditsNb;		// Nb de crÃ¯Â¿Â½dits pour la partie.
 	if (gGameVar.nCreditsNb > 0) gGameVar.nCreditsNb--;		// On utilise le premier.
 	Player_InitCredit();
-	gGameVar.nBestScore = 0;		// Meilleur score de tous les crï¿½dits.
-	gGameVar.nContinueUsed = 0;		// Nb de continue utilisï¿½s.
+	gGameVar.nBestScore = 0;		// Meilleur score de tous les crÃ¯Â¿Â½dits.
+	gGameVar.nContinueUsed = 0;		// Nb de continue utilisÃ¯Â¿Â½s.
 	gGameVar.nMissionNo = 0;
 	//
 	gGameVar.nExitCode = 0;
@@ -563,19 +563,19 @@ void ExgPlatformerInit(s32 nCreditsNb, u32 nMissionTbOffset)
 	srand(time(NULL));		// Init hasard.
 
 
-	// Level sï¿½lecteur activï¿½ ? (et jeu ? i.e. pas crï¿½dits ou how to play).
+	// Level sÃ¯Â¿Â½lecteur activÃ¯Â¿Â½ ? (et jeu ? i.e. pas crÃ¯Â¿Â½dits ou how to play).
 	if ((gCCodes.nCheat & e_Cheat_LevelSelect) && nMissionTbOffset >= MISSIONOFFS_LEVELS)
 	{
-		// Sur un dï¿½but de mission ?
+		// Sur un dÃ¯Â¿Â½but de mission ?
 		if (gMissionTb[gGameVar.nGenLevel].nMissionNo == -1)
 		{
-			// Non, on remonte dans la liste pour trouver le nï¿½ de mission qui va bien.
+			// Non, on remonte dans la liste pour trouver le nÃ¯Â¿Â½ de mission qui va bien.
 			u32	i = gGameVar.nGenLevel;
 			while (gMissionTb[--i].nMissionNo == -1);
 			gGameVar.nMissionNo = gMissionTb[i].nMissionNo;
 
-			// Init des donnï¿½es qui seront restaurï¿½es dans Player_LvlDataRestore(),
-			// lors du e_Game_LoadLevel. (Normalement, datas sauvegardï¿½es en sortant du niveau prï¿½cï¿½dent).
+			// Init des donnÃ¯Â¿Â½es qui seront restaurÃ¯Â¿Â½es dans Player_LvlDataRestore(),
+			// lors du e_Game_LoadLevel. (Normalement, datas sauvegardÃ¯Â¿Â½es en sortant du niveau prÃ¯Â¿Â½cÃ¯Â¿Â½dent).
 			gShootSav.nWeapon = e_Player_Weapon_Gun;
 			gShootSav.nAmmo = gpnArmsLoadMax[gShootSav.nWeapon];
 			gShootSav.nBombAmmo = PLYR_NAKED_BOMBS_DEFAULT;
@@ -588,15 +588,15 @@ void ExgPlatformerInit(s32 nCreditsNb, u32 nMissionTbOffset)
 
 void Inactivity_WriterInit(void);
 extern s32	gnScrollLimitXMin;
-// Rï¿½initialisation du bit de flip quand nï¿½cessaire, aprï¿½s le Player_InitLife.
+// RÃ¯Â¿Â½initialisation du bit de flip quand nÃ¯Â¿Â½cessaire, aprÃ¯Â¿Â½s le Player_InitLife.
 void Player_ReinitFlipX(u32 nPlayerLastDir)
 {
-	// Si scroll libre OU scroll bloquï¿½, on restaure le bit de flip.
+	// Si scroll libre OU scroll bloquÃ¯Â¿Â½, on restaure le bit de flip.
 	if (gMissionTb[gGameVar.nGenLevel].nScrollType == e_ScrollType_Free || gnScrollLimitXMin != -1)
 		gShoot.nPlayerDir = nPlayerLastDir;
 }
 
-// Init joueur ï¿½ chaque vie.
+// Init joueur Ã¯Â¿Â½ chaque vie.
 void Player_InitLife(s32 nPosX, s32 nPosY, u32 nVehicleType)
 {
 	gShoot.nPlayerPosX = nPosX;
@@ -610,36 +610,36 @@ void Player_InitLife(s32 nPosX, s32 nPosY, u32 nVehicleType)
 
 	gShoot.nVehicleType = nVehicleType;
 
-	gShoot.nVehicleAnim = AnmSet(gAnm_Hero_Stance, gShoot.nVehicleAnim);	// On rï¿½serve un slot.
-	gShoot.nPlayerAnimInOut = AnmSet(gAnm_Hero_Stance, gShoot.nPlayerAnimInOut);	// On rï¿½serve un slot.
+	gShoot.nVehicleAnim = AnmSet(gAnm_Hero_Stance, gShoot.nVehicleAnim);	// On rÃ¯Â¿Â½serve un slot.
+	gShoot.nPlayerAnimInOut = AnmSet(gAnm_Hero_Stance, gShoot.nPlayerAnimInOut);	// On rÃ¯Â¿Â½serve un slot.
 
 #ifdef POW_RESET_EACH_LIFE
-	gShoot.nFreedPrisoners = 0;	// Nb de prisonniers libï¿½rï¿½s.
+	gShoot.nFreedPrisoners = 0;	// Nb de prisonniers libÃ¯Â¿Â½rÃ¯Â¿Â½s.
 #endif
 
 	gShoot.nPlayerAnm = AnmSet(gAnm_Hero_Stance, gShoot.nPlayerAnm);	// Anim du bas.
-	gShoot.nPlayerAnmTop = -1;	// Anim du haut pour cas spï¿½ciaux (tirs...). => Normalement, pas de "fuite" ici, quand mort, le slot est cleanï¿½.
+	gShoot.nPlayerAnmTop = -1;	// Anim du haut pour cas spÃ¯Â¿Â½ciaux (tirs...). => Normalement, pas de "fuite" ici, quand mort, le slot est cleanÃ¯Â¿Â½.
 	gShoot.nPlayerDir = 0;		// 0 = droite / 1 = gauche.
 	gShoot.nParachuteAnm = -1;
 	gShoot.nInvulnerability = 0;
 	gShoot.nDeathFlag = 0;		// RAZ flag mort.
 	gShoot.nBoredCnt = 0;		// RAZ compteur d'ennui.
-	gShoot.nInactivityCnt = 0;	// Compteur d'inactivitï¿½.
+	gShoot.nInactivityCnt = 0;	// Compteur d'inactivitÃ¯Â¿Â½.
 	Inactivity_WriterInit();	// (On pourrait aussi l'initialiser une fois pour toutes, mais bon...).
 
 	gShoot.nPfAddress = 0;		// Pour plateformes mobiles.
 
 	gShoot.nMstProximity = 0;
 
-	Player_VehicleSet(gShoot.nVehicleType, nPosX, nPosY, SLUG_ENERGY_MAX, 0, SLUG_BOMBS_DEFAULT);	// Nb de bombes par dï¿½faut, au cas oï¿½ on commence un niveau en slug.
+	Player_VehicleSet(gShoot.nVehicleType, nPosX, nPosY, SLUG_ENERGY_MAX, 0, SLUG_BOMBS_DEFAULT);	// Nb de bombes par dÃ¯Â¿Â½faut, au cas oÃ¯Â¿Â½ on commence un niveau en slug.
 
 	// Init vulcan cannon.
 	gShoot.nVulcanAngle = 0;
-	gShoot.nVulcanAnm = AnmSet(gAnm_VulcanCannon_Idle, gShoot.nVulcanAnm);	// On rï¿½serve un slot.
+	gShoot.nVulcanAnm = AnmSet(gAnm_VulcanCannon_Idle, gShoot.nVulcanAnm);	// On rÃ¯Â¿Â½serve un slot.
 
 }
 
-// Initialisation ï¿½ l'init du niveau.
+// Initialisation Ã¯Â¿Â½ l'init du niveau.
 void GameInitLevel(void)
 {
 	u32	nPosX, nPosY;
@@ -651,16 +651,16 @@ void GameInitLevel(void)
 	DustInitEngine();
 	HardSpr_Init();
 
-	// Position du joueur (relue ï¿½ la lecture du niveau).
+	// Position du joueur (relue Ã¯Â¿Â½ la lecture du niveau).
 	nPosX = (gMap.nPlayerStartPosX * 4096) + (8 * 256);
 	nPosY = (gMap.nPlayerStartPosY * 4096) + (16 * 256);
 
-	// Solution de facilitï¿½ un peu crade, car ï¿½a ne sert que dans un niveau. Sinon on pourrait faire un monstre qui initialise la variable, voire avec un niveau cï¿½tï¿½ droit et un niveau cï¿½tï¿½ gauche et en fct de la pos du joueur.
+	// Solution de facilitÃ¯Â¿Â½ un peu crade, car Ã¯Â¿Â½a ne sert que dans un niveau. Sinon on pourrait faire un monstre qui initialise la variable, voire avec un niveau cÃ¯Â¿Â½tÃ¯Â¿Â½ droit et un niveau cÃ¯Â¿Â½tÃ¯Â¿Â½ gauche et en fct de la pos du joueur.
 	static s16 gnSplashTb[LEVEL_MAX] = { -1, -1, -1, -1,  -1, -1, -1, -1,  -1, -1, -1, -1,  -1, (20*16)-8, -1, (13*16), -1, -1 };
 	gShoot.nSplashLevel = (s32)gnSplashTb[gGameVar.nLevel];
 
 	// Init joueur.
-	gShoot.nVehicleAnim = -1;		// RAZ des nï¿½ de slots d'anim ï¿½ l'init du niveau, pour rï¿½init de vie sans perte de slots.
+	gShoot.nVehicleAnim = -1;		// RAZ des nÃ¯Â¿Â½ de slots d'anim Ã¯Â¿Â½ l'init du niveau, pour rÃ¯Â¿Â½init de vie sans perte de slots.
 	gShoot.nPlayerAnimInOut = -1;
 	gShoot.nPlayerAnm = -1;
 	gShoot.nVulcanAnm = -1;
@@ -672,10 +672,10 @@ void GameInitLevel(void)
 	for (i = 0; i < 4; i++) gShoot.pnRocketThrustersAnm[i] = -1;
 
 	Player_InitLife(nPosX, nPosY, gMissionTb[gGameVar.nGenLevel].nVehicleType);
-	// Au cas ou on commence dans un vï¿½hicule, on force la phase "normale" pour ne pas voir le 'get in'.
+	// Au cas ou on commence dans un vÃ¯Â¿Â½hicule, on force la phase "normale" pour ne pas voir le 'get in'.
 	gShoot.nVehiclePhase = e_SlugPhase_Normal;
 
-//<<< Rï¿½cupï¿½rer le "mission start" ici. (????? Ah, peut-ï¿½tre le nï¿½ de la mission !)
+//<<< RÃ¯Â¿Â½cupÃ¯Â¿Â½rer le "mission start" ici. (????? Ah, peut-Ã¯Â¿Â½tre le nÃ¯Â¿Â½ de la mission !)
 
 	ScrollInitScreen(gMissionTb[gGameVar.nGenLevel].nScrollType);
 
@@ -683,7 +683,7 @@ void GameInitLevel(void)
 
 
 //=============================================================================
-// Routines gï¿½nï¿½rales.
+// Routines gÃ¯Â¿Â½nÃ¯Â¿Â½rales.
 
 u64 *gpHeroAnm[] =
 {
@@ -710,7 +710,7 @@ u64 *gpHeroAnm[] =
 };
 enum
 {
-	e_Anm_Hero_Stance = 0,		// !!! Attention ï¿½ l'ordre !!! Pour Stance et Run, on fait un anm+1 dans control_naked quand crouch.
+	e_Anm_Hero_Stance = 0,		// !!! Attention Ã¯Â¿Â½ l'ordre !!! Pour Stance et Run, on fait un anm+1 dans control_naked quand crouch.
 	e_Anm_Hero_CrouchStance,
 	e_Anm_Hero_Run,
 	e_Anm_Hero_CrouchWalk,
@@ -733,11 +733,11 @@ enum
 };
 
 
-// Avance l'anim du bas et en dï¿½duit le sprite qui va bien en haut (en fct de l'arme, etc...).
+// Avance l'anim du bas et en dÃ¯Â¿Â½duit le sprite qui va bien en haut (en fct de l'arme, etc...).
 void Player_GetTopBottom(u32 *pnLegs, u32 *pnTop)
 {
 	u32	nAnmKey;
-	//*** 1) On regarde l'anim du bas. On en dï¿½duit le sprite qui va bien pour le haut (en fct de l'arme, etc...).
+	//*** 1) On regarde l'anim du bas. On en dÃ¯Â¿Â½duit le sprite qui va bien pour le haut (en fct de l'arme, etc...).
 
 	*pnLegs = AnmGetImage(gShoot.nPlayerAnm);		// Anim du bas.
 	*pnTop = 0;
@@ -798,7 +798,7 @@ void Player_GetTopBottom(u32 *pnLegs, u32 *pnTop)
 		*pnTop += gpHeroTopImg[e_gpHeroTopImg_SubRun][gShoot.nWeapon];
 		break;
 
-	case e_AnmKey_Hero_Bored:		// Cas trï¿½s spï¿½cial des anims "bored".
+	case e_AnmKey_Hero_Bored:		// Cas trÃ¯Â¿Â½s spÃ¯Â¿Â½cial des anims "bored".
 		*pnTop = *pnLegs;
 		*pnLegs = e_Spr_HeroLegs_Stance;	// Jambes fixes. L'anim donne l'image du haut.
 		break;
@@ -807,8 +807,8 @@ void Player_GetTopBottom(u32 *pnLegs, u32 *pnTop)
 
 }
 
-// Accï¿½lï¿½ration/ralentissement.
-// Out : 1 = On a demandï¿½ a bouger / 0 = Plus de direction.
+// AccÃ¯Â¿Â½lÃ¯Â¿Â½ration/ralentissement.
+// Out : 1 = On a demandÃ¯Â¿Â½ a bouger / 0 = Plus de direction.
 u32 PlyrMove_Spd(s32 *pSpd, s32 nSpdMax, s32 nAcc, const u32 nKeyMinus, const u32 nKeyPlus)
 {
 	if (gVar.pKeys[nKeyMinus] || gVar.pKeys[nKeyPlus])
@@ -838,7 +838,7 @@ u32 PlyrMove_Spd(s32 *pSpd, s32 nSpdMax, s32 nAcc, const u32 nKeyMinus, const u3
 	return (0);
 }
 
-// Empï¿½che de sortir de la map par le haut.
+// EmpÃ¯Â¿Â½che de sortir de la map par le haut.
 void PlayerMove_LimitY(s32 nHeight)
 {
 	if (gShoot.nPlayerPosY - (nHeight * 256) <= 0)
@@ -848,7 +848,7 @@ void PlayerMove_LimitY(s32 nHeight)
 	}
 }
 
-// Empï¿½che de sortir de la map par le bas (peut arriver dans le niveau sous-marin).
+// EmpÃ¯Â¿Â½che de sortir de la map par le bas (peut arriver dans le niveau sous-marin).
 void PlayerMove_LimitY_Bottom(s32 nHeight)
 {
 	if (gShoot.nPlayerPosY + (nHeight * 256) >= (gMap.pPlanesHt[gMap.nHeroPlane] * 4096) - 0x100)
@@ -858,7 +858,7 @@ void PlayerMove_LimitY_Bottom(s32 nHeight)
 	}
 }
 
-// Limites gauche et droite. Map ou fenï¿½tre.
+// Limites gauche et droite. Map ou fenÃ¯Â¿Â½tre.
 void PlayerMove_LimitX(s32 nOffsetX)
 {
 	s32	nLimitMinX, nLimitMaxX;
@@ -867,16 +867,16 @@ void PlayerMove_LimitX(s32 nOffsetX)
 	nLimitMaxX = gScrollPos.nPosX + (SCR_Width * 256) - 0x100;
 
 	if (gShoot.nPlayerPosX + gShoot.nPlayerSpdX - nOffsetX <= nLimitMinX) gShoot.nPlayerSpdX = 0;
-	if (gShoot.nPlayerPosX - nOffsetX <= nLimitMinX) gShoot.nPlayerPosX = nLimitMinX + nOffsetX;	// Sï¿½curitï¿½, mais ne devrait pas arriver.
+	if (gShoot.nPlayerPosX - nOffsetX <= nLimitMinX) gShoot.nPlayerPosX = nLimitMinX + nOffsetX;	// SÃ¯Â¿Â½curitÃ¯Â¿Â½, mais ne devrait pas arriver.
 	if (gShoot.nPlayerPosX + gShoot.nPlayerSpdX + nOffsetX >= nLimitMaxX) gShoot.nPlayerSpdX = 0;
-	if (gShoot.nPlayerPosX + nOffsetX >= nLimitMaxX) gShoot.nPlayerPosX = nLimitMaxX - nOffsetX;	// Sï¿½curitï¿½, mais ne devrait pas arriver.
+	if (gShoot.nPlayerPosX + nOffsetX >= nLimitMaxX) gShoot.nPlayerPosX = nLimitMaxX - nOffsetX;	// SÃ¯Â¿Â½curitÃ¯Â¿Â½, mais ne devrait pas arriver.
 
 }
 
 //=============================================================================
-// Gestion du canon vulcain accrochï¿½ aux slugs.
+// Gestion du canon vulcain accrochÃ¯Â¿Â½ aux slugs.
 
-// In : Le nï¿½ de sprite sur lequel attacher le canon.
+// In : Le nÃ¯Â¿Â½ de sprite sur lequel attacher le canon.
 void VulcanCannon_Manage(u32 nSlugSpr)
 {
 	static	u8	nCntS = 0;
@@ -884,7 +884,7 @@ void VulcanCannon_Manage(u32 nSlugSpr)
 	u8	nKbDir;
 
 	// Angle.
-	static	u8	pAngKb[16] = { 0, 64, 0, 32, 192, 0, 224, 0, 128, 96, 0, 64, 160, 64, 192, 0  };	// Direction en fonction des touches de direction enfoncï¿½es.
+	static	u8	pAngKb[16] = { 0, 64, 0, 32, 192, 0, 224, 0, 128, 96, 0, 64, 160, 64, 192, 0  };	// Direction en fonction des touches de direction enfoncÃ¯Â¿Â½es.
 	nKbDir = 0;
 //	nKbDir |= (gVar.pKeys[SDL_SCANCODE_UP] ? e_KbDir_Up : 0) | (gVar.pKeys[SDL_SCANCODE_RIGHT] ? e_KbDir_Right : 0) |
 //				(gVar.pKeys[SDL_SCANCODE_DOWN] ? e_KbDir_Down : 0) | (gVar.pKeys[SDL_SCANCODE_LEFT] ? e_KbDir_Left : 0);
@@ -907,14 +907,14 @@ void VulcanCannon_Manage(u32 nSlugSpr)
 		}
 	}
 
-	// On rï¿½cupï¿½re le point d'attache du canon sur le sprite du slug.
+	// On rÃ¯Â¿Â½cupÃ¯Â¿Â½re le point d'attache du canon sur le sprite du slug.
 	s32	nOffsX = 0, nOffsY = 0;
 	struct SSprRect sSlugRect;
 	if (SprGetRect(nSlugSpr, e_SprRectZone_ShotOrg, &sSlugRect))
 	{
 		if (sSlugRect.nType == e_SprRect_Rect)
 		{
-			nOffsX = sSlugRect.nX1;		// Rect, le canon est au point infï¿½rieur gauche. (Supï¿½rieur droit = origine du tir du slug (-16)).
+			nOffsX = sSlugRect.nX1;		// Rect, le canon est au point infÃ¯Â¿Â½rieur gauche. (SupÃ¯Â¿Â½rieur droit = origine du tir du slug (-16)).
 			nOffsY = sSlugRect.nY2;
 		}
 		else
@@ -924,7 +924,7 @@ void VulcanCannon_Manage(u32 nSlugSpr)
 		}
 	}
 
-	// Slugs en rotation, dï¿½calage du point de ref du cannon.
+	// Slugs en rotation, dÃ¯Â¿Â½calage du point de ref du cannon.
 	if (gShoot.nVehicleType == e_HeroVehicle_Tank)
 	{
 		Rot2D_RotatePoint(&nOffsX, &nOffsY, gShoot.nVehicleCurAdd);
@@ -970,7 +970,7 @@ void VulcanCannon_Manage(u32 nSlugSpr)
 #define	SLUGENGINENOISE_MAX	2
 struct sSlugEngineNoise
 {
-	s8	pnFx[SLUGENGINENOISE_MAX];		// 1 son et ï¿½ventuellement 1 son alternatif.
+	s8	pnFx[SLUGENGINENOISE_MAX];		// 1 son et Ã¯Â¿Â½ventuellement 1 son alternatif.
 };
 struct sSlugEngineNoise	gpSlugEngineNoises[e_HeroVehicle_MAX - e_HeroVehicle_SlugBase] =
 {
@@ -1007,10 +1007,10 @@ void SlugEngine_Stop(u32 nVehicle)
 //=============================================================================
 // Gestion des slugs.
 
-// Gï¿½nï¿½ration d'un monstre slug quand le joueur quitte le vï¿½hicule.
+// GÃ¯Â¿Â½nÃ¯Â¿Â½ration d'un monstre slug quand le joueur quitte le vÃ¯Â¿Â½hicule.
 void Slug_GenerateMst(u32 nVehicleType, s32 nPosX, s32 nPosY, u32 nSlugBombsSave)
 {
-	// On gï¿½nï¿½re le monstre slug.
+	// On gÃ¯Â¿Â½nÃ¯Â¿Â½re le monstre slug.
 
 	//[mst9] Slug
 	//Type = 0:3: Submarine - Tank
@@ -1041,7 +1041,7 @@ void Slug_OutSign(void)
 	AnmSetIfNew(gAnm_Slug_OutSign, gShoot.nPlayerAnimInOut);
 	nSpr = AnmGetImage(gShoot.nPlayerAnimInOut);
 	MstSlug_EntrancePtGet(e_HeroVehicle_Submarine - e_HeroVehicle_SlugBase, &nOffsX, &nOffsY);
-	// Slugs en rotation, dï¿½calage du point de ref de la flï¿½che.
+	// Slugs en rotation, dÃ¯Â¿Â½calage du point de ref de la flÃ¯Â¿Â½che.
 	if (gShoot.nVehicleType == e_HeroVehicle_Tank)
 	{
 		Rot2D_RotatePoint(&nOffsX, &nOffsY, gShoot.nVehicleCurAdd);
@@ -1078,32 +1078,32 @@ void Slug_GetOut(u32 nSlugType, u32 nNakedType, u64 *pExitAnm, s32 nPlyrSpdY)
 	s32	nPosX, nPosY;
 	u32 nSlugBombsSave = gShoot.nVehicleBombAmmo;
 
-//	if (nNakedType == e_HeroVehicle_None_SlugNoExit_Temp) gShoot.nVehicleNoExitTypeToReset = nSlugType;	// NoExit => On note le vï¿½hicule qu'on avait.
+//	if (nNakedType == e_HeroVehicle_None_SlugNoExit_Temp) gShoot.nVehicleNoExitTypeToReset = nSlugType;	// NoExit => On note le vÃ¯Â¿Â½hicule qu'on avait.
 	if (nNakedType == e_HeroVehicle_None_SlugNoExit_Temp)
 	{
-		gShoot.nVehicleNoExitTypeToReset = nSlugType;	// NoExit => On note le vï¿½hicule qu'on avait.
-		gShoot.nBombAmmo = gShoot.nVehicleBombAmmo;		// Pour pb affichage quand on sort d'un vï¿½hicule "no exit", pour ne pas afficher le nombre de bombes du mode "naked".
+		gShoot.nVehicleNoExitTypeToReset = nSlugType;	// NoExit => On note le vÃ¯Â¿Â½hicule qu'on avait.
+		gShoot.nBombAmmo = gShoot.nVehicleBombAmmo;		// Pour pb affichage quand on sort d'un vÃ¯Â¿Â½hicule "no exit", pour ne pas afficher le nombre de bombes du mode "naked".
 		gShoot.nAmmo = gShoot.nVehicleAmmo;				// idem.
 	}
 
-	nPosX = gShoot.nPlayerPosX;		// Sauvegarde des pos du hï¿½ros AVANT le VehicleSet.
+	nPosX = gShoot.nPlayerPosX;		// Sauvegarde des pos du hÃ¯Â¿Â½ros AVANT le VehicleSet.
 	nPosY = gShoot.nPlayerPosY + (gShoot.nVehicleOffsY * 256);
 	MstSlug_EntrancePtGet(nSlugType - e_HeroVehicle_SlugBase, &nOffsX, &nOffsY);
-	// Slugs en rotation, dï¿½calage du point de ref.
+	// Slugs en rotation, dÃ¯Â¿Â½calage du point de ref.
 	if (gShoot.nVehicleType == e_HeroVehicle_Tank)
 	{
 		Rot2D_RotatePoint(&nOffsX, &nOffsY, gShoot.nVehicleCurAdd);
 	}
 
 	// Passe en naked.
-	if (nNakedType == e_HeroVehicle_None_Swim) nOffsY -= 8;		// Dï¿½calage pour le slug out sous-marin.
+	if (nNakedType == e_HeroVehicle_None_Swim) nOffsY -= 8;		// DÃ¯Â¿Â½calage pour le slug out sous-marin.
 	Player_VehicleSet(nNakedType, nPosX + (nOffsX * 256), nPosY + (nOffsY * 256), SLUG_ENERGY_MAX, 0, 0);
 	AnmSet(pExitAnm, gShoot.nPlayerAnm);	// Force l'anim de slug out.
 	gShoot.nPlayerSpdY = -nPlyrSpdY;
 	gShoot.nPlayerGnd = gShoot.nPlayerLastGnd = 0;
-	gpFctCtrlTb[gShoot.nVehicleType]();	// La routine de contrï¿½le du nouveau vï¿½hicule.
+	gpFctCtrlTb[gShoot.nVehicleType]();	// La routine de contrÃ¯Â¿Â½le du nouveau vÃ¯Â¿Â½hicule.
 
-	// Gï¿½nï¿½re le monstre.
+	// GÃ¯Â¿Â½nÃ¯Â¿Â½re le monstre.
 	Slug_GenerateMst(nSlugType, nPosX, nPosY, nSlugBombsSave);
 
 	SlugEngine_Stop(nSlugType);	// Stoppe les bruits de moteur.
@@ -1111,12 +1111,12 @@ void Slug_GetOut(u32 nSlugType, u32 nNakedType, u64 *pExitAnm, s32 nPlyrSpdY)
 }
 
 // Gestion des phases In/Out.
-// Renvoie 1 quand il ne faut pas continuer la gestion du slug derriï¿½re (le hï¿½ros est sorti). 0 sinon.
+// Renvoie 1 quand il ne faut pas continuer la gestion du slug derriÃ¯Â¿Â½re (le hÃ¯Â¿Â½ros est sorti). 0 sinon.
 u32 Slug_CtrlInOut(u32 nSlugType, u32 nNakedType, u64 *pExitAnm, s32 nPlyrSpdY, u64 *pVehicleIdleAnim)
 {
 	if (gShoot.nVehiclePhase != e_SlugPhase_Normal)
 	{
-		// Pas de contrï¿½le pendant les In/Out.
+		// Pas de contrÃ¯Â¿Â½le pendant les In/Out.
 		Gen_KbNoControl();
 
 		// Avance des anims In/Out.
@@ -1130,18 +1130,18 @@ u32 Slug_CtrlInOut(u32 nSlugType, u32 nNakedType, u64 *pExitAnm, s32 nPlyrSpdY, 
 				Slug_GetOut(nSlugType, nNakedType, pExitAnm, nPlyrSpdY);
 				return (1);
 			}
-			// On ï¿½tait en GetIn, on passe en mode normal.
+			// On Ã¯Â¿Â½tait en GetIn, on passe en mode normal.
 			gShoot.nVehiclePhase = e_SlugPhase_Normal;
 			// Anim du vehicule "idle".
 			AnmSet(pVehicleIdleAnim, gShoot.nVehicleAnim);
 
-			if (gShoot.nVehicleAutoPilot == 0) Gen_KbRestore();	// Remis uniquement pour gï¿½rer le cas ou on monte dans le slug tank et qu'on appuie vers le bas.
+			if (gShoot.nVehicleAutoPilot == 0) Gen_KbRestore();	// Remis uniquement pour gÃ¯Â¿Â½rer le cas ou on monte dans le slug tank et qu'on appuie vers le bas.
 		}
 	}
 	else
 	if (gShoot.nVehicleEnergy == 0)
 	{
-		// Plus d'ï¿½nergie ?
+		// Plus d'Ã¯Â¿Â½nergie ?
 		Slug_GetOut(nSlugType, nNakedType, pExitAnm, nPlyrSpdY);
 		Game_Player_DeathSet();
 		return (1);
@@ -1184,20 +1184,20 @@ void Slug_AutoPilot_Manage(void)
 	s32	nNewBlkX, nNewBlkY;
 
 	if (gShoot.nVehicleAutoPilot == 0) return;	// Pas de pilote automatique.
-	if (gShoot.nInvulnerability == 0) gShoot.nInvulnerability = PLYR_INVL_BLINK - 1;	// Invulnï¿½rable pendant l'auto pilot.
+	if (gShoot.nInvulnerability == 0) gShoot.nInvulnerability = PLYR_INVL_BLINK - 1;	// InvulnÃ¯Â¿Â½rable pendant l'auto pilot.
 
 	// Auto pilote de base : Direction automatique.
 	if ((gShoot.nVehicleAutoPilot & 0x80) == 0)
 	{
-		// On a changï¿½ de bloc ?
+		// On a changÃ¯Â¿Â½ de bloc ?
 		nNewBlkX = ((gShoot.nPlayerPosX & ~0xFFF) | 0x800) >> 12;
 		nNewBlkY = ((gShoot.nPlayerPosY & ~0xFFF) | 0x800) >> 12;
 		if (nNewBlkX != gShoot.nVehicleAutoPilotLastBlkX || nNewBlkY != gShoot.nVehicleAutoPilotLastBlkY)
 			Slug_AutoPilot_NewDir(nNewBlkX, nNewBlkY);
 	}
-	// Sinon on tombe dans la version pilotï¿½e par un monstre (how to play + credits) : Le monstre place les bits de gShoot.nVehicleAutoPilot.
+	// Sinon on tombe dans la version pilotÃ¯Â¿Â½e par un monstre (how to play + credits) : Le monstre place les bits de gShoot.nVehicleAutoPilot.
 
-	// Coupe le contrï¿½le.
+	// Coupe le contrÃ¯Â¿Â½le.
 	Gen_KbNoControl();
 	// Taggue les touches qui vont bien.
 //	for (i = 0; i < 7; i++)
@@ -1216,7 +1216,7 @@ void Slug_AutoPilot_Manage(void)
 u32 Gen_CeilingCheck(u32 nPosX, s32 nHeroHt);
 void Gen_CeilingSideCheck(s32 nTestOffsX, s32 nHeroHt, s32 nSpdMaxX);
 
-// Contrï¿½le du sous-marin.
+// ContrÃ¯Â¿Â½le du sous-marin.
 void SlugControl_Submarine(void)
 {
 
@@ -1235,18 +1235,18 @@ if (gVar.pKeys[SDL_SCANCODE_R])
 	// Gestion des phases In/Out.
 	if (Slug_CtrlInOut(e_HeroVehicle_Submarine, e_HeroVehicle_None_Swim, gAnm_HeroSub_SlugOutGen, PLYR_SWIM_SPDY_MAX, gAnm_SlugSubmarine_Idle)) return;
 
-	// *** Dï¿½placement du sub.
+	// *** DÃ¯Â¿Â½placement du sub.
 	// Vitesse.
 //	PlyrMove_Spd(&gShoot.nPlayerSpdX, SLUG_SUBMARINE_SPDX_MAX, SLUG_SUBMARINE_ACC, SDL_SCANCODE_LEFT, SDL_SCANCODE_RIGHT);
 //	PlyrMove_Spd(&gShoot.nPlayerSpdY, SLUG_SUBMARINE_SPDY_MAX, SLUG_SUBMARINE_ACC, SDL_SCANCODE_UP, SDL_SCANCODE_DOWN);
 	PlyrMove_Spd(&gShoot.nPlayerSpdX, SLUG_SUBMARINE_SPDX_MAX, SLUG_SUBMARINE_ACC, gMSCfg.pKeys[e_CfgKey_Left], gMSCfg.pKeys[e_CfgKey_Right]);
 	PlyrMove_Spd(&gShoot.nPlayerSpdY, SLUG_SUBMARINE_SPDY_MAX, SLUG_SUBMARINE_ACC, gMSCfg.pKeys[e_CfgKey_Up], gMSCfg.pKeys[e_CfgKey_Down]);
-	// Bords de map ou scroll bloquï¿½.
+	// Bords de map ou scroll bloquÃ¯Â¿Â½.
 	PlayerMove_LimitX(SLUG_SUBMARINE_REF_OFFSETX);
 	PlayerMove_LimitY(SLUG_SUBMARINE_HEIGHT);
 	PlayerMove_LimitY_Bottom(SLUG_SUBMARINE_HEIGHT_B);
 	// Sol dte/gche.
-	Gen_SideCheck(SLUG_SUBMARINE_REF_OFFSETX, SLUG_SUBMARINE_SPDX_MAX);	// Mettra la vitesse ï¿½ 0 si mouvement pas possible.
+	Gen_SideCheck(SLUG_SUBMARINE_REF_OFFSETX, SLUG_SUBMARINE_SPDX_MAX);	// Mettra la vitesse Ã¯Â¿Â½ 0 si mouvement pas possible.
 	// Plafond dte/gche.
 	Gen_CeilingSideCheck(SLUG_SUBMARINE_REF_OFFSETX, (SLUG_SUBMARINE_HEIGHT - 4) * 256, SLUG_SUBMARINE_SPDX_MAX);
 	// Add.
@@ -1263,9 +1263,9 @@ if (gVar.pKeys[SDL_SCANCODE_R])
 
 	// Inclinaison.
 	gShoot.nVehicleReqAdd = SLUG_SUBMARINE_DEFAULTSPRADD;
-//	if (gVar.pKeys[SDL_SCANCODE_UP]) gShoot.nVehicleReqAdd = 29 - 4;	// Le sinus sur le add spr varie de -4 ï¿½ +4.
+//	if (gVar.pKeys[SDL_SCANCODE_UP]) gShoot.nVehicleReqAdd = 29 - 4;	// Le sinus sur le add spr varie de -4 Ã¯Â¿Â½ +4.
 //	if (gVar.pKeys[SDL_SCANCODE_DOWN]) gShoot.nVehicleReqAdd = 0 + 4;
-	if (gVar.pKeys[gMSCfg.pKeys[e_CfgKey_Up]]) gShoot.nVehicleReqAdd = 29 - 4;	// Le sinus sur le add spr varie de -4 ï¿½ +4.
+	if (gVar.pKeys[gMSCfg.pKeys[e_CfgKey_Up]]) gShoot.nVehicleReqAdd = 29 - 4;	// Le sinus sur le add spr varie de -4 Ã¯Â¿Â½ +4.
 	if (gVar.pKeys[gMSCfg.pKeys[e_CfgKey_Down]]) gShoot.nVehicleReqAdd = 0 + 4;
 	if (gShoot.nVehicleCurAdd != gShoot.nVehicleReqAdd)
 		gShoot.nVehicleCurAdd += (gShoot.nVehicleCurAdd < gShoot.nVehicleReqAdd ? 1 : -1);
@@ -1302,7 +1302,7 @@ void SlugDisplay_Submarine(void)
 	switch (gShoot.nVehiclePhase)
 	{
 	case e_SlugPhase_GetIn:
-		// Affiche le hï¿½ros en train d'entrer dans le slug.
+		// Affiche le hÃ¯Â¿Â½ros en train d'entrer dans le slug.
 		if (AnmCheckEnd(gShoot.nPlayerAnimInOut) == 0)
 		{
 			nSpr = AnmGetLastImage(gShoot.nPlayerAnimInOut);
@@ -1324,12 +1324,12 @@ void SlugDisplay_Submarine(void)
 		// Slug, + petit sinus pour faire une petite oscillation.
 		nSpr = e_Spr_SlugSubmarine_Body + gShoot.nVehicleCurAdd;
 		gShoot.nVehicleFrmCnt0 += 3;
-		nAdd = (gVar.pSin[gShoot.nVehicleFrmCnt0] + 31) >> 6;	// +31 : On divise par 64, avec le +31 ï¿½a rï¿½partit ï¿½quitablement entre -4 et +4, au lieu d'avoir plein de -1 et un seul +4.
+		nAdd = (gVar.pSin[gShoot.nVehicleFrmCnt0] + 31) >> 6;	// +31 : On divise par 64, avec le +31 Ã¯Â¿Â½a rÃ¯Â¿Â½partit Ã¯Â¿Â½quitablement entre -4 et +4, au lieu d'avoir plein de -1 et un seul +4.
 		SprDisplay((nSpr + nAdd) | nFlagHit, gShoot.nPlayerPosX >> 8, gShoot.nPlayerPosY >> 8, e_Prio_Joueur-1);
 		// Perso dans le sous-marin.
 		SprDisplay(e_Spr_Hero_InSlug_Sub + gShoot.nVehicleCurAdd + nAdd, gShoot.nPlayerPosX >> 8, gShoot.nPlayerPosY >> 8, e_Prio_Joueur);
 
-		// Paillettes : Bulles sur le dï¿½placement avant.
+		// Paillettes : Bulles sur le dÃ¯Â¿Â½placement avant.
 		if ((gnFrame & 15) == 0)
 		if (gShoot.nPlayerSpdX > SLUG_SUBMARINE_ACC)
 			DustSet(gAnm_SubmarineBubble_Dust,
@@ -1346,7 +1346,7 @@ void SlugDisplay_Submarine(void)
 		if (SprGetRect(nSpr, e_SprRectZone_ShotOrg, &sSlugRect))
 		if (sSlugRect.nType == e_SprRect_Rect)
 		{
-			// Origine du tir : Point supï¿½rieur droit (+16).
+			// Origine du tir : Point supÃ¯Â¿Â½rieur droit (+16).
 //			FireAdd(e_Shot_Player_SlugSubmarine_Rocket_Launch, gShoot.nPlayerPosX + (sSlugRect.nX2 * 256), gShoot.nPlayerPosY  + ((sSlugRect.nY1 + 16) * 256), 0);	// Tout droit.
 			FireAdd(e_Shot_Player_SlugSubmarine_Rocket_Launch, gShoot.nPlayerPosX + (sSlugRect.nX2 * 256), gShoot.nPlayerPosY  + ((sSlugRect.nY1 + 16) * 256), gShoot.nVehicleCurAdd - 15);	// Avec angle su slug.
 			Sfx_PlaySfx(e_Sfx_Shot_MiniRocket, e_SfxPrio_Hero_Shot);	// !!changer!!
@@ -1370,7 +1370,7 @@ void SlugDisplay_Submarine(void)
 u32	gpSlugInBaseImg[e_Player_Weapon_Max] =
 	{ e_Spr_Hero_SlugIn_Gun, e_Spr_Hero_SlugIn_Shotgun, e_Spr_Hero_SlugIn_Machinegun, e_Spr_Hero_SlugIn_Shotgun, e_Spr_Hero_SlugIn_Shotgun };
 
-// Test pour le Mst37, a-t'on poussï¿½ le joueur hors de l'ï¿½cran ?
+// Test pour le Mst37, a-t'on poussÃ¯Â¿Â½ le joueur hors de l'Ã¯Â¿Â½cran ?
 u32 Rocket_EnemyCheckScreenOut(void)
 {
 	u32	nRetVal = 0;
@@ -1397,7 +1397,7 @@ u32 Rocket_EnemyCheckScreenOut(void)
 	return (nRetVal);
 }
 
-// Contrï¿½le de la fusï¿½e.
+// ContrÃ¯Â¿Â½le de la fusÃ¯Â¿Â½e.
 void SlugControl_Rocket(void)
 {
 	s32	nPosX_sav, nPosY_sav;	// Juste pour explosion en dust over.
@@ -1422,29 +1422,29 @@ if (gVar.pKeys[SDL_SCANCODE_R])
 	// Gestion des phases In/Out.
 	if (Slug_CtrlInOut(e_HeroVehicle_Rocket, e_HeroVehicle_None_SlugNoExit_Temp, gAnm_HeroSlugNoExit_DeathGen, 3 * PLYR_NAKED_JUMP_VAL / 4, gAnm_SlugRocket_Idle))// return;
 	{
-		// Explosion (en dust over, exactement superposï¿½e ï¿½ celle d'en dessous).
+		// Explosion (en dust over, exactement superposÃ¯Â¿Â½e Ã¯Â¿Â½ celle d'en dessous).
 		DustSet(gAnm_Explosion0_Big_Dust, nPosX_sav, nPosY_sav, e_Prio_DustOver, 0);
 		return;
 	}
-	// !!! Attention : du fait de la gestion simplifiï¿½e ï¿½ l'extï¿½me dans l'espace, il faut passer gAnm_HeroSlugNoExit_DeathGen
-	// !!! ï¿½ Slug_CtrlInOut() et pas une anim de sortie.
-	// !!! Sinon, Slug_GetOut() appelle la fonction de contrï¿½le du joueur, qui vï¿½rifie que l'anim n'est pas celle de mort
-	// !!! (le Game_Player_DeathSet() est appelï¿½ juste aprï¿½s Slug_GetOut()), et comme c'est le cas repasse tout de suite en fusï¿½e.
-	// !!! Avec un pb supplï¿½mentaire : Comme on repasse en fusï¿½e entre temps, on gï¿½nï¿½re un slug.
+	// !!! Attention : du fait de la gestion simplifiÃ¯Â¿Â½e Ã¯Â¿Â½ l'extÃ¯Â¿Â½me dans l'espace, il faut passer gAnm_HeroSlugNoExit_DeathGen
+	// !!! Ã¯Â¿Â½ Slug_CtrlInOut() et pas une anim de sortie.
+	// !!! Sinon, Slug_GetOut() appelle la fonction de contrÃ¯Â¿Â½le du joueur, qui vÃ¯Â¿Â½rifie que l'anim n'est pas celle de mort
+	// !!! (le Game_Player_DeathSet() est appelÃ¯Â¿Â½ juste aprÃ¯Â¿Â½s Slug_GetOut()), et comme c'est le cas repasse tout de suite en fusÃ¯Â¿Â½e.
+	// !!! Avec un pb supplÃ¯Â¿Â½mentaire : Comme on repasse en fusÃ¯Â¿Â½e entre temps, on gÃ¯Â¿Â½nÃ¯Â¿Â½re un slug.
 
-	// *** Dï¿½placement de la fusï¿½e.
-	// Vitesse. Note : Avec autopilot, spdy * 2 : C'est pour le dï¿½collage, car une fois la transition lancï¿½e le kb est forcï¿½ ï¿½ 0.
+	// *** DÃ¯Â¿Â½placement de la fusÃ¯Â¿Â½e.
+	// Vitesse. Note : Avec autopilot, spdy * 2 : C'est pour le dÃ¯Â¿Â½collage, car une fois la transition lancÃ¯Â¿Â½e le kb est forcÃ¯Â¿Â½ Ã¯Â¿Â½ 0.
 //	PlyrMove_Spd(&gShoot.nPlayerSpdX, SLUG_ROCKET_SPDX_MAX, SLUG_ROCKET_ACC, SDL_SCANCODE_LEFT, SDL_SCANCODE_RIGHT);
 //	PlyrMove_Spd(&gShoot.nPlayerSpdY, (gShoot.nVehicleAutoPilot ? 2*SLUG_ROCKET_SPDY_MAX : SLUG_ROCKET_SPDY_MAX), SLUG_ROCKET_ACC, SDL_SCANCODE_UP, SDL_SCANCODE_DOWN);
 	PlyrMove_Spd(&gShoot.nPlayerSpdX, SLUG_ROCKET_SPDX_MAX, SLUG_ROCKET_ACC, gMSCfg.pKeys[e_CfgKey_Left], gMSCfg.pKeys[e_CfgKey_Right]);
 	PlyrMove_Spd(&gShoot.nPlayerSpdY, (gShoot.nVehicleAutoPilot ? 2*SLUG_ROCKET_SPDY_MAX : SLUG_ROCKET_SPDY_MAX), SLUG_ROCKET_ACC, gMSCfg.pKeys[e_CfgKey_Up], gMSCfg.pKeys[e_CfgKey_Down]);
 	if (gShoot.nPlayerSpdX)
 		AnmSetIfNew((gShoot.nPlayerSpdX < 0 ? gAnm_HeroInSlug_Rocket_LookL : gAnm_HeroInSlug_Rocket_LookR), gShoot.nPlayerAnm);	// Anim du joueur dans le slug.
-	// Bords de map ou scroll bloquï¿½.
-	if (gShoot.nVehicleAutoPilot == 0)	// Si pilote automatique, pas de limites : Permet de faire sortir la fusï¿½e de la map au dï¿½collage.
+	// Bords de map ou scroll bloquÃ¯Â¿Â½.
+	if (gShoot.nVehicleAutoPilot == 0)	// Si pilote automatique, pas de limites : Permet de faire sortir la fusÃ¯Â¿Â½e de la map au dÃ¯Â¿Â½collage.
 	{
 		PlayerMove_LimitX(SLUG_ROCKET_REF_OFFSETX);
-		// En Y, cas spï¿½cifique au niveau de la roquette.
+		// En Y, cas spÃ¯Â¿Â½cifique au niveau de la roquette.
 		s32	nLimitMinY, nLimitMaxY;
 		nLimitMinY = gScrollPos.nPosY + (SLUG_ROCKET_HEIGHT * 256);
 		nLimitMaxY = gScrollPos.nPosY + (SCR_Height * 256);
@@ -1464,21 +1464,21 @@ if (gVar.pKeys[SDL_SCANCODE_R])
 	gShoot.nPlayerPosY += gShoot.nPlayerSpdY;
 
 /*
-// On ne sort pas de la fusï¿½e !
+// On ne sort pas de la fusÃ¯Â¿Â½e !
 	// Sortie du slug ?
 	Slug_CheckKbGetOut(gAnm_SlugSubmarine_GetOut);
 */
 
 }
 
-// Sous routine de dï¿½clenchement d'un tir.
+// Sous routine de dÃ¯Â¿Â½clenchement d'un tir.
 void SlugRocket_sub_Shot(u32 nShotNo, u32 nSpr, s32 nPosX, s32 nPosY, s32 nSparkAnmSlot, u64 *pSparkAnm)
 {
 	// Offset du tir.
 	struct SSprRect sShotRect;
 	s32	nShotOffsX, nShotOffsY;
 	if (SprGetRect(nSpr, e_SprRectZone_ShotOrg, &sShotRect))
-	{	// Si on a trouvï¿½ un point, tir.
+	{	// Si on a trouvÃ¯Â¿Â½ un point, tir.
 		nShotOffsX = sShotRect.nX1;
 		nShotOffsY = sShotRect.nY1;
 		FireAdd(nShotNo, nPosX + (nShotOffsX * 256), nPosY + ((nShotOffsY - 16) * 256), 64);
@@ -1491,7 +1491,7 @@ void SlugRocket_sub_Shot(u32 nShotNo, u32 nSpr, s32 nPosX, s32 nPosY, s32 nSpark
 
 extern u32	gnSprSto;	// Pour supprimer les ajouts lors du clignotement.
 
-// Affichage de la fusï¿½e.
+// Affichage de la fusÃ¯Â¿Â½e.
 void SlugDisplay_Rocket(void)
 {
 	u32	nSpr;
@@ -1505,7 +1505,7 @@ void SlugDisplay_Rocket(void)
 	switch (gShoot.nVehiclePhase)
 	{
 	case e_SlugPhase_GetIn:
-		// Affiche le hï¿½ros en train d'entrer dans le slug.
+		// Affiche le hÃ¯Â¿Â½ros en train d'entrer dans le slug.
 		if (AnmCheckEnd(gShoot.nPlayerAnimInOut) == 0)
 		{
 			nSpr = AnmGetLastImage(gShoot.nPlayerAnimInOut);
@@ -1515,7 +1515,7 @@ void SlugDisplay_Rocket(void)
 		}
 		else
 		{
-			// Perso dans la fusï¿½e.
+			// Perso dans la fusÃ¯Â¿Â½e.
 			SprDisplay(AnmGetImage(gShoot.nPlayerAnm) | nFlagHit, gShoot.nPlayerPosX >> 8, gShoot.nPlayerPosY >> 8, e_Prio_Joueur);
 		}
 		// Pas de break !
@@ -1523,33 +1523,33 @@ void SlugDisplay_Rocket(void)
 		// L'anim d'ouverture/fermeture.
 		nSpr = AnmGetLastImage(gShoot.nVehicleAnim);
 		SprDisplay(nSpr | nFlagHit, gShoot.nPlayerPosX >> 8, (gShoot.nPlayerPosY >> 8) - 50, e_Prio_Joueur);
-		SprDisplay(e_Spr_SlugRocket_Close_Body | nFlagHit, gShoot.nPlayerPosX >> 8, gShoot.nPlayerPosY >> 8, e_Prio_Joueur-1);	// Corps de la fusï¿½e.
+		SprDisplay(e_Spr_SlugRocket_Close_Body | nFlagHit, gShoot.nPlayerPosX >> 8, gShoot.nPlayerPosY >> 8, e_Prio_Joueur-1);	// Corps de la fusÃ¯Â¿Â½e.
 		break;
 
 	//case e_SlugPhase_Normal:
 	default:
 //		Slug_OutSign();		// Panneau "Out" si plus assez de vie.
 
-		AnmSetIfNew(gAnm_SlugRocket_Idle, gShoot.nVehicleAnim);		// Anim du corps de la roquette. (Obligatoire ici, cas des niveaux oï¿½ on commence dans la roquette).
+		AnmSetIfNew(gAnm_SlugRocket_Idle, gShoot.nVehicleAnim);		// Anim du corps de la roquette. (Obligatoire ici, cas des niveaux oÃ¯Â¿Â½ on commence dans la roquette).
 
-		nSprSto_sav = gnSprSto;		// Sauvegarde du nombre de sprites actuel dans la pile, pour un ï¿½ventuel clignotement.
+		nSprSto_sav = gnSprSto;		// Sauvegarde du nombre de sprites actuel dans la pile, pour un Ã¯Â¿Â½ventuel clignotement.
 
-		// Affichage de la fusï¿½e.
+		// Affichage de la fusÃ¯Â¿Â½e.
 		nSpr = AnmGetImage(gShoot.nVehicleAnim);
 		SprDisplay(nSpr | nFlagHit, gShoot.nPlayerPosX >> 8, gShoot.nPlayerPosY >> 8, e_Prio_Joueur-1);
-		// Perso dans la fusï¿½e.
+		// Perso dans la fusÃ¯Â¿Â½e.
 		SprDisplay(AnmGetImage(gShoot.nPlayerAnm) | nFlagHit, gShoot.nPlayerPosX >> 8, gShoot.nPlayerPosY >> 8, e_Prio_Joueur);
-		// Etincelles du tir sur le corps de la fusï¿½e.
+		// Etincelles du tir sur le corps de la fusÃ¯Â¿Â½e.
 		if ((nSpr = AnmGetImage(gShoot.nRocketBodyWeaponSparkAnm)) != SPR_NoSprite)
 			SprDisplay(nSpr | nFlagHit, gShoot.nPlayerPosX >> 8, (gShoot.nPlayerPosY >> 8) - 40, e_Prio_Joueur+1);
 
-		// Armes sur les cï¿½tï¿½s.
+		// Armes sur les cÃ¯Â¿Â½tÃ¯Â¿Â½s.
 		for (i = 0; i < 2; i++)
 		if (gShoot.pnRocketSideWeaponsAnmLR[i] != -1)
 		{
 			u32	nSpr2;
 			nSpr = AnmGetImage(gShoot.pnRocketSideWeaponsAnmLR[i]);
-			if (AnmCheckEnd(gShoot.pnRocketSideWeaponsAnmLR[i]))	// Si anim de rentrï¿½e des canons.
+			if (AnmCheckEnd(gShoot.pnRocketSideWeaponsAnmLR[i]))	// Si anim de rentrÃ¯Â¿Â½e des canons.
 			{
 				AnmReleaseSlot(gShoot.pnRocketSideWeaponsAnmLR[i]);
 				gShoot.pnRocketSideWeaponsAnmLR[i] = -1;
@@ -1563,7 +1563,7 @@ void SlugDisplay_Rocket(void)
 				struct SSprRect sShotRect;
 				s32	nShotOffsX, nShotOffsY;
 				if (SprGetRect(nSpr, e_SprRectZone_ShotOrg, &sShotRect))
-				{	// Si on a trouvï¿½ un point, affichage de l'ï¿½tincelle.
+				{	// Si on a trouvÃ¯Â¿Â½ un point, affichage de l'Ã¯Â¿Â½tincelle.
 					nShotOffsX = sShotRect.nX1;
 					nShotOffsY = sShotRect.nY1;
 					SprDisplay(nSpr2 | nFlagHit, (gShoot.nPlayerPosX >> 8) + nShotOffsX, (gShoot.nPlayerPosY >> 8) + nShotOffsY - 20, e_Prio_Joueur+1);
@@ -1571,13 +1571,13 @@ void SlugDisplay_Rocket(void)
 			}
 		}
 
-		// Rï¿½acteur + thrusters.
+		// RÃ¯Â¿Â½acteur + thrusters.
 		if (gShoot.nVehicleAutoPilot)
 		{
-			// Si autopilot, trainï¿½e diffï¿½rente.
+			// Si autopilot, trainÃ¯Â¿Â½e diffÃ¯Â¿Â½rente.
 //			SprDisplay((e_Spr_SlugRocket_MainThrustersV + 3 + ((gnFrame >> 2) & 1)) | nFlagHit, gShoot.nPlayerPosX >> 8, gShoot.nPlayerPosY >> 8, e_Prio_Joueur-2);
 			SprDisplayZoom(e_Spr_SlugRocket_TakeOffTrail | nFlagHit, gShoot.nPlayerPosX >> 8, (gShoot.nPlayerPosY >> 8) - 1, e_Prio_Joueur-2, 0x100  + (gnFrame & 4 ? 0 : 0x20), 0x100 + (gnFrame & 4 ? 0x20 : 0) );
-			// Bruit du rï¿½acteur.
+			// Bruit du rÃ¯Â¿Â½acteur.
 			u32	nEngineCntMax = 64;
 			SlugEngine_Play(gpSlugEngineNoises[gShoot.nVehicleType - e_HeroVehicle_SlugBase].pnFx[0], nEngineCntMax);
 		}
@@ -1585,7 +1585,7 @@ void SlugDisplay_Rocket(void)
 		{
 			// Cas normal.
 
-		// Rï¿½acteur principal.
+		// RÃ¯Â¿Â½acteur principal.
 		nSpr = AnmGetImage(gShoot.nRocketMainThrusterAnm);
 		nSpr += (ABS(gShoot.nPlayerSpdX) >= SLUG_ROCKET_SPDX_MAX / 2 ? e_Spr_SlugRocket_MainThrustersR | (gShoot.nPlayerSpdX > 0 ? SPR_Flip_X : 0) : e_Spr_SlugRocket_MainThrustersV);
 		SprDisplay(nSpr | nFlagHit, gShoot.nPlayerPosX >> 8, gShoot.nPlayerPosY >> 8, e_Prio_Joueur-2);
@@ -1603,10 +1603,10 @@ void SlugDisplay_Rocket(void)
 			static	u32	pThrLRNoWeapon[2] = { e_Spr_SlugRocket_GunL, e_Spr_SlugRocket_GunR };
 			s32	nThrOffsX;
 
-			// Anims en fonction des touches enfoncï¿½es.
+			// Anims en fonction des touches enfoncÃ¯Â¿Â½es.
 //			gShoot.pnRocketThrustersAnm[i] = AnmSetIfNew((gVar.pKeys[pKeysToTest[i]] ? pThrAnmTb[i] : gAnm_SlugRocket_ThrustEmpty), gShoot.pnRocketThrustersAnm[i]);
 			gShoot.pnRocketThrustersAnm[i] = AnmSetIfNew((gVar.pKeys[gMSCfg.pKeys[pKeysToTest[i]]] ? pThrAnmTb[i] : gAnm_SlugRocket_ThrustEmpty), gShoot.pnRocketThrustersAnm[i]);
-			// Dï¿½calage sur les cï¿½tï¿½s (ï¿½ cause des side weapons).
+			// DÃ¯Â¿Â½calage sur les cÃ¯Â¿Â½tÃ¯Â¿Â½s (Ã¯Â¿Â½ cause des side weapons).
 			nThrOffsX = 0;
 			if (i < 2)
 			{
@@ -1625,8 +1625,8 @@ void SlugDisplay_Rocket(void)
 
 		}
 
-		if ((gShoot.nInvulnerability & PLYR_INVL_BLINK) != 0)	// Clignotement quand invulnï¿½rable ?
-			gnSprSto = nSprSto_sav;		// On "annule" l'affichage des sprites de la fusï¿½e.
+		if ((gShoot.nInvulnerability & PLYR_INVL_BLINK) != 0)	// Clignotement quand invulnÃ¯Â¿Â½rable ?
+			gnSprSto = nSprSto_sav;		// On "annule" l'affichage des sprites de la fusÃ¯Â¿Â½e.
 
 		break;
 	}
@@ -1657,7 +1657,7 @@ void SlugDisplay_Rocket(void)
 	{
 		// Rocket's body.
 		SlugRocket_sub_Shot(e_Shot_Player_SlugRocket_MachinegunV, e_Spr_SlugRocket_Idle, gShoot.nPlayerPosX, gShoot.nPlayerPosY, gShoot.nRocketBodyWeaponSparkAnm, gAnm_SlugRocket_ShotSparkMain);
-		// Armes sur les cï¿½tï¿½s.
+		// Armes sur les cÃ¯Â¿Â½tÃ¯Â¿Â½s.
 		for (i = 0; i < 2; i++)
 		if (gShoot.nVehicleAmmo > 0)
 		if (gShoot.pnRocketSideWeaponsAnmLR[i] != -1)
@@ -1669,9 +1669,9 @@ void SlugDisplay_Rocket(void)
 		// Plus de balles ? => Repasse en Gun.
 		if (gShoot.nVehicleAmmo == 0) Rocket_WeaponSet(e_Player_Weapon_Gun);
 	}
-//	if (gpHeroShotClearKb[gShoot.nRocketWeapon]) gVar.pKeys[KB_BUTTONA] = 0;	// Clear touche de tir si nï¿½cessaire.
+//	if (gpHeroShotClearKb[gShoot.nRocketWeapon]) gVar.pKeys[KB_BUTTONA] = 0;	// Clear touche de tir si nÃ¯Â¿Â½cessaire.
 //	if (gVar.pKeys[KB_BUTTONA] == 0) nCntS = 0;
-	if (gpHeroShotClearKb[gShoot.nRocketWeapon]) gVar.pKeys[gMSCfg.pKeys[e_CfgKey_ButtonA]] = 0;	// Clear touche de tir si nï¿½cessaire.
+	if (gpHeroShotClearKb[gShoot.nRocketWeapon]) gVar.pKeys[gMSCfg.pKeys[e_CfgKey_ButtonA]] = 0;	// Clear touche de tir si nÃ¯Â¿Â½cessaire.
 	if (gVar.pKeys[gMSCfg.pKeys[e_CfgKey_ButtonA]] == 0) nCntS = 0;
 	if (nCntS) nCntS--;
 
@@ -1686,7 +1686,7 @@ void SlugDisplay_Rocket(void)
 
 //=================
 
-// Contrï¿½le de l'hï¿½lico.
+// ContrÃ¯Â¿Â½le de l'hÃ¯Â¿Â½lico.
 void SlugControl_Helicopter(void)
 {
 	s32	nPosX_sav, nPosY_sav;	// Juste pour explosion en dust over.
@@ -1716,33 +1716,33 @@ if (gVar.pKeys[SDL_SCANCODE_R])
 
 	// Gestion des phases In/Out.
 	if (gShoot.nVehicleType == e_HeroVehicle_HelicopterNoExit)
-	{	// Cas de l'hï¿½lico "no exit" (lev2).
+	{	// Cas de l'hÃ¯Â¿Â½lico "no exit" (lev2).
 		if (Slug_CtrlInOut(e_HeroVehicle_HelicopterNoExit, e_HeroVehicle_None_SlugNoExit_Temp, gAnm_HeroSlugNoExit_DeathGen, 3 * PLYR_NAKED_JUMP_VAL / 4, gAnm_SlugRocket_Idle))// return;
 		{
-			// Explosion (en dust over, exactement superposï¿½e ï¿½ celle d'en dessous).
+			// Explosion (en dust over, exactement superposÃ¯Â¿Â½e Ã¯Â¿Â½ celle d'en dessous).
 			DustSet(gAnm_Explosion0_Big_Dust, nPosX_sav, nPosY_sav, e_Prio_DustOver, 0);
 			return;
 		}
 		// !!! Voir explication dans SlugControl_Rocket() !!!
 	}
 	else
-	{	// Cas hï¿½lico normal.
+	{	// Cas hÃ¯Â¿Â½lico normal.
 		if (Slug_CtrlInOut(e_HeroVehicle_Helicopter, e_HeroVehicle_None_Naked, gAnm_Hero_SlugOutGen, 3 * PLYR_NAKED_JUMP_VAL / 4, gAnm_SlugCopter_Idle)) return;
 	}
 
 
-	// *** Dï¿½placement du slug.
+	// *** DÃ¯Â¿Â½placement du slug.
 	// Vitesse.
 //	PlyrMove_Spd(&gShoot.nPlayerSpdX, SLUG_HELICOPTER_SPDX_MAX, SLUG_HELICOPTER_ACC, SDL_SCANCODE_LEFT, SDL_SCANCODE_RIGHT);
 //	PlyrMove_Spd(&gShoot.nPlayerSpdY, SLUG_HELICOPTER_SPDY_MAX, SLUG_HELICOPTER_ACC, SDL_SCANCODE_UP, SDL_SCANCODE_DOWN);
 	PlyrMove_Spd(&gShoot.nPlayerSpdX, SLUG_HELICOPTER_SPDX_MAX, SLUG_HELICOPTER_ACC, gMSCfg.pKeys[e_CfgKey_Left], gMSCfg.pKeys[e_CfgKey_Right]);
 	PlyrMove_Spd(&gShoot.nPlayerSpdY, SLUG_HELICOPTER_SPDY_MAX, SLUG_HELICOPTER_ACC, gMSCfg.pKeys[e_CfgKey_Up], gMSCfg.pKeys[e_CfgKey_Down]);
-	// Bords de map ou scroll bloquï¿½.
+	// Bords de map ou scroll bloquÃ¯Â¿Â½.
 	PlayerMove_LimitX(SLUG_HELICOPTER_REF_OFFSETX);
 	PlayerMove_LimitY(SLUG_HELICOPTER_HEIGHT);
 	PlayerMove_LimitY_Bottom(SLUG_HELICOPTER_HEIGHT_B);
 	// Sol dte/gche.
-	Gen_SideCheck(SLUG_HELICOPTER_REF_OFFSETX, SLUG_HELICOPTER_SPDX_MAX);	// Mettra la vitesse ï¿½ 0 si mouvement pas possible.
+	Gen_SideCheck(SLUG_HELICOPTER_REF_OFFSETX, SLUG_HELICOPTER_SPDX_MAX);	// Mettra la vitesse Ã¯Â¿Â½ 0 si mouvement pas possible.
 	// Add.
 	gShoot.nPlayerPosX += gShoot.nPlayerSpdX;
 	gShoot.nPlayerPosY += gShoot.nPlayerSpdY;
@@ -1752,8 +1752,8 @@ if (gVar.pKeys[SDL_SCANCODE_R])
 	Gen_GroundCheck(gShoot.nPlayerPosX);
 	Gen_GroundCheck(gShoot.nPlayerPosX + SLUG_HELICOPTER_REF_OFFSETX);
 	Gen_GroundCheck(gShoot.nPlayerPosX - SLUG_HELICOPTER_REF_OFFSETX);
-	// Si pas de sol, on met ï¿½ jour le LastY.
-	//if (gShoot.nPlayerGnd == 0) gShoot.nPlayerLastGndPosY = gShoot.nPlayerPosY + 0x1800;		// Hmmm... Le recalage du scroll est trï¿½s violent.
+	// Si pas de sol, on met Ã¯Â¿Â½ jour le LastY.
+	//if (gShoot.nPlayerGnd == 0) gShoot.nPlayerLastGndPosY = gShoot.nPlayerPosY + 0x1800;		// Hmmm... Le recalage du scroll est trÃ¯Â¿Â½s violent.
 	gShoot.nPlayerLastGndPosY = gShoot.nPlayerPosY;
 
 	// Inclinaison : b0-b7 = X / b8-b15 = Y.
@@ -1781,7 +1781,7 @@ if (gVar.pKeys[SDL_SCANCODE_R])
 	// Sortie du slug ?
 	if (gShoot.nPlayerGnd) Slug_CheckKbGetOut(gAnm_SlugCopter_GetOut);
 
-	// Bruit de l'hï¿½lice.
+	// Bruit de l'hÃ¯Â¿Â½lice.
 	if (gShoot.nVehiclePhase != e_SlugPhase_GetOut)
 	{
 		u32	nEngineCntMax = (ABS(gShoot.nPlayerSpdX) > SLUG_HELICOPTER_SPDX_MAX / 2 ||
@@ -1791,7 +1791,7 @@ if (gVar.pKeys[SDL_SCANCODE_R])
 
 }
 
-// Affichage de l'hï¿½lico.
+// Affichage de l'hÃ¯Â¿Â½lico.
 void SlugDisplay_Helicopter(void)
 {
 	u32	nSpr, nSpr2;
@@ -1805,8 +1805,8 @@ void SlugDisplay_Helicopter(void)
 	{
 	case e_SlugPhase_GetIn:
 /*
-//!!! Pas pour l'hï¿½lico !!!
-		// Affiche le hï¿½ros en train d'entrer dans le slug.
+//!!! Pas pour l'hÃ¯Â¿Â½lico !!!
+		// Affiche le hÃ¯Â¿Â½ros en train d'entrer dans le slug.
 		if (AnmCheckEnd(gShoot.nPlayerAnimInOut) == 0)
 		{
 			nSpr = AnmGetLastImage(gShoot.nPlayerAnimInOut);
@@ -1818,7 +1818,7 @@ void SlugDisplay_Helicopter(void)
 		// Pas de break !
 	case e_SlugPhase_GetOut:
 		nSpr = AnmGetLastImage(gShoot.nVehicleAnim);
-		// L'hï¿½lice.
+		// L'hÃ¯Â¿Â½lice.
 		SprDisplay(((nSpr - e_Spr_SlugCopter_Close_Body) + e_Spr_SlugCopter_Close_Blades) | nFlagHit, gShoot.nPlayerPosX >> 8, gShoot.nPlayerPosY >> 8, e_Prio_Joueur - 2);
 		// L'anim d'ouverture/fermeture (body).
 		SprDisplay(nSpr | nFlagHit, gShoot.nPlayerPosX >> 8, gShoot.nPlayerPosY >> 8, e_Prio_Joueur - 1);
@@ -1831,7 +1831,7 @@ void SlugDisplay_Helicopter(void)
 		if (gShoot.nVehicleType != e_HeroVehicle_HelicopterNoExit)
 			Slug_OutSign();		// Panneau "Out" si plus assez de vie.
 
-		// Hï¿½lice.
+		// HÃ¯Â¿Â½lice.
 		static u8	pAnmBlades[] = { 0,0, 1, 2,2, 3, 4,4, 5, 0,0, 6, 2,2, 7, 4,4, 8 };
 		if (++gShoot.nVehicleFrmCnt0 >= 18*2) gShoot.nVehicleFrmCnt0 = 0;
 		nSpr2 = e_Spr_SlugCopter_Blades + (((gShoot.nVehicleCurAdd >> 4) & 0x0F) * 9 * 5);
@@ -1842,13 +1842,13 @@ void SlugDisplay_Helicopter(void)
 		nAdd += ((gShoot.nVehicleCurAdd >> 12) & 0x0F) * 5;		// Inclinaison haut/bas.
 		nSpr = e_Spr_SlugCopter_Body + nAdd;
 
-		if ((gShoot.nInvulnerability & PLYR_INVL_BLINK) == 0)	// Clignotement quand invulnï¿½rable ?
+		if ((gShoot.nInvulnerability & PLYR_INVL_BLINK) == 0)	// Clignotement quand invulnÃ¯Â¿Â½rable ?
 		{
-			// Hï¿½lice.
+			// HÃ¯Â¿Â½lice.
 			SprDisplay(nSpr2 | nFlagHit, gShoot.nPlayerPosX >> 8, gShoot.nPlayerPosY >> 8, e_Prio_Joueur - 2);
 			// Body.
 			SprDisplay(nSpr | nFlagHit, gShoot.nPlayerPosX >> 8, gShoot.nPlayerPosY >> 8, e_Prio_Joueur - 1);
-			// Perso dans l'hï¿½lico.
+			// Perso dans l'hÃ¯Â¿Â½lico.
 			SprDisplay(e_Spr_Hero_InSlug_Copter + nAdd, gShoot.nPlayerPosX >> 8, gShoot.nPlayerPosY >> 8, e_Prio_Joueur);
 		}
 		break;
@@ -1862,17 +1862,17 @@ void SlugDisplay_Helicopter(void)
 		if (SprGetRect(nSpr, e_SprRectZone_ShotOrg, &sSlugRect))
 		if (sSlugRect.nType == e_SprRect_Rect)
 		{
-			// Origine du tir : Point supï¿½rieur droit (+16).
+			// Origine du tir : Point supÃ¯Â¿Â½rieur droit (+16).
 //			FireAdd(e_Shot_Player_SlugCopter_Bomb_Drop, gShoot.nPlayerPosX + (sSlugRect.nX2 * 256), gShoot.nPlayerPosY  + ((sSlugRect.nY1 + 16) * 256), 0);
 
 			if (gShoot.nVehicleType == e_HeroVehicle_HelicopterNoExit)
-			{	// Hï¿½lico no exit : Missile.
+			{	// HÃ¯Â¿Â½lico no exit : Missile.
 //				FireAdd(e_Shot_Player_RocketSmall_Launch, gShoot.nPlayerPosX + (sSlugRect.nX2 * 256), gShoot.nPlayerPosY  + ((sSlugRect.nY1 + 16) * 256), -gShoot.nPlayerSpdY >> 7);
 				FireAdd(e_Shot_Player_RocketSmall_Launch, gShoot.nPlayerPosX + (sSlugRect.nX2 * 256) + (8<<8), gShoot.nPlayerPosY  + ((sSlugRect.nY1 + 16) * 256) - (8<<8) + (gShoot.nPlayerSpdY * 4), 0);
 				Sfx_PlaySfx(e_Sfx_Shot_MiniRocket, e_SfxPrio_Hero_Shot);	// !!changer!!
 			}
 			else
-			{	// Hï¿½lico normal : Bombe.
+			{	// HÃ¯Â¿Â½lico normal : Bombe.
 				// Tir + Modification de la vitesse X du tir.
 				s32	nFireSlot;
 				nFireSlot = FireAdd(e_Shot_Player_SlugCopter_Bomb_Drop, gShoot.nPlayerPosX + (sSlugRect.nX2 * 256), gShoot.nPlayerPosY  + ((sSlugRect.nY1 + 16) * 256), 0);
@@ -1920,7 +1920,7 @@ u64 *gpSlugTankAnm[] =
 };
 enum
 {
-	e_Anm_SlugTank_Stance = 0,				// !!! Attention ï¿½ l'ordre !!! +1 pour passer de normal ï¿½ accroupi.
+	e_Anm_SlugTank_Stance = 0,				// !!! Attention Ã¯Â¿Â½ l'ordre !!! +1 pour passer de normal Ã¯Â¿Â½ accroupi.
 	e_Anm_SlugTank_CrouchStance,
 	e_Anm_SlugTank_DriveForward,
 	e_Anm_SlugTank_CrouchDriveForward,
@@ -1938,7 +1938,7 @@ enum
 };
 
 
-// Contrï¿½le du tank.
+// ContrÃ¯Â¿Â½le du tank.
 void SlugControl_Tank(void)
 {
 	s32	nAnmNo;
@@ -1965,16 +1965,16 @@ if (gVar.pKeys[SDL_SCANCODE_R])
 //	if (Slug_CtrlInOut(e_HeroVehicle_Tank, e_HeroVehicle_None_Naked, gAnm_Hero_SlugOutGen, 2 * PLYR_NAKED_JUMP_VAL / 3, gAnm_SlugTank_Idle)) return;
 	if (Slug_CtrlInOut(e_HeroVehicle_Tank, e_HeroVehicle_None_Naked, gAnm_Hero_SlugOutGen, 2 * PLYR_NAKED_JUMP_VAL / 3, gAnm_SlugTank_CrouchIdle)) return;
 
-	// *** Dï¿½placement du tank.
+	// *** DÃ¯Â¿Â½placement du tank.
 	// Vitesse. (Spd Max X = cos(angle du tank)).
 	s32	nSpdXMax = (gShoot.nPlayerGnd ? (SLUG_TANK_SPDX_MAX * ABS(gVar.pCos[gShoot.nVehicleCurAdd & 0xFF])) / 256 : SLUG_TANK_SPDX_MAX);
-//(a voir, mais plutï¿½t non)	if (AnmGetKey(gShoot.nVehicleAnim) == e_AnmKey_Hero_UpDown) nSpdXMax = 0;	// Cas de l'anim UpDown.
+//(a voir, mais plutÃ¯Â¿Â½t non)	if (AnmGetKey(gShoot.nVehicleAnim) == e_AnmKey_Hero_UpDown) nSpdXMax = 0;	// Cas de l'anim UpDown.
 //	if (PlyrMove_Spd(&gShoot.nPlayerSpdX, nSpdXMax, SLUG_TANK_ACCX, SDL_SCANCODE_LEFT, SDL_SCANCODE_RIGHT)) nAnmNo = (gShoot.nPlayerSpdX >= 0 ? e_Anm_SlugTank_DriveForward : e_Anm_SlugTank_DriveBackward);
 	if (PlyrMove_Spd(&gShoot.nPlayerSpdX, nSpdXMax, SLUG_TANK_ACCX, gMSCfg.pKeys[e_CfgKey_Left], gMSCfg.pKeys[e_CfgKey_Right])) nAnmNo = (gShoot.nPlayerSpdX >= 0 ? e_Anm_SlugTank_DriveForward : e_Anm_SlugTank_DriveBackward);
-	// Anim d'arrï¿½t ?
+	// Anim d'arrÃ¯Â¿Â½t ?
 	if (nAnmNo == e_Anm_SlugTank_Stance && gShoot.nPlayerSpdX > 0) nAnmNo = e_Anm_SlugTank_DriveStop;
 
-	// Bords de map ou scroll bloquï¿½.
+	// Bords de map ou scroll bloquÃ¯Â¿Â½.
 	PlayerMove_LimitX(SLUG_TANK_REF_OFFSETX);
 	PlayerMove_LimitY(SLUG_TANK_HEIGHT);
 
@@ -1984,12 +1984,12 @@ if (gVar.pKeys[SDL_SCANCODE_R])
 	if (gVar.pKeys[gMSCfg.pKeys[e_CfgKey_ButtonA]] == 0)
 	{
 		// Pas de tir (vulcan), on regarde si le joueur veut se baisser.
-//		if (gVar.pKeys[SDL_SCANCODE_DOWN]) nAnmNo++;	// Ok car ï¿½ ce moment lï¿½, seulement Idle ou Run.
-		if (gVar.pKeys[gMSCfg.pKeys[e_CfgKey_Down]]) nAnmNo++;	// Ok car ï¿½ ce moment lï¿½, seulement Idle ou Run.
+//		if (gVar.pKeys[SDL_SCANCODE_DOWN]) nAnmNo++;	// Ok car Ã¯Â¿Â½ ce moment lÃ¯Â¿Â½, seulement Idle ou Run.
+		if (gVar.pKeys[gMSCfg.pKeys[e_CfgKey_Down]]) nAnmNo++;	// Ok car Ã¯Â¿Â½ ce moment lÃ¯Â¿Â½, seulement Idle ou Run.
 	}
 	else
 	{
-		// Tir en cours (vulcan), si anm == crouch, on reste baissï¿½.
+		// Tir en cours (vulcan), si anm == crouch, on reste baissÃ¯Â¿Â½.
 		nAnmKey = AnmGetKey(gShoot.nVehicleAnim);
 		if (nAnmKey == e_AnmKey_Hero_CrouchStance || nAnmKey == e_AnmKey_Hero_CrouchWalk ||
 			nAnmKey == e_AnmKey_Hero_CrouchWalkStop) nAnmNo++;
@@ -2008,7 +2008,7 @@ if (gVar.pKeys[SDL_SCANCODE_R])
 //		if (gVar.pKeys[SDL_SCANCODE_DOWN])
 		if (gVar.pKeys[gMSCfg.pKeys[e_CfgKey_Down]])
 		{
-			nAnmNo++;	// Ok car ï¿½ ce moment lï¿½, seulement Idle ou Run.
+			nAnmNo++;	// Ok car Ã¯Â¿Â½ ce moment lÃ¯Â¿Â½, seulement Idle ou Run.
 			if (nCrouch == 0 || nAnmKey == e_AnmKey_Hero_UpDown) nAnmNo = e_Anm_SlugTank_Up2Down;
 		}
 		else
@@ -2018,13 +2018,13 @@ if (gVar.pKeys[SDL_SCANCODE_R])
 	}
 	else
 	{
-		// Tir en cours (vulcan), si crouch, on reste baissï¿½.
+		// Tir en cours (vulcan), si crouch, on reste baissÃ¯Â¿Â½.
 		if (nCrouch) nAnmNo++;
 		if (nAnmKey == e_AnmKey_Hero_UpDown) nAnmNo = -1;	// Et si UpDown, rien.
 	}
 
 	// Sol dte/gche.
-	Gen_SideCheck(SLUG_TANK_REF_OFFSETX, SLUG_TANK_SPDX_MAX);	// Mettra la vitesse ï¿½ 0 si mouvement pas possible.
+	Gen_SideCheck(SLUG_TANK_REF_OFFSETX, SLUG_TANK_SPDX_MAX);	// Mettra la vitesse Ã¯Â¿Â½ 0 si mouvement pas possible.
 	// Add.
 	gShoot.nPlayerPosX += gShoot.nPlayerSpdX;
 
@@ -2051,32 +2051,32 @@ if (gVar.pKeys[SDL_SCANCODE_R])
 	nShift = 1;								// Pour calcul offset y.
 
 	// Gestion des "marches" verticales. Test sur le point central.
-	// (Bien garder en tï¿½te que le point qui touche est obligatoirement le point le plus haut).
-	if (nHtL - nHtM > SLUG_TANK_REF_OFFSETX >> 8)	// Pt ï¿½ gauche en l'air.
+	// (Bien garder en tÃ¯Â¿Â½te que le point qui touche est obligatoirement le point le plus haut).
+	if (nHtL - nHtM > SLUG_TANK_REF_OFFSETX >> 8)	// Pt Ã¯Â¿Â½ gauche en l'air.
 	{
 		nHtL = nHtM;
 		nDiffX = SLUG_TANK_REF_OFFSETX;
 		nShift = 0;
 	}
 	else
-	if (nHtR - nHtM > SLUG_TANK_REF_OFFSETX >> 8)	// Pt ï¿½ droite en l'air.
+	if (nHtR - nHtM > SLUG_TANK_REF_OFFSETX >> 8)	// Pt Ã¯Â¿Â½ droite en l'air.
 	{
 		nHtR = nHtM;
 		nDiffX = SLUG_TANK_REF_OFFSETX;
 		nShift = 0;
 	}
-	if (nHtL - nHtM < -SLUG_TANK_REF_OFFSETX >> 8)	// Pts ï¿½ droite et central en l'air, seul le pt gauche touche.
+	if (nHtL - nHtM < -SLUG_TANK_REF_OFFSETX >> 8)	// Pts Ã¯Â¿Â½ droite et central en l'air, seul le pt gauche touche.
 	{
-		if (nHtM > nHtR) nHtM = nHtR;	// Cas foireux ou il y a des pf les unes au dessus des autres. => 'if ' testï¿½ sur le boss du l13.
+		if (nHtM > nHtR) nHtM = nHtR;	// Cas foireux ou il y a des pf les unes au dessus des autres. => 'if ' testÃ¯Â¿Â½ sur le boss du l13.
 		//
 		nHtR = nHtL + (nHtR - nHtM);
 		nDiffX = SLUG_TANK_REF_OFFSETX;
 		nShift = 0;
 	}
 	else
-	if (nHtR - nHtM < -SLUG_TANK_REF_OFFSETX >> 8)	// Pts ï¿½ gauche et central en l'air, seul le pt droit touche.
+	if (nHtR - nHtM < -SLUG_TANK_REF_OFFSETX >> 8)	// Pts Ã¯Â¿Â½ gauche et central en l'air, seul le pt droit touche.
 	{
-		if (nHtM > nHtL) nHtM = nHtL;	// Cas foireux ou il y a des pf les unes au dessus des autres. => 'if ' non testï¿½.
+		if (nHtM > nHtL) nHtM = nHtL;	// Cas foireux ou il y a des pf les unes au dessus des autres. => 'if ' non testÃ¯Â¿Â½.
 		//
 		nHtL = nHtR + (nHtL - nHtM);
 		nDiffX = SLUG_TANK_REF_OFFSETX;
@@ -2084,8 +2084,8 @@ if (gVar.pKeys[SDL_SCANCODE_R])
 	}
 //<< marches
 
-//m	gShoot.nVehicleOffsY = ABS(nHtL - nHtR) / 2;	// Dï¿½calage pour l'affichage.
-	gShoot.nVehicleOffsY = ABS(nHtL - nHtR) >> nShift;	// Dï¿½calage Y pour l'affichage.
+//m	gShoot.nVehicleOffsY = ABS(nHtL - nHtR) / 2;	// DÃ¯Â¿Â½calage pour l'affichage.
+	gShoot.nVehicleOffsY = ABS(nHtL - nHtR) >> nShift;	// DÃ¯Â¿Â½calage Y pour l'affichage.
 
 	if (gShoot.nPlayerGnd)
 	{
@@ -2095,7 +2095,7 @@ if (gVar.pKeys[SDL_SCANCODE_R])
 	}
 	else if (gShoot.nPlayerSpdY > 0)
 	{
-		// En l'air, on tourne un peu juste avant de retoucher le sol pour ï¿½viter un gros accoup.
+		// En l'air, on tourne un peu juste avant de retoucher le sol pour Ã¯Â¿Â½viter un gros accoup.
 		if (BlockGetGroundLevel(gShoot.nPlayerPosX >> 8, (gShoot.nPlayerPosY >> 8) + gShoot.nVehicleOffsY) <= 16)
 		{
 //m			s32 nAng = fatan2((nHtL - nHtR) * 256, SLUG_TANK_REF_OFFSETX * 2);
@@ -2103,7 +2103,7 @@ if (gVar.pKeys[SDL_SCANCODE_R])
 			gShoot.nVehicleCurAdd += (nAng - (s32)gShoot.nVehicleCurAdd) / 4;
 		}
 	}
-	gShoot.nVehicleCurAdd &= 0xFF;	// Fix 11/10/2012. Sinon pb quand accï¿½s ï¿½ table de sinus, ligne 2462. 
+	gShoot.nVehicleCurAdd &= 0xFF;	// Fix 11/10/2012. Sinon pb quand accÃ¯Â¿Â½s Ã¯Â¿Â½ table de sinus, ligne 2462. 
 
 	// Anim de jump/fall.
 	if (gShoot.nPlayerGnd == 0) nAnmNo = (gShoot.nPlayerSpdY < 0 ? e_Anm_SlugTank_Jump : e_Anm_SlugTank_Fall);
@@ -2149,19 +2149,19 @@ void SlugDisplay_Tank(void)
 
 	nFlagHit = (gShoot.nVehicleHitCnt ? SPR_Flag_HitPal : 0);		// Palette hit.
 
-	// Le dï¿½calage - Add.
+	// Le dÃ¯Â¿Â½calage - Add.
 	gShoot.nPlayerPosY += gShoot.nVehicleOffsY * 256;
 
 	switch (gShoot.nVehiclePhase)
 	{
 	case e_SlugPhase_GetIn:
-		// Affiche le hï¿½ros en train d'entrer dans le slug.
+		// Affiche le hÃ¯Â¿Â½ros en train d'entrer dans le slug.
 		if (AnmCheckEnd(gShoot.nPlayerAnimInOut) == 0)
 		{
 			nSpr = AnmGetLastImage(gShoot.nPlayerAnimInOut);
 			nSpr += gpSlugInBaseImg[gShoot.nWeapon];
 			MstSlug_EntrancePtGet(e_HeroVehicle_Tank - e_HeroVehicle_SlugBase, &nOffsX, &nOffsY);
-			// Rotation de l'offset d'entrï¿½e.
+			// Rotation de l'offset d'entrÃ¯Â¿Â½e.
 			Rot2D_RotatePoint(&nOffsX, &nOffsY, gShoot.nVehicleCurAdd);
 			SprDisplay(nSpr, (gShoot.nPlayerPosX >> 8) + nOffsX, (gShoot.nPlayerPosY >> 8) + nOffsY, e_Prio_Joueur + 2);
 		}
@@ -2185,11 +2185,11 @@ void SlugDisplay_Tank(void)
 
 	// Point de lancer du tir.
 	struct SSprRect sSlugRect;
-	nOffsX = nOffsY = 0;	// Par dï¿½faut.
+	nOffsX = nOffsY = 0;	// Par dÃ¯Â¿Â½faut.
 	if (SprGetRect(nSpr, e_SprRectZone_ShotOrg, &sSlugRect))
 	if (sSlugRect.nType == e_SprRect_Rect)
 	{
-		// Origine du tir : Point supï¿½rieur droit (+16).
+		// Origine du tir : Point supÃ¯Â¿Â½rieur droit (+16).
 		nOffsX = sSlugRect.nX2;
 		nOffsY = sSlugRect.nY1 + 16;
 		Rot2D_RotatePoint(&nOffsX, &nOffsY, gShoot.nVehicleCurAdd);
@@ -2245,7 +2245,7 @@ void SlugDisplay_Tank(void)
 	Gen_StepDust(e_HeroVehicle_Tank, gShoot.nPlayerGnd, SLUG_TANK_REF_OFFSETX, 0, gShoot.nPlayerPosX, gShoot.nPlayerPosY);
 //	Slug_StepDust(gShoot.nPlayerGnd, SLUG_TANK_REF_OFFSETX, gShoot.nPlayerPosX, gShoot.nPlayerPosY);
 
-	// Le dï¿½calage - Sub.
+	// Le dÃ¯Â¿Â½calage - Sub.
 	gShoot.nPlayerPosY -= gShoot.nVehicleOffsY * 256;
 
 }
@@ -2257,53 +2257,47 @@ void Player_ButtonA_Check(void)
 {
 	u32	nAnmKey;
 
+	if (gShoot.nDeathFlag || 
+	    AnmGetKey(gShoot.nPlayerAnm) == e_AnmKey_Hero_Death || 
+	    AnmGetKey(gShoot.nPlayerAnm) == e_AnmKey_Hero_DeathAir ||
+	    gGameVar.nPhase == e_Game_PlayerDead ||
+	    gGameVar.nPhase == e_Game_GameOver)
+	{
+		return;
+	}
+
+	if (gRogue.nActive)
+	{
+		if (gShoot.nAmmo == 0) Player_WeaponSet(e_Player_Weapon_Gun);
+		gVar.pKeys[gMSCfg.pKeys[e_CfgKey_ButtonA]] = 1;
+	}
+
 	// Tir, appui sur le bouton ?
-// le test nAmmo doit ï¿½tre virable, on repasse en gun si ammo == 0 (ï¿½ moins de laisser l'anim de fin de tir ?).
-//	if (gVar.pKeys[KB_BUTTONA] && gShoot.nAmmo)
 	if (gVar.pKeys[gMSCfg.pKeys[e_CfgKey_ButtonA]] && gShoot.nAmmo)
 	{
-/*
-		static u64 *gpHeroShotAnm[e_HeroVehicle_SlugBase][e_Player_Weapon_Max] =	// Anim de tir en fct de l'arme.
-		{
-			{ gAnm_Hero_Shot_Gun, gAnm_Hero_Shot_Shotgun, gAnm_Hero_Shot_Machinegun, gAnm_Hero_Shot_Flamethrower, gAnm_Hero_Shot_Shotgun },	// Naked.
-			{ gAnm_Hero_Shot_Gun, gAnm_Hero_Shot_Gun, gAnm_Hero_Shot_Gun, gAnm_Hero_Shot_Gun, gAnm_Hero_Shot_Gun },							// Swim (un peu inutile, mais c'est par sï¿½curitï¿½ car on n'a pas toutes les anims).
-		};
-*/
-//+		static u64 *gpHeroShotAnm[e_Player_Weapon_Max] =	// Anim de tir en fct de l'arme.
-//+			{ gAnm_Hero_Shot_Gun, gAnm_Hero_Shot_Shotgun, gAnm_Hero_Shot_Machinegun, gAnm_Hero_Shot_Flamethrower, gAnm_Hero_Shot_Shotgun };
-
 		static u64 *gpHeroShotAnmStd[e_Player_Weapon_Max] =	// Anim de tir en fct de l'arme.
 			{ gAnm_Hero_Shot_Gun, gAnm_Hero_Shot_Shotgun, gAnm_Hero_Shot_Machinegun, gAnm_Hero_Shot_Flamethrower, gAnm_Hero_Shot_RocketLauncher };
-		static u64 *gpHeroShotAnmSub[e_Player_Weapon_Max] =	// Anim de tir en fct de l'arme, spï¿½cial sub car pas de gfx de mitrailleuse.
+		static u64 *gpHeroShotAnmSub[e_Player_Weapon_Max] =	// Anim de tir en fct de l'arme, spÃ©cial sub car pas de gfx de mitrailleuse.
 			{ gAnm_Hero_Shot_Gun, gAnm_Hero_Shot_Shotgun, gAnm_Hero_Shot_SubMachinegun, gAnm_Hero_Shot_Flamethrower, gAnm_Hero_Shot_RocketLauncher };
 
 		static u64 **gpHeroShotAnmTb[e_HeroVehicle_SlugBase] =
 			{ gpHeroShotAnmStd, gpHeroShotAnmSub, gpHeroShotAnmStd, gpHeroShotAnmStd };
 
-//		static u32 gpHeroShotClearKb[e_Player_Weapon_Max] = { 1, 1, 0, 0, 1 };	// Doit-on clearer la touche de tir, en fct de l'arme.
-		//
-//sans couteau		gShoot.nPlayerAnmTop = AnmSetIfNew(gpHeroShotAnm[gShoot.nWeapon], gShoot.nPlayerAnmTop);
-//sans couteau		if (gpHeroShotClearKb[gShoot.nWeapon]) gVar.pKeys[KB_BUTTONA] = 0;	// Clear touche de tir si nï¿½cessaire.
-
 		nAnmKey = (gShoot.nPlayerAnmTop == -1 ? e_AnmKey_Null : AnmGetKey(gShoot.nPlayerAnmTop));
-		if (gShoot.nMstProximity && nAnmKey != e_AnmKey_Hero_Shot)
+		if (gShoot.nMstProximity && nAnmKey != e_AnmKey_Hero_Shot && !gRogue.nActive)
 		{
 			gShoot.nPlayerAnmTop = AnmSetIfNew(gAnm_Hero_Shot_Knife1, gShoot.nPlayerAnmTop);	// Coup de couteau.
-//			gVar.pKeys[KB_BUTTONA] = 0;
 			gVar.pKeys[gMSCfg.pKeys[e_CfgKey_ButtonA]] = 0;
 		}
 		else
 		{
-//			gShoot.nPlayerAnmTop = AnmSetIfNew(gpHeroShotAnm[gShoot.nVehicleType][gShoot.nWeapon], gShoot.nPlayerAnmTop);	// Tir normal.
-//+			gShoot.nPlayerAnmTop = AnmSetIfNew(gpHeroShotAnm[gShoot.nWeapon], gShoot.nPlayerAnmTop);	// Tir normal.
 			gShoot.nPlayerAnmTop = AnmSetIfNew( (gpHeroShotAnmTb[gShoot.nVehicleType])[gShoot.nWeapon], gShoot.nPlayerAnmTop);	// Tir normal.
-//			if (gpHeroShotClearKb[gShoot.nWeapon]) gVar.pKeys[KB_BUTTONA] = 0;	// Clear touche de tir si nï¿½cessaire.
-			if (gpHeroShotClearKb[gShoot.nWeapon]) gVar.pKeys[gMSCfg.pKeys[e_CfgKey_ButtonA]] = 0;	// Clear touche de tir si nï¿½cessaire.
+			if (gpHeroShotClearKb[gShoot.nWeapon] && !gRogue.nActive) gVar.pKeys[gMSCfg.pKeys[e_CfgKey_ButtonA]] = 0;	// Clear touche de tir si nÃ©cessaire.
 		}
 	}
 }
 
-// Avance de l'anim du haut, placement de l'anim de fin de tir si nï¿½cessaire.
+// Avance de l'anim du haut, placement de l'anim de fin de tir si nÃ¯Â¿Â½cessaire.
 void Player_TopAnmAdvance(void)
 {
 	u32	i;
@@ -2325,13 +2319,13 @@ void Player_TopAnmAdvance(void)
 		}
 		else
 		{
-			// Cas particulier des tirs qui bouclent, il faut mettre l'anim de fin de tir ï¿½ la main.
+			// Cas particulier des tirs qui bouclent, il faut mettre l'anim de fin de tir Ã¯Â¿Â½ la main.
 			if (AnmGetKey(gShoot.nPlayerAnmTop) == e_AnmKey_Hero_Shot)
 			{
 //+				static u32 *gpHeroShotEndAnm[e_Player_Weapon_Max] = { 0, 0, gAnm_Hero_ShotEnd_Machinegun, gAnm_Hero_ShotEnd_Flamethrower, 0 };	// Anim de fin de tir en fct de l'arme.
 
 				static u64 *gpHeroShotEndAnmStd[e_Player_Weapon_Max] = { 0, 0, gAnm_Hero_ShotEnd_Machinegun, gAnm_Hero_ShotEnd_Flamethrower, 0 };	// Anim de fin de tir en fct de l'arme.
-				static u64 *gpHeroShotEndAnmSub[e_Player_Weapon_Max] = { 0, 0, gAnm_Hero_ShotEnd_Machinegun, gAnm_Hero_ShotEnd_Flamethrower, 0 };	// Anim de fin de tir en fct de l'arme, spï¿½cial sub car pas de gfx de mitrailleuse.
+				static u64 *gpHeroShotEndAnmSub[e_Player_Weapon_Max] = { 0, 0, gAnm_Hero_ShotEnd_Machinegun, gAnm_Hero_ShotEnd_Flamethrower, 0 };	// Anim de fin de tir en fct de l'arme, spÃ¯Â¿Â½cial sub car pas de gfx de mitrailleuse.
 
 				static u64 **gpHeroShotEndAnmTb[e_HeroVehicle_SlugBase] =
 					{ gpHeroShotEndAnmStd, gpHeroShotEndAnmSub, gpHeroShotEndAnmStd, gpHeroShotEndAnmStd };
@@ -2356,17 +2350,17 @@ void Player_TopAnmAdvance(void)
 
 }
 
-// Dï¿½clenchement d'un tir ?
+// DÃ¯Â¿Â½clenchement d'un tir ?
 void Player_ShotCheck(u32 nSpr, u32 nUp)
 {
 	// Frame de hit (couteau).
 	if (AnmGetKey(gShoot.nPlayerAnmTop) == e_AnmKey_Hero_Knife) gShoot.nPlayerKnifeSprCol = nSpr | (gShoot.nPlayerDir ? SPR_Flip_X : 0);
 
-	// Dï¿½clenchement d'un tir ?
+	// DÃ¯Â¿Â½clenchement d'un tir ?
 	if (AnmGetKey(gShoot.nPlayerAnmTop) == e_AnmKey_Hero_Shot)	// Est-on dans une anim de tir ?
 	if (AnmCheckNewImgFlag(gShoot.nPlayerAnmTop))	// Nouvelle image ?
 	{
-		// Est-ce qu'on a une coordonnï¿½e d'origine de tir ?
+		// Est-ce qu'on a une coordonnÃ¯Â¿Â½e d'origine de tir ?
 		struct SSprRect sRect1;
 		if (SprGetRect(nSpr | (gShoot.nPlayerDir ? SPR_Flip_X : 0), e_SprRectZone_ShotOrg, &sRect1))
 		if (sRect1.nType == e_SprRect_Point)
@@ -2392,7 +2386,7 @@ void Player_ShotCheck(u32 nSpr, u32 nUp)
 			else
 			FireAdd(gpPlyrShotH[gShoot.nWeapon], gShoot.nPlayerPosX + (sRect1.nX1 * 256), gShoot.nPlayerPosY + (sRect1.nY1 * 256), (gShoot.nPlayerDir ? 128 : 0) + nAddAng);
 
-			// Dï¿½crï¿½mentation du nombre de balles, sauf si nï¿½gatif (pistolet => munitions infinies).
+			// DÃ¯Â¿Â½crÃ¯Â¿Â½mentation du nombre de balles, sauf si nÃ¯Â¿Â½gatif (pistolet => munitions infinies).
 			if (gShoot.nAmmo > 0) gShoot.nAmmo--;
 		}
 	}
@@ -2400,7 +2394,7 @@ void Player_ShotCheck(u32 nSpr, u32 nUp)
 }
 
 
-// Le joueur se prend des dï¿½gats.
+// Le joueur se prend des dÃ¯Â¿Â½gats.
 // On peut appeler la routine directement pour un hit avec un coup de poing par exemple.
 void Player_Damage(u32 nDamage)
 {
@@ -2414,11 +2408,11 @@ void Player_Damage(u32 nDamage)
 	nDamage >>= 16;		// = Damage Type.
 
 	if (gShoot.nVehicleType < e_HeroVehicle_SlugBase)
-	{	// Joueur pas dans un vï¿½hicule. Metal Slug => 1 touchette = mort.
+	{	// Joueur pas dans un vÃ¯Â¿Â½hicule. Metal Slug => 1 touchette = mort.
 		Game_Player_DeathSet();
 	}
 	else
-	{	// Joueur dans un vï¿½hicule.
+	{	// Joueur dans un vÃ¯Â¿Â½hicule.
 		gShoot.nVehicleHitCnt = MST_HIT_CNT;		// Compteur de hit pour palette alt.
 		if (gShoot.nVehicleEnergy > nDamagePts)
 			gShoot.nVehicleEnergy -= nDamagePts;
@@ -2431,7 +2425,7 @@ void Player_Damage(u32 nDamage)
 //	gShoot.nVehicleEnergy = nEnergyTemp;
 
 /* pour les tests des types de damage :
-		// Giclï¿½e de sang quand il se prend une balle.
+		// GiclÃ¯Â¿Â½e de sang quand il se prend une balle.
 		if (nDamage >> 16 == e_ShotDamageType_Gen)
 		// Souffle.
 		else if (nDamage >> 16 == e_ShotDamageType_Blow)
@@ -2450,7 +2444,7 @@ void Player_ShotHitCheck(void)
 	if (gShoot.nVehicleType == e_HeroVehicle_Tank)
 	{
 //		nOffsX = (SLUG_TANK_REF_OFFSETX >> 8) * gVar.pSin[gShoot.nVehicleCurAdd];
-		nOffsX = (SLUG_TANK_REF_OFFSETX >> 8) * gVar.pSin[gShoot.nVehicleCurAdd & 0xFF];	// Fix 11/10/2012. Normalement AND fait ligne 2115. Sinon problï¿½me nï¿½gatif en u32 et ptr en 64 bits...
+		nOffsX = (SLUG_TANK_REF_OFFSETX >> 8) * gVar.pSin[gShoot.nVehicleCurAdd & 0xFF];	// Fix 11/10/2012. Normalement AND fait ligne 2115. Sinon problÃ¯Â¿Â½me nÃ¯Â¿Â½gatif en u32 et ptr en 64 bits...
 		nOffsY = ABS(nOffsX);
 	}
 	else
@@ -2505,7 +2499,7 @@ u32 RectColCheck(struct SSprRect *pRect1, s32 nPosX1, s32 nPosY1, struct SSprRec
 
 }
 
-// Test d'une frappe sur les canons latï¿½raux de la fusï¿½e. (Sub-routine de Enemy_PlayerBlowRect()).
+// Test d'une frappe sur les canons latÃ¯Â¿Â½raux de la fusÃ¯Â¿Â½e. (Sub-routine de Enemy_PlayerBlowRect()).
 // Out: 0 = Pas de col / 1 = Il y a eu col.
 u32 Enemy_sub_RocketBlowRect(struct SSprRect *pRect1, s32 nPosX1, s32 nPosY1)
 {
@@ -2521,7 +2515,7 @@ u32 Enemy_sub_RocketBlowRect(struct SSprRect *pRect1, s32 nPosX1, s32 nPosY1)
 		{
 			// Explosion du canon.
 			DustSet(gAnm_Explosion0_Medium_Dust, gShoot.nPlayerPosX + ((i & 1 ? 32 : -32) * 256), gShoot.nPlayerPosY - (20 * 256), e_Prio_Joueur + 3, 0);	//e_Prio_DustOver
-			// Libï¿½re le slot d'anim.
+			// LibÃ¯Â¿Â½re le slot d'anim.
 			AnmReleaseSlot(gShoot.pnRocketSideWeaponsAnmLR[i]);
 			gShoot.pnRocketSideWeaponsAnmLR[i] = -1;
 			return (1);
@@ -2541,7 +2535,7 @@ u32 Enemy_PlayerBlowRect(struct SSprRect *pRect1, s32 nPosX, s32 nPosY, u32 nDam
 
 	if (gShoot.nPlayerSprCol == SPR_NoSprite) return (0);
 
-	// Cas spï¿½cial pour la fusï¿½e, test des canons latï¿½raux.
+	// Cas spÃ¯Â¿Â½cial pour la fusÃ¯Â¿Â½e, test des canons latÃ¯Â¿Â½raux.
 	if (gShoot.nVehicleType == e_HeroVehicle_Rocket)
 	if (Enemy_sub_RocketBlowRect(pRect1, nPosX, nPosY))
 	{
@@ -2552,7 +2546,7 @@ u32 Enemy_PlayerBlowRect(struct SSprRect *pRect1, s32 nPosX, s32 nPosY, u32 nDam
 		return (1);
 	}
 
-	// On rï¿½cupï¿½re la zone de col du joueur.
+	// On rÃ¯Â¿Â½cupÃ¯Â¿Â½re la zone de col du joueur.
 	if (SprGetRect(gShoot.nPlayerSprCol, e_SprRectZone_RectCol, &sRect2) == 0) return (0);
 	if (sRect2.nType != e_SprRect_Rect) return (0);
 	// Ok.
@@ -2593,7 +2587,7 @@ u32 Enemy_PlayerBlowRect(struct SSprRect *pRect1, s32 nPosX, s32 nPosY, u32 nDam
 }
 
 //=============================================================================
-// Gestion du hï¿½ros en train de nager.
+// Gestion du hÃ¯Â¿Â½ros en train de nager.
 
 // Test du plafond.
 // Out : Si on touche, le code du bloc sur lequel on touche.
@@ -2606,7 +2600,7 @@ u32 Gen_CeilingCheck(u32 nPosX, s32 nHeroHt)
 
 	if (gShoot.nPlayerSpdY > 0) return (0);
 
-	gShoot.nPlayerPosY -= nHeroHt;	// *** Ajoute le dï¿½calage.
+	gShoot.nPlayerPosY -= nHeroHt;	// *** Ajoute le dÃ¯Â¿Â½calage.
 
 //SprDisplay(e_Spr_Tstrct_Cross, nPosX>>8, gShoot.nPlayerPosY>>8, 250);
 	pBlocks = gMap.ppPlanesBlocks[gMap.nHeroPlane];	// Blocs.
@@ -2621,7 +2615,7 @@ u32 Gen_CeilingCheck(u32 nPosX, s32 nHeroHt)
 			nHt2 = nHt;
 			nCol = (gMap.ppColCodes[gMap.nHeroPlane] + nBlockNo)->nCol;
 
-			// Si on pose sur la ligne infï¿½rieure, on regarde aussi le bloc du dessous.
+			// Si on pose sur la ligne infÃ¯Â¿Â½rieure, on regarde aussi le bloc du dessous.
 			if (nHt == 15)
 			{
 				nBlockNo = *(pBlocks + (((gShoot.nPlayerPosY >> 12) + 1) * gMap.nMapLg) + (nPosX >> 12) );
@@ -2634,23 +2628,23 @@ u32 Gen_CeilingCheck(u32 nPosX, s32 nHeroHt)
 				}
 			}
 
-			// Plafond touchï¿½.
+			// Plafond touchÃ¯Â¿Â½.
 			gShoot.nPlayerSpdY = 0;
 			gShoot.nPlayerPosY &= ~0xFFF;	// FFF => On cleane la virgule avec.
 			gShoot.nPlayerPosY += nHt2 * 256;
 
 //SprDisplay(e_Spr_Tstrct_Cross, nPosX>>8, gShoot.nPlayerPosY>>8, 250);
 
-			gShoot.nPlayerPosY += nHeroHt;	// *** Retire le dï¿½calage.
+			gShoot.nPlayerPosY += nHeroHt;	// *** Retire le dÃ¯Â¿Â½calage.
 			return (nCol);
 		}
 	}
 
-	gShoot.nPlayerPosY += nHeroHt;	// *** Retire le dï¿½calage.
+	gShoot.nPlayerPosY += nHeroHt;	// *** Retire le dÃ¯Â¿Â½calage.
 	return (0);
 }
 
-// Test sur les cï¿½tï¿½s au niveau du plafond (nage + slug sous-marin).
+// Test sur les cÃ¯Â¿Â½tÃ¯Â¿Â½s au niveau du plafond (nage + slug sous-marin).
 void Gen_CeilingSideCheck(s32 nTestOffsX, s32 nHeroHt, s32 nSpdMaxX)
 {
 	s32	*pBlocks;
@@ -2692,11 +2686,11 @@ void PlayerControl_Swim(void)
 	// Gestion de la victoire.
 	Player_VictoryManage();
 
-	// Slug out : Couper le contrï¿½le.
+	// Slug out : Couper le contrÃ¯Â¿Â½le.
 	if (AnmGetKey(gShoot.nPlayerAnm) == e_AnmKey_Hero_SlugOut) Gen_KbNoControl();
 
 
-	// *** Dï¿½placement du perso.
+	// *** DÃ¯Â¿Â½placement du perso.
 	// Vitesse.
 //	i = PlyrMove_Spd(&gShoot.nPlayerSpdX, PLYR_SWIM_SPDX_MAX, PLYR_SWIM_ACC, SDL_SCANCODE_LEFT, SDL_SCANCODE_RIGHT);
 //	i += PlyrMove_Spd(&gShoot.nPlayerSpdY, PLYR_SWIM_SPDY_MAX, PLYR_SWIM_ACC, SDL_SCANCODE_UP, SDL_SCANCODE_DOWN);
@@ -2704,12 +2698,12 @@ void PlayerControl_Swim(void)
 	i += PlyrMove_Spd(&gShoot.nPlayerSpdY, PLYR_SWIM_SPDY_MAX, PLYR_SWIM_ACC, gMSCfg.pKeys[e_CfgKey_Up], gMSCfg.pKeys[e_CfgKey_Down]);
 	if (i) nAnmNo = e_Anm_HeroSub_Run;
 	if (gShoot.nPlayerSpdX) gShoot.nPlayerDir = (gShoot.nPlayerSpdX >= 0 ? 0 : 1);
-	// Bords de map ou scroll bloquï¿½.
+	// Bords de map ou scroll bloquÃ¯Â¿Â½.
 	PlayerMove_LimitX(PLYR_SWIM_REF_OFFSETX);
 	PlayerMove_LimitY(PLYR_SWIM_HEIGHT);
 	PlayerMove_LimitY_Bottom(PLYR_SWIM_HEIGHT_B);
 	// Sol dte/gche.
-	Gen_SideCheck(PLYR_SWIM_REF_OFFSETX, PLYR_SWIM_SPDX_MAX);	// Mettra la vitesse ï¿½ 0 si mouvement pas possible.
+	Gen_SideCheck(PLYR_SWIM_REF_OFFSETX, PLYR_SWIM_SPDX_MAX);	// Mettra la vitesse Ã¯Â¿Â½ 0 si mouvement pas possible.
 	// Plafond dte/gche.
 	Gen_CeilingSideCheck(PLYR_SWIM_REF_OFFSETX, (PLYR_SWIM_HEIGHT - 4) * 256, PLYR_SWIM_SPDX_MAX);
 	// Add.
@@ -2773,7 +2767,7 @@ void PlayerDisplay_Swim(void)
 	}
 
 
-	// *** Tirs, ï¿½ cause des tirs qui bouclent, on est obligï¿½ de faire un test d'image ici, AVANT l'affichage rï¿½el.
+	// *** Tirs, Ã¯Â¿Â½ cause des tirs qui bouclent, on est obligÃ¯Â¿Â½ de faire un test d'image ici, AVANT l'affichage rÃ¯Â¿Â½el.
 	Player_TopAnmAdvance();
 /*
 	// Avance de l'anim du haut.
@@ -2788,9 +2782,9 @@ void PlayerDisplay_Swim(void)
 */
 
 
-	// Affichage du hï¿½ros.
+	// Affichage du hÃ¯Â¿Â½ros.
 
-	// *** 1) Rï¿½cupï¿½re les sprites bottom et top basiques.
+	// *** 1) RÃ¯Â¿Â½cupÃ¯Â¿Â½re les sprites bottom et top basiques.
 	Player_GetTopBottom(&nLegs, &nTop);
 	// Inclinaison (sauf anim de mort ou slug out).
 	if (AnmGetKey(gShoot.nPlayerAnm) != e_AnmKey_Hero_Death &&
@@ -2808,7 +2802,7 @@ void PlayerDisplay_Swim(void)
 				gShoot.nPlayerPosX + ((gShoot.nPlayerDir ? -8 : 8) * 256), gShoot.nPlayerPosY - (12 * 256), e_Prio_DustUnder, 0);
 	}
 
-	// *** 2) Ensuite, y-a-t'il une anim spï¿½ciale en haut ? Si oui, on met le sprite qui va bien. Si nï¿½cessaire, ï¿½crase celui du bas (accroupi...).
+	// *** 2) Ensuite, y-a-t'il une anim spÃ¯Â¿Â½ciale en haut ? Si oui, on met le sprite qui va bien. Si nÃ¯Â¿Â½cessaire, Ã¯Â¿Â½crase celui du bas (accroupi...).
 	// Anim de tir ?
 	gShoot.nPlayerKnifeSprCol = SPR_NoSprite;		// RAZ frame de hit (couteau).
 	if (gShoot.nPlayerAnmTop != -1)
@@ -2841,12 +2835,12 @@ void PlayerDisplay_Swim(void)
 		nTop += gShoot.nVehicleCurAdd * gpHeroTopShotMultiplier[nTbIdx][gShoot.nWeapon];	// Inclinaison.
 		i = nTop;	// En cas de tir, on note le sprite.
 
-		// Dï¿½clenchement d'un tir ?
+		// DÃ¯Â¿Â½clenchement d'un tir ?
 		Player_ShotCheck(i, 0);
 
 	} //if (gShoot.nPlayerAnmTop != -1)
 
-	if ((gShoot.nInvulnerability & PLYR_INVL_BLINK) == 0)	// Clignotement quand invulnï¿½rable.
+	if ((gShoot.nInvulnerability & PLYR_INVL_BLINK) == 0)	// Clignotement quand invulnÃ¯Â¿Â½rable.
 	{
 		// Affichage haut et bas.
 		SprDisplay(nLegs ^ (gShoot.nPlayerDir ? SPR_Flip_X : 0), (gShoot.nPlayerPosX >> 8), (gShoot.nPlayerPosY >> 8), e_Prio_Joueur);
@@ -2865,7 +2859,7 @@ void PlayerDisplay_Swim(void)
 }
 
 //=============================================================================
-// Gestion "tampon" du hï¿½ros quand mort dans un slug duquel on ne doit pas descendre.
+// Gestion "tampon" du hÃ¯Â¿Â½ros quand mort dans un slug duquel on ne doit pas descendre.
 
 void PlayerControl_SlugNoExit_Temp(void)
 {
@@ -2874,19 +2868,19 @@ void PlayerControl_SlugNoExit_Temp(void)
 	// Gestion de la victoire.
 //	Player_VictoryManage();
 
-	// Si pas (plus) en mort, on repasse dans le vï¿½hicule qui va bien.
+	// Si pas (plus) en mort, on repasse dans le vÃ¯Â¿Â½hicule qui va bien.
 //	if (AnmGetKey(gShoot.nPlayerAnm) != e_AnmKey_Hero_Death)
 	if (gShoot.nDeathFlag == 0)
 	{
 		s32	nOffsX, nOffsY;
-//		MstSlug_EntrancePtGet(e_HeroVehicle_Rocket - e_HeroVehicle_SlugBase, &nOffsX, &nOffsY);		// Pour compenser le dï¿½calage de la sortie.
+//		MstSlug_EntrancePtGet(e_HeroVehicle_Rocket - e_HeroVehicle_SlugBase, &nOffsX, &nOffsY);		// Pour compenser le dÃ¯Â¿Â½calage de la sortie.
 //		Player_VehicleSet(e_HeroVehicle_Rocket, gShoot.nPlayerPosX - (nOffsX * 256), gShoot.nPlayerPosY - (nOffsY * 256), SLUG_ENERGY_MAX, 0, SLUG_BOMBS_DEFAULT);
-		MstSlug_EntrancePtGet(gShoot.nVehicleNoExitTypeToReset - e_HeroVehicle_SlugBase, &nOffsX, &nOffsY);		// Pour compenser le dï¿½calage de la sortie.
+		MstSlug_EntrancePtGet(gShoot.nVehicleNoExitTypeToReset - e_HeroVehicle_SlugBase, &nOffsX, &nOffsY);		// Pour compenser le dÃ¯Â¿Â½calage de la sortie.
 		Player_VehicleSet(gShoot.nVehicleNoExitTypeToReset, gShoot.nPlayerPosX - (nOffsX * 256), gShoot.nPlayerPosY - (nOffsY * 256), SLUG_ENERGY_MAX, 0, SLUG_BOMBS_DEFAULT);
 
-		gShoot.nInvulnerability = PLYR_INVULNERABILTY_CNT;	// Petit temps d'invulnï¿½rabilitï¿½. (Cas spï¿½cial espace + hï¿½lico no exit).
+		gShoot.nInvulnerability = PLYR_INVULNERABILTY_CNT;	// Petit temps d'invulnÃ¯Â¿Â½rabilitÃ¯Â¿Â½. (Cas spÃ¯Â¿Â½cial espace + hÃ¯Â¿Â½lico no exit).
 		gShoot.nVehiclePhase = e_SlugPhase_Normal;			// On force la phase "normale" pour ne pas voir le 'get in'.
-		Player_Control();	// La routine de contrï¿½le du nouveau vï¿½hicule.
+		Player_Control();	// La routine de contrÃ¯Â¿Â½le du nouveau vÃ¯Â¿Â½hicule.
 	}
 
 }
@@ -2894,7 +2888,7 @@ void PlayerControl_SlugNoExit_Temp(void)
 void PlayerDisplay_SlugNoExit_Temp(void)
 {
 	u32	nSpr;
-	nSpr = AnmGetImage(gShoot.nPlayerAnm);		// Trï¿½s important, pour faire avancer l'anim de mort et arriver sur le AnmEnd !
+	nSpr = AnmGetImage(gShoot.nPlayerAnm);		// TrÃ¯Â¿Â½s important, pour faire avancer l'anim de mort et arriver sur le AnmEnd !
 
 	// Pas de sprite de collision.
 	gShoot.nPlayerSprCol = SPR_NoSprite;
@@ -2902,9 +2896,9 @@ void PlayerDisplay_SlugNoExit_Temp(void)
 }
 
 //=============================================================================
-// Gestion du hï¿½ros en parachute.
+// Gestion du hÃ¯Â¿Â½ros en parachute.
 
-// Contrï¿½le du joueur.
+// ContrÃ¯Â¿Â½le du joueur.
 void PlayerControl_Parachute(void)
 {
 	u32	nAnmNo;
@@ -2916,11 +2910,11 @@ void PlayerControl_Parachute(void)
 	// Oscillation X : Ajout et retrait de l'offset pour ne pas perturber le scroll.
 	nPosX_sav = gShoot.nPlayerPosX;	// Sauvegarde de la pos X.
 	gShoot.nPlayerPosX += gVar.pSin[gShoot.nVehicleFrmCnt0] << 2;
-	gShoot.nVehicleFrmCnt0 += 3;	// Incrï¿½mentation de l'index pour oscillation.
+	gShoot.nVehicleFrmCnt0 += 3;	// IncrÃ¯Â¿Â½mentation de l'index pour oscillation.
 
 	nAnmNo = e_Anm_Hero_Fall;
 
-	// Jump ? => On lï¿½che le parachute.
+	// Jump ? => On lÃ¯Â¿Â½che le parachute.
 	u32 nHt;
 	nHt = BlockGetGroundLevel(gShoot.nPlayerPosX >> 8, gShoot.nPlayerPosY >> 8);
 //	if (gVar.pKeys[KB_BUTTONB] && nHt < 64)
@@ -2932,7 +2926,7 @@ void PlayerControl_Parachute(void)
 		gShoot.nPlayerSpdY = PLYR_PARACHUTE_SPDY_MAX;
 //		gVar.pKeys[KB_BUTTONB] = 0;
 		gVar.pKeys[gMSCfg.pKeys[e_CfgKey_ButtonB]] = 0;
-		gpFctCtrlTb[gShoot.nVehicleType]();	// La routine de contrï¿½le du nouveau vï¿½hicule.
+		gpFctCtrlTb[gShoot.nVehicleType]();	// La routine de contrÃ¯Â¿Â½le du nouveau vÃ¯Â¿Â½hicule.
 		return;
 	}
 
@@ -2944,7 +2938,7 @@ void PlayerControl_Parachute(void)
 		// Atterrissage.
 		Player_VehicleSet(e_HeroVehicle_None_Naked, gShoot.nPlayerPosX, gShoot.nPlayerPosY, SLUG_ENERGY_MAX, 0, 0);
 		gShoot.nParachuteAnm = AnmSetIfNew(gAnm_Parachute_Fold, gShoot.nParachuteAnm);	// Repli du parachute.
-		gpFctCtrlTb[gShoot.nVehicleType]();	// La routine de contrï¿½le du nouveau vï¿½hicule.
+		gpFctCtrlTb[gShoot.nVehicleType]();	// La routine de contrÃ¯Â¿Â½le du nouveau vÃ¯Â¿Â½hicule.
 		return;
 	}
 
@@ -2970,9 +2964,9 @@ void PlayerDisplay_Parachute(void)
 }
 
 //=============================================================================
-// Gestion du hï¿½ros ï¿½ pied.
+// Gestion du hÃ¯Â¿Â½ros Ã¯Â¿Â½ pied.
 
-// Teste le dï¿½clenchement d'un saut.
+// Teste le dÃ¯Â¿Â½clenchement d'un saut.
 void Gen_ButtonB_Check(s32 nJumpSpdY)
 {
 	// Jump.
@@ -2981,14 +2975,14 @@ void Gen_ButtonB_Check(s32 nJumpSpdY)
 	{
 		gShoot.nPlayerGnd = 0;
 		gShoot.nPlayerSpdY = -nJumpSpdY;
-		gShoot.nPfAddress = 0;	// Si on ï¿½tait sur une plateforme mobile, RAZ (sinon la plateforme recale !).
+		gShoot.nPfAddress = 0;	// Si on Ã¯Â¿Â½tait sur une plateforme mobile, RAZ (sinon la plateforme recale !).
 //		gVar.pKeys[KB_BUTTONB] = 0;
 		gVar.pKeys[gMSCfg.pKeys[e_CfgKey_ButtonB]] = 0;
 	}
 
 }
 
-// Replace les touches qui servent dans l'ï¿½tat du buffer SDL.
+// Replace les touches qui servent dans l'Ã¯Â¿Â½tat du buffer SDL.
 void Gen_KbRestore(void)
 {
 /*
@@ -3011,7 +3005,7 @@ void Gen_KbRestore(void)
 //	gVar.pKeys[gMSCfg.pKeys[e_CfgKey_ButtonC]] = gVar.pKeysSDL[gMSCfg.pKeys[e_CfgKey_ButtonC]];
 }
 
-// Plus de contrï¿½le, place toutes les touches de contrï¿½le du joueur ï¿½ 0.
+// Plus de contrÃ¯Â¿Â½le, place toutes les touches de contrÃ¯Â¿Â½le du joueur Ã¯Â¿Â½ 0.
 void Gen_KbNoControl(void)
 {
 //	gVar.pKeys[SDL_SCANCODE_LEFT] = gVar.pKeys[SDL_SCANCODE_RIGHT] = gVar.pKeys[SDL_SCANCODE_UP] = gVar.pKeys[SDL_SCANCODE_DOWN] =
@@ -3043,7 +3037,7 @@ u32 Gen_GroundCheck(u32 nPosX)
 			nHt2 = nHt;
 			nCol = (gMap.ppColCodes[gMap.nHeroPlane] + nBlockNo)->nCol;
 
-			// Si on pose sur la ligne supï¿½rieure, on regarde aussi le bloc du dessus.
+			// Si on pose sur la ligne supÃ¯Â¿Â½rieure, on regarde aussi le bloc du dessus.
 			if (nHt == 0)
 			{
 				nBlockNo = *(pBlocks + (((gShoot.nPlayerPosY >> 12) - 1) * gMap.nMapLg) + (nPosX >> 12) );
@@ -3056,14 +3050,14 @@ u32 Gen_GroundCheck(u32 nPosX)
 				}
 			}
 
-			// On doit monter sur une plateforme transparente ? (Pentes dï¿½conseillï¿½es, recalage merdique avec le double point).
+			// On doit monter sur une plateforme transparente ? (Pentes dÃ¯Â¿Â½conseillÃ¯Â¿Â½es, recalage merdique avec le double point).
 			if (gShoot.nPlayerLastGnd == 0 && (nCol & 0x0F) == e_BlockCode_Soft)
 			{
 				nCmpY = (gShoot.nPlayerPosY & ~0xF00) + (nHt2 * 256);
 				if (gShoot.nPlayerPosY - nCmpY > PLYR_NAKED_SPDY_MAX) return (0);	// On est trop bas, on ne monte pas.
 			}
 
-			// Sol touchï¿½.
+			// Sol touchÃ¯Â¿Â½.
 			gShoot.nPlayerGnd = nCol;//1;
 			gShoot.nPlayerSpdY = 0;
 			gShoot.nPlayerPosY &= ~0xFFF;//~0xF00;	// FFF => On cleane la virgule avec.
@@ -3128,7 +3122,7 @@ void GroundCheck(u32 nPosX)
 			gShoot.nPlayerPosY &= ~0xF00;
 			gShoot.nPlayerPosY += (nHt) * 256;
 
-			// Si on pose sur la ligne supï¿½rieure, on regarde aussi le bloc du dessus.
+			// Si on pose sur la ligne supÃ¯Â¿Â½rieure, on regarde aussi le bloc du dessus.
 			if (nHt == 0)
 			{
 				nBlockNo = *(pBlocks + (((gShoot.nPlayerPosY >> 12) - 1) * gMap.nMapLg) + (nPosX >> 12) );
@@ -3151,7 +3145,7 @@ void GroundCheck(u32 nPosX)
 */
 
 // Gestion du sol.
-// Out : b0 = Touche ï¿½ droite / b1 = Touche ï¿½ gauche / Tester avec & car le rï¿½sultat peut ï¿½tre 3.
+// Out : b0 = Touche Ã¯Â¿Â½ droite / b1 = Touche Ã¯Â¿Â½ gauche / Tester avec & car le rÃ¯Â¿Â½sultat peut Ã¯Â¿Â½tre 3.
 u32 Gen_GroundManage(s32 nSpdXMax, s32 nSpdYMax, s32 nRefOffset, u32 nPfTest)
 {
 	u32	nCol0, nCol1;
@@ -3195,24 +3189,24 @@ u32 Gen_GroundManage(s32 nSpdXMax, s32 nSpdYMax, s32 nRefOffset, u32 nPfTest)
 	{
 		if (gShoot.nPlayerGnd == 0)
 		{
-			gShoot.nPlayerGnd = 1;	// Sur pf et pas de contact avec le sol => on fait comme si on ï¿½tait par terre.
+			gShoot.nPlayerGnd = 1;	// Sur pf et pas de contact avec le sol => on fait comme si on Ã¯Â¿Â½tait par terre.
 			gShoot.nPlayerSpdY = 0;
 			gShoot.nPlayerLastGndPosY = gShoot.nPlayerPosY;
 			nTouch = 0;
 		}
 		else
 		{
-			gShoot.nPfAddress = 0;	// Si sur pf on touche le sol, prioritï¿½ au sol.
+			gShoot.nPfAddress = 0;	// Si sur pf on touche le sol, prioritÃ¯Â¿Â½ au sol.
 		}
 	}
 
-	// Remise au y prï¿½cï¿½dent si on n'a pas touchï¿½ le sol (une vraie chute commence).
+	// Remise au y prÃ¯Â¿Â½cÃ¯Â¿Â½dent si on n'a pas touchÃ¯Â¿Â½ le sol (une vraie chute commence).
 	if (gShoot.nPlayerLastGnd && gShoot.nPlayerGnd == 0) gShoot.nPlayerPosY -= nSpdXMax + 0x100;
 
 	return (nTouch);
 }
 
-// Test sur les cï¿½tï¿½s.
+// Test sur les cÃ¯Â¿Â½tÃ¯Â¿Â½s.
 void Gen_SideCheck(s32 nTestOffsX, s32 nSpdMaxX)
 {
 	s32	*pBlocks;
@@ -3243,16 +3237,16 @@ void Gen_SideCheck(s32 nTestOffsX, s32 nSpdMaxX)
 	}
 	// Hard sprite ?
 	nSprPosY = (gShoot.nPlayerPosY >> 8) + HardSpr_TestHt(nPosX >> 8, gShoot.nPlayerPosY >> 8, 0);
-	if ((nPosY >> 8) >= nSprPosY)	// Le test du hard sprite suffit ï¿½ ce niveau. Les bords doivent ï¿½tre au pire verticaux, si ï¿½a ne bloque pas ici, ï¿½a ne bloquera pas plus haut.
+	if ((nPosY >> 8) >= nSprPosY)	// Le test du hard sprite suffit Ã¯Â¿Â½ ce niveau. Les bords doivent Ã¯Â¿Â½tre au pire verticaux, si Ã¯Â¿Â½a ne bloque pas ici, Ã¯Â¿Â½a ne bloquera pas plus haut.
 	{
 		gShoot.nPlayerSpdX = 0;
 		return;
 	}
 
-//	// Si on est accroupi, on arrï¿½te les tests ici.
+//	// Si on est accroupi, on arrÃ¯Â¿Â½te les tests ici.
 //	if (AnmGetKey(gShoot.nPlayerAnm) == e_AnmKey_Hero_CrouchStance ||
 //		AnmGetKey(gShoot.nPlayerAnm) == e_AnmKey_Hero_CrouchWalk) return;
-	// Si on est accroupi ou en train de nager, on arrï¿½te les tests ici.
+	// Si on est accroupi ou en train de nager, on arrÃ¯Â¿Â½te les tests ici.
 	if (AnmGetKey(gShoot.nPlayerAnm) == e_AnmKey_Hero_CrouchStance ||
 		AnmGetKey(gShoot.nPlayerAnm) == e_AnmKey_Hero_CrouchWalk ||
 //		AnmGetKey(gShoot.nPlayerAnm) == e_AnmKey_HeroSub_Stance ||
@@ -3286,7 +3280,7 @@ void Gen_SideCheck(s32 nTestOffsX, s32 nSpdMaxX)
 //	AnmGetKey(gShoot.nPlayerAnm) == e_AnmKey_HeroSub_Run) return;
 
 
-	// Et enfin au niveau de la tï¿½te.
+	// Et enfin au niveau de la tÃ¯Â¿Â½te.
 	nPosY -= 10 * 256;
 //SprDisplay(e_Spr_Tstrct_Cross, nPosX>>8, nPosY>>8, 250);
 //SprDisplay(e_Spr_Tstrct_CornerUL, (nPosX>>12)<<4, (nPosY>>12)<<4, 250);
@@ -3307,8 +3301,8 @@ void Gen_SideCheck(s32 nTestOffsX, s32 nSpdMaxX)
 
 }
 
-/* - version avant de la rendre gï¿½nï¿½rique.
-// Test sur les cï¿½tï¿½s.
+/* - version avant de la rendre gÃ¯Â¿Â½nÃ¯Â¿Â½rique.
+// Test sur les cÃ¯Â¿Â½tÃ¯Â¿Â½s.
 void SideCheck(void)
 {
 	s32	*pBlocks;
@@ -3338,7 +3332,7 @@ void SideCheck(void)
 		}
 	}
 
-	// Si on est accroupi, on arrï¿½te les tests ici.
+	// Si on est accroupi, on arrÃ¯Â¿Â½te les tests ici.
 	if (AnmGetKey(gShoot.nPlayerAnm) == e_AnmKey_Hero_CrouchStance ||
 		AnmGetKey(gShoot.nPlayerAnm) == e_AnmKey_Hero_CrouchWalk) return;
 
@@ -3360,7 +3354,7 @@ void SideCheck(void)
 		}
 	}
 
-	// Et enfin au niveau de la tï¿½te.
+	// Et enfin au niveau de la tÃ¯Â¿Â½te.
 	nPosY -= 10 * 256;
 //SprDisplay(e_Spr_Ball, nPosX>>8, nPosY>>8, 250);
 	nBlockNo = *(pBlocks + ((nPosY >> 12) * gMap.nMapLg) + (nPosX >> 12) );
@@ -3381,7 +3375,7 @@ void SideCheck(void)
 }
 */
 
-// Pendant un saut, la tï¿½te touche ?
+// Pendant un saut, la tÃ¯Â¿Â½te touche ?
 void HeadCheck(u32 nPosX)
 {
 	s32	*pBlocks;
@@ -3397,7 +3391,7 @@ void HeadCheck(u32 nPosX)
 
 ////	nPosY -= 24 * 256;
 //	nPosY -= (PLYR_NAKED_SPDX_MAX * 2) + (1 * 4096);
-	nPosY -= (PLYR_NAKED_SPDX_MAX * 2) + (1 * 4096) + (10 * 256);		// = Mï¿½me calcul que dans SideCheck, mais vitesse en dur car fct utlisï¿½e seulement dans 'naked'.
+	nPosY -= (PLYR_NAKED_SPDX_MAX * 2) + (1 * 4096) + (10 * 256);		// = MÃ¯Â¿Â½me calcul que dans SideCheck, mais vitesse en dur car fct utlisÃ¯Â¿Â½e seulement dans 'naked'.
 //SprDisplay(e_Spr_Tstrct_Cross, nPosX>>8, nPosY>>8, 250);
 //SprDisplay(e_Spr_Tstrct_CornerUL, (nPosX>>12)<<4, (nPosY>>12)<<4, 250);
 	nBlockNo = *(pBlocks + ((nPosY >> 12) * gMap.nMapLg) + (nPosX >> 12) );
@@ -3443,7 +3437,7 @@ u32 CrouchCheck(u32 nPosX)
 
 
 
-// Mort, inits particuliï¿½res - naked.
+// Mort, inits particuliÃ¯Â¿Â½res - naked.
 void Player_DeathSet_Naked(void)
 {
 	u32	nAnm;
@@ -3454,7 +3448,7 @@ void Player_DeathSet_Naked(void)
 	{
 		nAnm = e_Anm_Hero_DeathGen_Air;
 		//if (gShoot.nPlayerSpdY < 0) gShoot.nPlayerSpdY = 0;
-		gShoot.nPlayerSpdY = -0x400;	// Petit saut quand touchï¿½ en l'air.
+		gShoot.nPlayerSpdY = -0x400;	// Petit saut quand touchÃ¯Â¿Â½ en l'air.
 	}
 	AnmSetIfNew(gpHeroAnm[nAnm], gShoot.nPlayerAnm);
 
@@ -3471,7 +3465,7 @@ void Player_DeathSet_Naked(void)
 
 }
 
-// Mort, inits particuliï¿½res - swim.
+// Mort, inits particuliÃ¯Â¿Â½res - swim.
 void Player_DeathSet_Swim(void)
 {
 	u32	nAnm;
@@ -3489,7 +3483,7 @@ void Player_DeathSet_Swim(void)
 
 }
 
-// Mort, inits particuliï¿½res - Cas des vï¿½hicules desquels on ne doit pas descendre.
+// Mort, inits particuliÃ¯Â¿Â½res - Cas des vÃ¯Â¿Â½hicules desquels on ne doit pas descendre.
 void Player_DeathSet_SlugNoExit_Temp(void)
 {
 	u32	nAnm;
@@ -3501,7 +3495,7 @@ void Player_DeathSet_SlugNoExit_Temp(void)
 
 }
 
-// Place le joueur en mort, en fct du vï¿½hicule.
+// Place le joueur en mort, en fct du vÃ¯Â¿Â½hicule.
 typedef void (*pFctDeathSet) (void);
 void Game_Player_DeathSet(void)
 {
@@ -3518,40 +3512,40 @@ void Game_Player_DeathSet(void)
 	if (pFctDeathTb[gShoot.nVehicleType] == NULL) return;	// Au cas ou...
 	pFctDeathTb[gShoot.nVehicleType]();
 
-	if (gShoot.nPlayerAnmTop != -1)		// Libï¿½re l'anim top.
+	if (gShoot.nPlayerAnmTop != -1)		// LibÃ¯Â¿Â½re l'anim top.
 	{
 		AnmReleaseSlot(gShoot.nPlayerAnmTop);
 		gShoot.nPlayerAnmTop = -1;
 	}
-	if (gShoot.nParachuteAnm != -1)			// Libï¿½re l'anim du parachute.
+	if (gShoot.nParachuteAnm != -1)			// LibÃ¯Â¿Â½re l'anim du parachute.
 	{
 		AnmReleaseSlot(gShoot.nParachuteAnm);
 		gShoot.nParachuteAnm = -1;
 	}
 	Gen_KbNoControl();
-	gShoot.nDeathFlag = 1;		// < Je pense que c'est une bonne idï¿½e de le placer ici aussi.
+	gShoot.nDeathFlag = 1;		// < Je pense que c'est une bonne idÃ¯Â¿Â½e de le placer ici aussi.
 
 }
 
-// Si le joueur est en anim de mort, coupe le contrï¿½le.
+// Si le joueur est en anim de mort, coupe le contrÃ¯Â¿Â½le.
 void Player_DeathManage(void)
 {
 	gShoot.nDeathFlag = 0;
 
-	// Si mort, on coupe le contrï¿½le.
+	// Si mort, on coupe le contrÃ¯Â¿Â½le.
 	if (AnmGetKey(gShoot.nPlayerAnm) == e_AnmKey_Hero_Death ||
 		AnmGetKey(gShoot.nPlayerAnm) == e_AnmKey_Hero_DeathAir)
 	{
 		gShoot.nDeathFlag = 1;
 
-		// Si mort + chute, met l'anim d'arrivï¿½e au sol quand on touche le sol.
+		// Si mort + chute, met l'anim d'arrivÃ¯Â¿Â½e au sol quand on touche le sol.
 		if (AnmGetKey(gShoot.nPlayerAnm) == e_AnmKey_Hero_DeathAir && gShoot.nPlayerGnd)
 			AnmSetIfNew(gpHeroAnm[e_Anm_Hero_DeathGen_Land], gShoot.nPlayerAnm);
 
 		// RAZ kb.
 		Gen_KbNoControl();
 
-		// Anim terminï¿½e ?
+		// Anim terminÃ¯Â¿Â½e ?
 		if (AnmCheckEnd(gShoot.nPlayerAnm))
 		{
 			//>> Cheat : Vies infinies (ici poour le cas de l'activation du flag avec 0 vies).
@@ -3559,7 +3553,7 @@ void Player_DeathManage(void)
 			if (gCCodes.nCheat & e_Cheat_InfiniteLives || gpMstQuestItems[MST_QUEST_ITEM_NEXT_LEVEL])
 				gShoot.nPlayerLives++;
 			//<< Cheat : Vies infinies.
-			// OR : Pour prise en compte des cas ï¿½ la con du style le joueur et le boss s'entretuent (sur la derniï¿½re vie du joueur ou pas).
+			// OR : Pour prise en compte des cas Ã¯Â¿Â½ la con du style le joueur et le boss s'entretuent (sur la derniÃ¯Â¿Â½re vie du joueur ou pas).
 			// Si on bat le boss, le joueur ne perd pas de vie. (On est sympa !).
 
 			// Il reste des vies ?
@@ -3571,12 +3565,12 @@ void Player_DeathManage(void)
 				u32	nPlayerLastDir = gShoot.nPlayerDir;
 				Player_InitLife(gShoot.nPlayerPosX, gShoot.nPlayerPosY, gShoot.nVehicleType);
 				Player_ReinitFlipX(nPlayerLastDir);
-				gShoot.nInvulnerability = PLYR_INVULNERABILTY_CNT;	// Petit temps d'invulnï¿½rabilitï¿½.
+				gShoot.nInvulnerability = PLYR_INVULNERABILTY_CNT;	// Petit temps d'invulnÃ¯Â¿Â½rabilitÃ¯Â¿Â½.
 			}
 			else
 			if (gGameVar.nPhase == e_Game_Normal)	// Pour ne faire les inits qu'une fois.
 			{
-				// Joueur mort, phase tmp pour sï¿½lection du Game Over ou du Continue.
+				// Joueur mort, phase tmp pour sÃ¯Â¿Â½lection du Game Over ou du Continue.
 				gGameVar.nPhase = e_Game_PlayerDead;
 			}
 		}
@@ -3589,14 +3583,14 @@ if (gVar.pKeys[SDL_SCANCODE_E]) Game_Player_DeathSet();  // test de mort.
 }
 
 // Gestion de la victoire.
-// Renvoie tjs 0 sauf s'il faut indiquer ï¿½ un vï¿½hicule qu'on a forcï¿½ la sortie du hï¿½ros.
+// Renvoie tjs 0 sauf s'il faut indiquer Ã¯Â¿Â½ un vÃ¯Â¿Â½hicule qu'on a forcÃ¯Â¿Â½ la sortie du hÃ¯Â¿Â½ros.
 u32 Player_VictoryManage(void)
 {
 	// Si victoire OU changement de level :
 	if (gpMstQuestItems[MST_QUEST_ITEM_NEXT_LEVEL])
 	{
-		Gen_KbNoControl();		// Coupe le contrï¿½le.
-		gShoot.nInvulnerability = PLYR_INVL_BLINK - 1;	// Invulnï¿½rable.
+		Gen_KbNoControl();		// Coupe le contrÃ¯Â¿Â½le.
+		gShoot.nInvulnerability = PLYR_INVL_BLINK - 1;	// InvulnÃ¯Â¿Â½rable.
 	}
 
 	// On quitte ici si pas de victoire.
@@ -3609,12 +3603,12 @@ u32 Player_VictoryManage(void)
 		// Cas improbable mais au cas ou : Le perso est en victoire, mais le sol disparait sous ses pieds.
 		if (gShoot.nPlayerGnd == 0 && AnmGetKey(gShoot.nPlayerAnm) == e_AnmKey_Hero_Victory)
 		{
-			AnmSet(gpHeroAnm[e_Anm_Hero_Stance], gShoot.nPlayerAnm);		// Passe au repos, le reste de la gestion du hï¿½ros le mettra en chute.
+			AnmSet(gpHeroAnm[e_Anm_Hero_Stance], gShoot.nPlayerAnm);		// Passe au repos, le reste de la gestion du hÃ¯Â¿Â½ros le mettra en chute.
 		}
 		// Au sol ? => Anim de victoire.
 		if (gShoot.nPlayerGnd)
 		{
-			if (gShoot.nPlayerAnmTop != -1)		// Libï¿½re l'anim top.
+			if (gShoot.nPlayerAnmTop != -1)		// LibÃ¯Â¿Â½re l'anim top.
 			{
 				AnmReleaseSlot(gShoot.nPlayerAnmTop);
 				gShoot.nPlayerAnmTop = -1;
@@ -3624,7 +3618,7 @@ u32 Player_VictoryManage(void)
 		break;
 
 	case e_HeroVehicle_Tank:
-		// Si le tank est au sol, ï¿½jecter le perso.
+		// Si le tank est au sol, Ã¯Â¿Â½jecter le perso.
 		if (gShoot.nPlayerGnd)
 		{
 			Slug_GetOut(e_HeroVehicle_Tank, e_HeroVehicle_None_Naked, gAnm_Hero_SlugOutGen, 2 * PLYR_NAKED_JUMP_VAL / 3);
@@ -3645,7 +3639,7 @@ u32 Player_VictoryManage(void)
 	return (0);
 }
 
-// Contrï¿½le du joueur.
+// ContrÃ¯Â¿Â½le du joueur.
 void PlayerControl_Naked(void)
 {
 	u32	i;
@@ -3658,10 +3652,19 @@ void PlayerControl_Naked(void)
 
 	// Gestion de la mort.
 	Player_DeathManage();
+	if (gShoot.nDeathFlag || 
+	    AnmGetKey(gShoot.nPlayerAnm) == e_AnmKey_Hero_Death || 
+	    AnmGetKey(gShoot.nPlayerAnm) == e_AnmKey_Hero_DeathAir)
+	{
+		gShoot.nPlayerSpdX = 0;
+		// Maintain gravity & ground collision so the player lands on ground and completes death animation
+		Gen_GroundManage(PLYR_NAKED_SPDX_MAX, PLYR_NAKED_SPDY_MAX, PLYR_NAKED_REF_OFFSETX, 1);
+		return;
+	}
 	// Gestion de la victoire.
 	Player_VictoryManage();
 
-	// Slug out : Couper le contrï¿½le.
+	// Slug out : Couper le contrÃ¯Â¿Â½le.
 	if (AnmGetKey(gShoot.nPlayerAnm) == e_AnmKey_Hero_SlugOut)
 	{
 		// On touche le sol ? => Passe en wait.
@@ -3671,7 +3674,7 @@ void PlayerControl_Naked(void)
 			Gen_KbNoControl();
 	}
 
-	// *** Test du dï¿½placement latï¿½ral.
+	// *** Test du dÃ¯Â¿Â½placement latÃ¯Â¿Â½ral.
 
 //	// Vitesse. (v.1)
 ////	if (PlyrMove_Spd(&gShoot.nPlayerSpdX, (AnmGetKey(gShoot.nPlayerAnm) == e_AnmKey_Hero_CrouchWalk ? PLYR_NAKED_SPDX_MAX / 2 : PLYR_NAKED_SPDX_MAX), PLYR_NAKED_ACCX, SDL_SCANCODE_LEFT, SDL_SCANCODE_RIGHT)) nAnmNo = e_Anm_Hero_Run;
@@ -3683,16 +3686,23 @@ void PlayerControl_Naked(void)
 //	if (PlyrMove_Spd(&gShoot.nPlayerSpdX, nSpdXMax, PLYR_NAKED_ACCX, SDL_SCANCODE_LEFT, SDL_SCANCODE_RIGHT)) nAnmNo = e_Anm_Hero_Run;
 	if (PlyrMove_Spd(&gShoot.nPlayerSpdX, nSpdXMax, PLYR_NAKED_ACCX, gMSCfg.pKeys[e_CfgKey_Left], gMSCfg.pKeys[e_CfgKey_Right])) nAnmNo = e_Anm_Hero_Run;
 
-	if (gShoot.nPlayerSpdX) gShoot.nPlayerDir = (gShoot.nPlayerSpdX >= 0 ? 0 : 1);
+	if (gRogue.nActive && g_nRogueAimDir != -1)
+	{
+		gShoot.nPlayerDir = g_nRogueAimDir;
+	}
+	else if (gShoot.nPlayerSpdX)
+	{
+		gShoot.nPlayerDir = (gShoot.nPlayerSpdX >= 0 ? 0 : 1);
+	}
 	// Blocage quand crouch + tir.
 	if ((AnmGetKey(gShoot.nPlayerAnm) == e_AnmKey_Hero_CrouchWalk ||
 		 AnmGetKey(gShoot.nPlayerAnm) == e_AnmKey_Hero_CrouchStance) && gShoot.nPlayerAnmTop != -1)
 	{
 		gShoot.nPlayerSpdX = 0;
 		// !!! Ne pas s'occuper de l'anim !!!
-		// On laisse stance ou run (ï¿½a dï¿½pend si le joueur appuie ou pas sur une direction) => Ca corrige le flick de 1 frame entre le tir et le move quand mode enchainï¿½.
+		// On laisse stance ou run (Ã¯Â¿Â½a dÃ¯Â¿Â½pend si le joueur appuie ou pas sur une direction) => Ca corrige le flick de 1 frame entre le tir et le move quand mode enchainÃ¯Â¿Â½.
 	}
-	// Limites gauche et droite. Map ou fenï¿½tre.
+	// Limites gauche et droite. Map ou fenÃ¯Â¿Â½tre.
 	PlayerMove_LimitX(PLYR_NAKED_REF_OFFSETX);
 	PlayerMove_LimitY(PLYR_NAKED_HEIGHT);
 
@@ -3700,20 +3710,20 @@ void PlayerControl_Naked(void)
 	i = CrouchCheck(gShoot.nPlayerPosX + PLYR_NAKED_REF_OFFSETX);
 	i += CrouchCheck(gShoot.nPlayerPosX - PLYR_NAKED_REF_OFFSETX);
 	// On s'accroupit ?
-//	if (gVar.pKeys[SDL_SCANCODE_DOWN] || i) nAnmNo++;	// Ok car ï¿½ ce moment lï¿½, seulement Idle ou Run.
-	if (gVar.pKeys[gMSCfg.pKeys[e_CfgKey_Down]] || i) nAnmNo++;	// Ok car ï¿½ ce moment lï¿½, seulement Idle ou Run.
-	// Si accroupi forcï¿½, bloque le saut.
+//	if (gVar.pKeys[SDL_SCANCODE_DOWN] || i) nAnmNo++;	// Ok car Ã¯Â¿Â½ ce moment lÃ¯Â¿Â½, seulement Idle ou Run.
+	if (gVar.pKeys[gMSCfg.pKeys[e_CfgKey_Down]] || i) nAnmNo++;	// Ok car Ã¯Â¿Â½ ce moment lÃ¯Â¿Â½, seulement Idle ou Run.
+	// Si accroupi forcÃ¯Â¿Â½, bloque le saut.
 //	if (i) gVar.pKeys[KB_BUTTONB] = 0;
 	if (i) gVar.pKeys[gMSCfg.pKeys[e_CfgKey_ButtonB]] = 0;
 
-	Gen_SideCheck(PLYR_NAKED_REF_OFFSETX, PLYR_NAKED_SPDX_MAX);	// Mettra la vitesse ï¿½ 0 si mouvement pas possible.
+	Gen_SideCheck(PLYR_NAKED_REF_OFFSETX, PLYR_NAKED_SPDX_MAX);	// Mettra la vitesse Ã¯Â¿Â½ 0 si mouvement pas possible.
 
 	gShoot.nPlayerPosX += gShoot.nPlayerSpdX;
 
 	// Jump ?
 	Gen_ButtonB_Check(PLYR_NAKED_JUMP_VAL);
 
-	// Pendant un saut, la tï¿½te touche ?
+	// Pendant un saut, la tÃ¯Â¿Â½te touche ?
 	HeadCheck(gShoot.nPlayerPosX + PLYR_NAKED_REF_OFFSETX);
 	HeadCheck(gShoot.nPlayerPosX - PLYR_NAKED_REF_OFFSETX);
 
@@ -3721,8 +3731,8 @@ void PlayerControl_Naked(void)
 	u32	nTouch;
 	nTouch = Gen_GroundManage(PLYR_NAKED_SPDX_MAX, PLYR_NAKED_SPDY_MAX, PLYR_NAKED_REF_OFFSETX, 1);
 
-	// Calcul de l'angle au niveau du sol (calcul entre le point central et le point du cï¿½tï¿½ qui touche).
-	gShoot.nPlayerGndAng = 0;	// Par dï¿½faut, RAZ.
+	// Calcul de l'angle au niveau du sol (calcul entre le point central et le point du cÃ¯Â¿Â½tÃ¯Â¿Â½ qui touche).
+	gShoot.nPlayerGndAng = 0;	// Par dÃ¯Â¿Â½faut, RAZ.
 	if (nTouch && nTouch != 3)
 	{
 		s32	nHt;
@@ -3756,13 +3766,13 @@ void PlayerControl_Naked(void)
 				};
 				AnmSetIfNew(pBoredAnm_Gun[gShoot.nWeapon][nRnd & 1], gShoot.nPlayerAnm);
 			}
-			gShoot.nBoredCnt = 0;	// Que l'anim ait ï¿½tï¿½ mise ou pas, on repart ï¿½ 0.
+			gShoot.nBoredCnt = 0;	// Que l'anim ait Ã¯Â¿Â½tÃ¯Â¿Â½ mise ou pas, on repart Ã¯Â¿Â½ 0.
 		}
 	}
 	else
 		gShoot.nBoredCnt = 0;
 
-	// Anim. (if uniquement pour ne pas dï¿½gager l'anim "bored").
+	// Anim. (if uniquement pour ne pas dÃ¯Â¿Â½gager l'anim "bored").
 	if ((nAnmNo == e_Anm_Hero_Stance && AnmGetKey(gShoot.nPlayerAnm) == e_AnmKey_Hero_Bored && gShoot.nPlayerAnmTop == -1) == 0)
 	AnmSetIfNew(gpHeroAnm[nAnmNo], gShoot.nPlayerAnm);
 
@@ -3802,10 +3812,10 @@ void PlayerDisplay_Naked(void)
 		// Anim.
 		nAnmKey = (gShoot.nPlayerAnmTop == -1 ? e_AnmKey_Null : AnmGetKey(gShoot.nPlayerAnmTop));
 		if (nAnmKey == e_AnmKey_Hero_ThrowHG)
-			AnmSet(gAnm_Hero_ThrowHG_Gen, gShoot.nPlayerAnmTop);	// Reset de l'anim de lancï¿½.
+			AnmSet(gAnm_Hero_ThrowHG_Gen, gShoot.nPlayerAnmTop);	// Reset de l'anim de lancÃ¯Â¿Â½.
 		else
 			gShoot.nPlayerAnmTop = AnmSetIfNew(gAnm_Hero_ThrowHG_Gen, gShoot.nPlayerAnmTop);
-		// Dï¿½calage en hauteur (debout / accroupi).
+		// DÃ¯Â¿Â½calage en hauteur (debout / accroupi).
 		nAnmKey = AnmGetKey(gShoot.nPlayerAnm);
 		i = (nAnmKey == e_AnmKey_Hero_CrouchStance || nAnmKey == e_AnmKey_Hero_CrouchWalk ? 16 : 30);
 		// Tir.
@@ -3815,7 +3825,7 @@ void PlayerDisplay_Naked(void)
 		gShoot.nBombAmmo--;
 	}
 
-	// *** Tirs, ï¿½ cause des tirs qui bouclent, on est obligï¿½ de faire un test d'image ici, AVANT l'affichage rï¿½el.
+	// *** Tirs, Ã¯Â¿Â½ cause des tirs qui bouclent, on est obligÃ¯Â¿Â½ de faire un test d'image ici, AVANT l'affichage rÃ¯Â¿Â½el.
 	Player_TopAnmAdvance();
 /*
 	// Avance de l'anim du haut.
@@ -3835,7 +3845,7 @@ void PlayerDisplay_Naked(void)
 				// Nouvelle image ?
 				if (AnmCheckNewImgFlag(gShoot.nPlayerAnmTop))
 				{
-					// Cas particulier de la mitrailleuse/flamethrower, loop + il faut mettre l'anim de fin de tir ï¿½ la main.
+					// Cas particulier de la mitrailleuse/flamethrower, loop + il faut mettre l'anim de fin de tir Ã¯Â¿Â½ la main.
 // ou simplifier le test en testant que gpHeroShotEndAnm[] != 0 au lieu de l'arme ? (tb 7 lignes plus bas).
 					if (gShoot.nWeapon == e_Player_Weapon_Machinegun ||
 						gShoot.nWeapon == e_Player_Weapon_Flamethrower)
@@ -3860,13 +3870,13 @@ void PlayerDisplay_Naked(void)
 
 
 
-	// Affichage du hï¿½ros.
+	// Affichage du hÃ¯Â¿Â½ros.
 
-	// *** 1) Rï¿½cupï¿½re les sprites bottom et top basiques.
+	// *** 1) RÃ¯Â¿Â½cupÃ¯Â¿Â½re les sprites bottom et top basiques.
 	Player_GetTopBottom(&nLegs, &nTop);
 	nAnmKey = AnmGetKey(gShoot.nPlayerAnm);
 
-	// *** 2) Ensuite, y-a-t'il une anim spï¿½ciale en haut ? Si oui, on met le sprite qui va bien. Si nï¿½cessaire, ï¿½crase celui du bas (accroupi...).
+	// *** 2) Ensuite, y-a-t'il une anim spÃ¯Â¿Â½ciale en haut ? Si oui, on met le sprite qui va bien. Si nÃ¯Â¿Â½cessaire, Ã¯Â¿Â½crase celui du bas (accroupi...).
 	// Anim de tir ?
 	gShoot.nPlayerKnifeSprCol = SPR_NoSprite;		// RAZ frame de hit (couteau).
 	if (gShoot.nPlayerAnmTop != -1)
@@ -3879,13 +3889,13 @@ void PlayerDisplay_Naked(void)
 			{ e_Spr_HeroCrouch_Shoot_Gun, e_Spr_HeroCrouch_Shoot_Shotgun, e_Spr_HeroCrouch_Shoot_Machinegun, e_Spr_HeroCrouch_Shoot_Shotgun, e_Spr_HeroCrouch_Shoot_Shotgun },
 			//
 			{ e_Spr_HeroTop_ThrowHG_Gun, e_Spr_HeroTop_ThrowHG_Shotgun, e_Spr_HeroTop_ThrowHG_Machinegun, e_Spr_HeroTop_ThrowHG_Shotgun, e_Spr_HeroTop_ThrowHG_Shotgun },
-			{ e_Spr_HeroTop_ThrowHG_Gun, e_Spr_HeroTop_ThrowHG_Shotgun, e_Spr_HeroTop_ThrowHG_Machinegun, e_Spr_HeroTop_ThrowHG_Shotgun, e_Spr_HeroTop_ThrowHG_Shotgun },	// Pas de up, mais ï¿½vite un cas particulier.
-			{ e_Spr_HeroTop_ThrowHG_Gun, e_Spr_HeroTop_ThrowHG_Shotgun, e_Spr_HeroTop_ThrowHG_Machinegun, e_Spr_HeroTop_ThrowHG_Shotgun, e_Spr_HeroTop_ThrowHG_Shotgun },	// Pas de down, mais ï¿½vite un cas particulier.
+			{ e_Spr_HeroTop_ThrowHG_Gun, e_Spr_HeroTop_ThrowHG_Shotgun, e_Spr_HeroTop_ThrowHG_Machinegun, e_Spr_HeroTop_ThrowHG_Shotgun, e_Spr_HeroTop_ThrowHG_Shotgun },	// Pas de up, mais Ã¯Â¿Â½vite un cas particulier.
+			{ e_Spr_HeroTop_ThrowHG_Gun, e_Spr_HeroTop_ThrowHG_Shotgun, e_Spr_HeroTop_ThrowHG_Machinegun, e_Spr_HeroTop_ThrowHG_Shotgun, e_Spr_HeroTop_ThrowHG_Shotgun },	// Pas de down, mais Ã¯Â¿Â½vite un cas particulier.
 			{ e_Spr_HeroCrouch_ThrowHG_Gun, e_Spr_HeroCrouch_ThrowHG_Shotgun, e_Spr_HeroCrouch_ThrowHG_Machinegun, e_Spr_HeroCrouch_ThrowHG_Shotgun, e_Spr_HeroCrouch_ThrowHG_Shotgun },
 			//
 			{ e_Spr_HeroTop_Knife1_Gun, e_Spr_HeroTop_Knife1_Shotgun, e_Spr_HeroTop_Knife1_Machinegun, e_Spr_HeroTop_Knife1_Shotgun, e_Spr_HeroTop_Knife1_Shotgun },
-			{ e_Spr_HeroTop_Knife1_Gun, e_Spr_HeroTop_Knife1_Shotgun, e_Spr_HeroTop_Knife1_Machinegun, e_Spr_HeroTop_Knife1_Shotgun, e_Spr_HeroTop_Knife1_Shotgun },	// Pas de up, mais ï¿½vite un cas particulier.
-			{ e_Spr_HeroTop_Knife1_Gun, e_Spr_HeroTop_Knife1_Shotgun, e_Spr_HeroTop_Knife1_Machinegun, e_Spr_HeroTop_Knife1_Shotgun, e_Spr_HeroTop_Knife1_Shotgun },	// Pas de down, mais ï¿½vite un cas particulier.
+			{ e_Spr_HeroTop_Knife1_Gun, e_Spr_HeroTop_Knife1_Shotgun, e_Spr_HeroTop_Knife1_Machinegun, e_Spr_HeroTop_Knife1_Shotgun, e_Spr_HeroTop_Knife1_Shotgun },	// Pas de up, mais Ã¯Â¿Â½vite un cas particulier.
+			{ e_Spr_HeroTop_Knife1_Gun, e_Spr_HeroTop_Knife1_Shotgun, e_Spr_HeroTop_Knife1_Machinegun, e_Spr_HeroTop_Knife1_Shotgun, e_Spr_HeroTop_Knife1_Shotgun },	// Pas de down, mais Ã¯Â¿Â½vite un cas particulier.
 			{ e_Spr_HeroCrouch_Knife1_Gun, e_Spr_HeroCrouch_Knife1_Shotgun, e_Spr_HeroCrouch_Knife1_Machinegun, e_Spr_HeroCrouch_Knife1_Shotgun, e_Spr_HeroCrouch_Knife1_Shotgun },
 		};
 		u32	nUp = 0;
@@ -3915,10 +3925,10 @@ void PlayerDisplay_Naked(void)
 		}
 		else
 		{
-//			nUp = gVar.pKeys[SDL_SCANCODE_UP];		// nUp servira au dï¿½clenchement du tir.
+//			nUp = gVar.pKeys[SDL_SCANCODE_UP];		// nUp servira au dÃ¯Â¿Â½clenchement du tir.
 //			nTop = i + gpHeroTopShotImg[nTbIdx + (nUp ? 1 : 0)][gShoot.nWeapon];		// Test du haut...
 
-			// nUp servira au dï¿½clenchement du tir. 1 = Haut / 2 = Bas.
+			// nUp servira au dÃ¯Â¿Â½clenchement du tir. 1 = Haut / 2 = Bas.
 //			if (gVar.pKeys[SDL_SCANCODE_UP])
 			if (gVar.pKeys[gMSCfg.pKeys[e_CfgKey_Up]])
 			{
@@ -3935,13 +3945,13 @@ void PlayerDisplay_Naked(void)
 			i = nTop;	// En cas de tir, on note le sprite.
 		}
 
-		// Dï¿½clenchement d'un tir ?
+		// DÃ¯Â¿Â½clenchement d'un tir ?
 		Player_ShotCheck(i, nUp);
 
 	} //if (gShoot.nPlayerAnmTop != -1)
 
 
-	if ((gShoot.nInvulnerability & PLYR_INVL_BLINK) == 0)	// Clignotement quand invulnï¿½rable.
+	if ((gShoot.nInvulnerability & PLYR_INVL_BLINK) == 0)	// Clignotement quand invulnÃ¯Â¿Â½rable.
 	{
 		// Affichage haut et bas.
 		SprDisplay(nLegs ^ (gShoot.nPlayerDir ? SPR_Flip_X : 0), (gShoot.nPlayerPosX >> 8), (gShoot.nPlayerPosY >> 8), e_Prio_Joueur);
@@ -3951,7 +3961,7 @@ void PlayerDisplay_Naked(void)
 		if (gShoot.nParachuteAnm != -1)
 		{
 			if ((i = AnmGetImage(gShoot.nParachuteAnm)) == (u32)-1)
-				gShoot.nParachuteAnm = -1;	// Anim terminï¿½e.
+				gShoot.nParachuteAnm = -1;	// Anim terminÃ¯Â¿Â½e.
 			else
 				SprDisplay(i ^ (gShoot.nPlayerDir ? SPR_Flip_X : 0), (gShoot.nPlayerPosX >> 8), (gShoot.nPlayerPosY >> 8), e_Prio_Joueur - 1);
 		}
@@ -3971,7 +3981,7 @@ void PlayerDisplay_Naked(void)
 		i = e_Spr_HeroCrouch_Stance_Gun;
 		break;
 	default:
-		i = e_Spr_HeroLegs_Stance;	// Par dï¿½faut, stance.
+		i = e_Spr_HeroLegs_Stance;	// Par dÃ¯Â¿Â½faut, stance.
 		break;
 	}
 	gShoot.nPlayerSprCol = i ^ (gShoot.nPlayerDir ? SPR_Flip_X : 0);
@@ -4016,7 +4026,7 @@ void Gen_StepDust(u32 nVehicle, u32 nGndCol, s32 nOffset, u32 nStepFlag, u32 nPo
 		if (nOffset)	// Si offset, on met un second splash.
 		SprDisplay(e_Spr_Steps_WaterL13 + (((gnFrame >> 3) + 1) & 3), (nPosX - nOffset) >> 8, (gShoot.nSplashLevel == -1 ? nPosY >> 8 : gShoot.nSplashLevel), 0x100 + 2);
 
-		if (gShoot.nSplashLevel != -1) nPosY = (gShoot.nSplashLevel - 8) * 256;	// On profite du if pour dï¿½caler le Y pour le step dans l'eau.
+		if (gShoot.nSplashLevel != -1) nPosY = (gShoot.nSplashLevel - 8) * 256;	// On profite du if pour dÃ¯Â¿Â½caler le Y pour le step dans l'eau.
 	}
 
 	// Traces de pas. (Seulement naked, sinon faire une table comme dans Gen_LandDust()).
@@ -4067,17 +4077,17 @@ u32 ShootGame(void)
 		FrameInit();
 		Music_Start(gMissionTb[gGameVar.nGenLevel].nMusicNo, 0);
 		gGameVar.nPhase = e_Game_Normal;				// Phase normale.
-		// Mission nï¿½ == 0 => Cas spï¿½ciaux du how to play et des crï¿½dits.
+		// Mission nÃ¯Â¿Â½ == 0 => Cas spÃ¯Â¿Â½ciaux du how to play et des crÃ¯Â¿Â½dits.
 		if (gMissionTb[gGameVar.nGenLevel].nMissionNo == 0)
 		{
 			Transit2D_InitOpening(e_Transit_HowToPlay);
 		}
 		else
-		// "Mission x start" a afficher ? (En dï¿½but de mission).
+		// "Mission x start" a afficher ? (En dÃ¯Â¿Â½but de mission).
 		if (gMissionTb[gGameVar.nGenLevel].nMissionNo != -1)
 		{
 			gGameVar.nMissionNo = gMissionTb[gGameVar.nGenLevel].nMissionNo;
-			Transit2D_InitOpening(e_Transit_Mission);	// Ouverture dï¿½but de mission.
+			Transit2D_InitOpening(e_Transit_Mission);	// Ouverture dÃ¯Â¿Â½but de mission.
 			gGameVar.nPhase = e_Game_MissionStart;		// Affichage du mission start.
 			MSE_MissionStartReset(0);
 		}
@@ -4091,7 +4101,7 @@ u32 ShootGame(void)
 
 	case e_Game_MissionStart:	// "Mission x Start".
 		if (MSE_MissionStartDisplay())
-			gGameVar.nPhase = e_Game_Normal;	// Passage en phase normale une fois l'affichage terminï¿½.
+			gGameVar.nPhase = e_Game_Normal;	// Passage en phase normale une fois l'affichage terminÃ¯Â¿Â½.
 		// !! Pas de break !!
 	case e_Game_Normal:			// Jeu.
 
@@ -4099,7 +4109,7 @@ u32 ShootGame(void)
 #ifdef DEBUG_KEYS
 if (gVar.pKeys[SDL_SCANCODE_F6])
 {
-	gpMstQuestItems[MST_QUEST_ITEM_NEXT_LEVEL] |= 1;	// Item de quï¿½te : Fin de niveau.
+	gpMstQuestItems[MST_QUEST_ITEM_NEXT_LEVEL] |= 1;	// Item de quÃ¯Â¿Â½te : Fin de niveau.
 	gVar.pKeys[SDL_SCANCODE_F6] = 0;
 }
 #endif
@@ -4108,14 +4118,14 @@ if (gVar.pKeys[SDL_SCANCODE_F6])
 		if (gCCodes.nCheat & e_Cheat_LevelNext)
 		if (gVar.pKeys[SDL_SCANCODE_F6])
 		{
-			gpMstQuestItems[MST_QUEST_ITEM_NEXT_LEVEL] |= 1;	// Item de quï¿½te : Fin de niveau.
+			gpMstQuestItems[MST_QUEST_ITEM_NEXT_LEVEL] |= 1;	// Item de quÃ¯Â¿Â½te : Fin de niveau.
 			gVar.pKeys[SDL_SCANCODE_F6] = 0;
 		}
 
 		// Fin de niveau ?
 		if (gpMstQuestItems[MST_QUEST_ITEM_NEXT_LEVEL] & 1)
 		{
-			// Mission nï¿½ == 0 => Cas spï¿½ciaux du how to play et des crï¿½dits.
+			// Mission nÃ¯Â¿Â½ == 0 => Cas spÃ¯Â¿Â½ciaux du how to play et des crÃ¯Â¿Â½dits.
 			if (gMissionTb[gGameVar.nGenLevel].nMissionNo == 0)
 			{
 				Transit2D_InitClosing(e_Transit_HowToPlay);
@@ -4125,7 +4135,7 @@ if (gVar.pKeys[SDL_SCANCODE_F6])
 			if (gMissionTb[gGameVar.nGenLevel + 1].nMissionNo != -1)
 			{
 				// Fin de mission.
-				gpMstQuestItems[MST_QUEST_ITEM_NEXT_LEVEL] |= 2;	// Signal pour que le hï¿½ros passe en victory (s'il n'y est pas dï¿½jï¿½).
+				gpMstQuestItems[MST_QUEST_ITEM_NEXT_LEVEL] |= 2;	// Signal pour que le hÃ¯Â¿Â½ros passe en victory (s'il n'y est pas dÃ¯Â¿Â½jÃ¯Â¿Â½).
 				MSE_MissionStartReset(1);	// Init du "Mission x Complete".
 				MSE_EndMissionStatusReset();
 				gGameVar.nPhase = e_Game_MissionEnd;
@@ -4140,8 +4150,8 @@ if (gVar.pKeys[SDL_SCANCODE_F6])
 		}
 		break;
 
-	case e_Game_PlayerDead:		// Joueur mort, sï¿½lection du Game Over ou du Continue.
-		// Meilleur score de tous les crï¿½dits.
+	case e_Game_PlayerDead:		// Joueur mort, sÃ¯Â¿Â½lection du Game Over ou du Continue.
+		// Meilleur score de tous les crÃ¯Â¿Â½dits.
 		if (gShoot.nPlayerScore > gGameVar.nBestScore) gGameVar.nBestScore = gShoot.nPlayerScore;
 		//
 		if (gGameVar.nCreditsNb)
@@ -4168,7 +4178,7 @@ if (gVar.pKeys[SDL_SCANCODE_F6])
 			break;
 		}
 
-		// Bouton A (restart) ? Bouton B (accï¿½lï¿½re le countdown) ?
+		// Bouton A (restart) ? Bouton B (accÃ¯Â¿Â½lÃ¯Â¿Â½re le countdown) ?
 		if (MSE_ContinueTxtInPos())		// Seulement une fois le texte en place !
 		{
 			if (gVar.pKeys[gMSCfg.pKeys[e_CfgKey_ButtonA]])
@@ -4181,7 +4191,7 @@ if (gVar.pKeys[SDL_SCANCODE_F6])
 				u32	nPlayerLastDir = gShoot.nPlayerDir;
 				Player_InitLife(gShoot.nPlayerPosX, gShoot.nPlayerPosY, gShoot.nVehicleType);
 				Player_ReinitFlipX(nPlayerLastDir);
-				gShoot.nInvulnerability = PLYR_INVULNERABILTY_CNT;	// Petit temps d'invulnï¿½rabilitï¿½.
+				gShoot.nInvulnerability = PLYR_INVULNERABILTY_CNT;	// Petit temps d'invulnÃ¯Â¿Â½rabilitÃ¯Â¿Â½.
 				// Phase.
 				gGameVar.nPhase = e_Game_Normal;
 	//			gVar.pKeys[KB_BUTTONA] = 0;
@@ -4198,20 +4208,20 @@ if (gVar.pKeys[SDL_SCANCODE_F6])
 		}
 		break;
 
-	case e_Game_Aborted:			// Partie abandonnï¿½e (Inactivitï¿½).
-		gShoot.nInvulnerability = PLYR_INVL_BLINK - 1;		// On ajoute l'invulnï¿½rabilitï¿½. Pendant la transition, il ne faut pas que le joueur meure (pas testï¿½, mais ï¿½a pourrait foutre la merde).
+	case e_Game_Aborted:			// Partie abandonnÃ¯Â¿Â½e (InactivitÃ¯Â¿Â½).
+		gShoot.nInvulnerability = PLYR_INVL_BLINK - 1;		// On ajoute l'invulnÃ¯Â¿Â½rabilitÃ¯Â¿Â½. Pendant la transition, il ne faut pas que le joueur meure (pas testÃ¯Â¿Â½, mais Ã¯Â¿Â½a pourrait foutre la merde).
 	case e_Game_GameOver:			// Game over.
-		Gen_KbNoControl();						// Coupe le contrï¿½le du joueur. (Pour la sortie sur inactivitï¿½).
+		Gen_KbNoControl();						// Coupe le contrÃ¯Â¿Â½le du joueur. (Pour la sortie sur inactivitÃ¯Â¿Â½).
 		if (Transit2D_CheckEnd())
 		{
 			LevelRelease();
 			gGameVar.nExitCode = gGameVar.nPhase;	// Code de sortie (Game Over ou Aborted).
-			nRet = 1;	// Plus rien de chargï¿½, il ne faut pas continuer dans PlatformerGame().
+			nRet = 1;	// Plus rien de chargÃ¯Â¿Â½, il ne faut pas continuer dans PlatformerGame().
 		}
 		break;
 
 	case e_Game_MissionEnd:			// Fin de mission.
-		Gen_KbNoControl();						// Coupe le contrï¿½le du joueur.
+		Gen_KbNoControl();						// Coupe le contrÃ¯Â¿Â½le du joueur.
 		if (MSE_EndMissionStatusDisplay())		// Affichage des bonus de fin de mission.
 		if (MSE_MissionStartDisplay())			// Affichage "Mission Complete".
 		if (Music_IsOver())						// Attente de la fin du jingle de fin de mission.
@@ -4232,14 +4242,14 @@ if (gVar.pKeys[SDL_SCANCODE_F6])
 		break;
 
 	case e_Game_MissionEnd_2:		// Fin de mission, fermeture en laissant l'affichage du "mission complete".
-		if (Transit2D_CheckEnd() == 0)			// 'if' en plus pour ï¿½viter le dernier affichage quand on doit quitter (sinon ï¿½a place les sprites dans la file, on quitte, et les sprites sont affichï¿½s sur la premiï¿½re frame du Game Over).
+		if (Transit2D_CheckEnd() == 0)			// 'if' en plus pour Ã¯Â¿Â½viter le dernier affichage quand on doit quitter (sinon Ã¯Â¿Â½a place les sprites dans la file, on quitte, et les sprites sont affichÃ¯Â¿Â½s sur la premiÃ¯Â¿Â½re frame du Game Over).
 			MSE_MissionStartDisplay();			// Affichage "Mission Complete".
 		// Pas de break !
-	case e_Game_LevelCompleted:		// Niveau terminï¿½.
-		Gen_KbNoControl();						// Coupe le contrï¿½le du joueur.
+	case e_Game_LevelCompleted:		// Niveau terminÃ¯Â¿Â½.
+		Gen_KbNoControl();						// Coupe le contrÃ¯Â¿Â½le du joueur.
 		if (Transit2D_CheckEnd() == 0) break;	// Transition en cours ?
 
-		// Transition terminï¿½e, on passe ï¿½ la suite.
+		// Transition terminÃ¯Â¿Â½e, on passe Ã¯Â¿Â½ la suite.
 		LevelRelease();
 		if (gMissionTb[++gGameVar.nGenLevel].nLevelNo != -1)
 		{
@@ -4249,12 +4259,12 @@ if (gVar.pKeys[SDL_SCANCODE_F6])
 		}
 		else
 		{
-			// Jeu terminï¿½. Sortie.
+			// Jeu terminÃ¯Â¿Â½. Sortie.
 			gGameVar.nExitCode = e_Game_AllClear;	// Code de sortie.
-			// Meilleur score de tous les crï¿½dits.
+			// Meilleur score de tous les crÃ¯Â¿Â½dits.
 			if (gShoot.nPlayerScore > gGameVar.nBestScore) gGameVar.nBestScore = gShoot.nPlayerScore;
 		}
-		nRet = 1;	// Plus rien de chargï¿½, il ne faut plus rien faire avant qu'un niveau soit lu !
+		nRet = 1;	// Plus rien de chargÃ¯Â¿Â½, il ne faut plus rien faire avant qu'un niveau soit lu !
 		break;
 
 	}
@@ -4263,7 +4273,7 @@ if (gVar.pKeys[SDL_SCANCODE_F6])
 
 }
 
-// +1 vie ï¿½ certains scores.
+// +1 vie Ã¯Â¿Â½ certains scores.
 #define	HUD_PLYR_1UP_BLINK	64
 #define	SC_EVERY	5000	//10000
 void CheckSpecialScore(void)
@@ -4277,7 +4287,7 @@ void CheckSpecialScore(void)
 	{
 		// 1Up.
 		if (gShoot.nPlayerLives < PLAYER_Lives_Max) gShoot.nPlayerLives++;
-		gShoot.nHUDPlayerLivesBlink = HUD_PLYR_1UP_BLINK;		// On met le clignotement et le son mï¿½me si max.
+		gShoot.nHUDPlayerLivesBlink = HUD_PLYR_1UP_BLINK;		// On met le clignotement et le son mÃ¯Â¿Â½me si max.
 		Sfx_PlaySfx(e_Sfx_Fx_GunReload, e_SfxPrio_0 + 5);	// Sfx.
 		// Le score suivant.
 		nNextScore += SC_EVERY;
@@ -4294,14 +4304,14 @@ u32 MSE_sub_CalcTxtPos(char *pStr, s16 *pPosXTb, u32 *pSprTb, u8 *pChrNb);
 #define	INACTIVITY_TXTSZMAX	4
 struct SInactivityWrt
 {
-// !!! Ne pas changer les tailles des donnï¿½es, ï¿½a matche avec MSE_sub_CalcTxtPos() !!!
+// !!! Ne pas changer les tailles des donnÃ¯Â¿Â½es, Ã¯Â¿Â½a matche avec MSE_sub_CalcTxtPos() !!!
 	s16	pnPosXTb[INACTIVITY_TXTSZMAX];
 	u32	pnSprTb[INACTIVITY_TXTSZMAX];
 	u8	nChrNb;
 };
 struct SInactivityWrt	gInactivityWrt;
 
-// Initialisation du "writer" (pour ne pas calculer les positions des lettres de la grosse fonte ï¿½ chaque fois).
+// Initialisation du "writer" (pour ne pas calculer les positions des lettres de la grosse fonte Ã¯Â¿Â½ chaque fois).
 void Inactivity_WriterInit(void)
 {
 	u32	i;
@@ -4317,7 +4327,7 @@ void Inactivity_WriterInit(void)
 		gInactivityWrt.pnPosXTb[i] += (SCR_Width - nLg) / 2;
 }
 
-// Gestion de l'inactivitï¿½.
+// Gestion de l'inactivitÃ¯Â¿Â½.
 void Inactivity(void)
 {
 	u32	i;
@@ -4342,7 +4352,7 @@ Font_Print(10, 160, pTb, 0);
 		for (i = 0; i < e_CfgKey_LAST; i++)
 			if (gVar.pKeysSDL[gMSCfg.pKeys[i]]) goto _EndRAZ;
 
-		// Abort ? (Compteur terminï¿½).
+		// Abort ? (Compteur terminÃ¯Â¿Â½).
 		if (gShoot.nInactivityCnt >= INACTIVITY_CNTEND)
 		{
 			gGameVar.nPhase = e_Game_Aborted;
@@ -4359,7 +4369,7 @@ Font_Print(10, 160, pTb, 0);
 			u32	nZoom;
 			u32	nSprFlag = (gShoot.nInactivityCnt & 8 ? SPR_Flag_HitPal : 0);
 
-			nOffs = (INACTIVITY_MIN + 8) - gShoot.nInactivityCnt;	// Petit truc pour l'arrivï¿½e en zoomant.
+			nOffs = (INACTIVITY_MIN + 8) - gShoot.nInactivityCnt;	// Petit truc pour l'arrivÃ¯Â¿Â½e en zoomant.
 			if (nOffs < 0) nOffs = 0;
 			nZoom = 0x100 - (nOffs * 32);
 			nOffs *= nOffs;
@@ -4382,7 +4392,7 @@ Font_Print(10, 160, pTb, 0);
 	}
 
 _EndRAZ:
-	gShoot.nInactivityCnt = 0;		// RAZ compteur d'inactivitï¿½.
+	gShoot.nInactivityCnt = 0;		// RAZ compteur d'inactivitÃ¯Â¿Â½.
 
 }
 
@@ -4392,15 +4402,15 @@ void PlatformerGame(void)
 {
 	u32	i;
 
-	if (ShootGame()) return;		// !!! Ne pas dï¿½placer !!! (Load level fait dedans !).
+	if (ShootGame()) return;		// !!! Ne pas dÃ¯Â¿Â½placer !!! (Load level fait dedans !).
 
-	// Deux direction opposï¿½es ï¿½ la fois ? => Clear.
+	// Deux direction opposÃ¯Â¿Â½es Ã¯Â¿Â½ la fois ? => Clear.
 //	if (gVar.pKeys[SDL_SCANCODE_UP] && gVar.pKeys[SDL_SCANCODE_DOWN]) gVar.pKeys[SDL_SCANCODE_UP] = gVar.pKeys[SDL_SCANCODE_DOWN] = 0;
 //	if (gVar.pKeys[SDL_SCANCODE_LEFT] && gVar.pKeys[SDL_SCANCODE_RIGHT]) gVar.pKeys[SDL_SCANCODE_LEFT] = gVar.pKeys[SDL_SCANCODE_RIGHT] = 0;
 	if (gVar.pKeys[gMSCfg.pKeys[e_CfgKey_Up]] && gVar.pKeys[gMSCfg.pKeys[e_CfgKey_Down]]) gVar.pKeys[gMSCfg.pKeys[e_CfgKey_Up]] = gVar.pKeys[gMSCfg.pKeys[e_CfgKey_Down]] = 0;
 	if (gVar.pKeys[gMSCfg.pKeys[e_CfgKey_Left]] && gVar.pKeys[gMSCfg.pKeys[e_CfgKey_Right]]) gVar.pKeys[gMSCfg.pKeys[e_CfgKey_Left]] = gVar.pKeys[gMSCfg.pKeys[e_CfgKey_Right]] = 0;
 
-	// Contrï¿½le du joueur.
+	// ContrÃ¯Â¿Â½le du joueur.
 	gpFctCtrlTb[gShoot.nVehicleType]();
 
 	ScrollManage();
@@ -4414,19 +4424,19 @@ void PlatformerGame(void)
 	Inactivity();
 
 	// Affichage du joueur.
-	gpFctDispTb[gShoot.nVehicleType]();		// APRES les monstres, car les pf mobiles peuvent dï¿½placer le joueur.
-	Gen_KbRestore();	// Aprï¿½s la gestion et l'affichage, on restore systï¿½matiquement le clavier ! Il sera cleanï¿½ ï¿½ nouveau dans les cas spï¿½ciaux.
-	// Traitement des variables spï¿½ciales.
-	gShoot.nMstProximity = 0;				// RAZ du flag de proximitï¿½.
-	if (gShoot.nInvulnerability) gShoot.nInvulnerability--;		// Dï¿½crï¿½mentation invulnï¿½rabilitï¿½.
-	if (gShoot.nVehicleHitCnt) gShoot.nVehicleHitCnt--;			// Dï¿½crï¿½mentation compteur de hit.
+	gpFctDispTb[gShoot.nVehicleType]();		// APRES les monstres, car les pf mobiles peuvent dÃ¯Â¿Â½placer le joueur.
+	Gen_KbRestore();	// AprÃ¯Â¿Â½s la gestion et l'affichage, on restore systÃ¯Â¿Â½matiquement le clavier ! Il sera cleanÃ¯Â¿Â½ Ã¯Â¿Â½ nouveau dans les cas spÃ¯Â¿Â½ciaux.
+	// Traitement des variables spÃ¯Â¿Â½ciales.
+	gShoot.nMstProximity = 0;				// RAZ du flag de proximitÃ¯Â¿Â½.
+	if (gShoot.nInvulnerability) gShoot.nInvulnerability--;		// DÃ¯Â¿Â½crÃ¯Â¿Â½mentation invulnÃ¯Â¿Â½rabilitÃ¯Â¿Â½.
+	if (gShoot.nVehicleHitCnt) gShoot.nVehicleHitCnt--;			// DÃ¯Â¿Â½crÃ¯Â¿Â½mentation compteur de hit.
 
-	//>> Cheat : Invulnï¿½rabilitï¿½.
+	//>> Cheat : InvulnÃ¯Â¿Â½rabilitÃ¯Â¿Â½.
 	if (gCCodes.nCheat & e_Cheat_Invulnerability)
-		gShoot.nInvulnerability = PLYR_INVL_BLINK - 1;	// Invulnï¿½rable.
-	//<< Cheat : Invulnï¿½rabilitï¿½.
+		gShoot.nInvulnerability = PLYR_INVL_BLINK - 1;	// InvulnÃ¯Â¿Â½rable.
+	//<< Cheat : InvulnÃ¯Â¿Â½rabilitÃ¯Â¿Â½.
 
-	//>> Cheat : Munitions ilimitï¿½es.
+	//>> Cheat : Munitions ilimitÃ¯Â¿Â½es.
 	if (gCCodes.nCheat & e_Cheat_WeaponUnlimited)
 	{
 		Player_WeaponReload(0);
@@ -4434,20 +4444,20 @@ void PlatformerGame(void)
 		gShoot.nBombAmmo = PLYR_NAKED_BOMBS_DEFAULT;
 		gShoot.nVehicleBombAmmo = SLUG_BOMBS_DEFAULT;
 	}
-	//<< Cheat : Munitions ilimitï¿½es.
+	//<< Cheat : Munitions ilimitÃ¯Â¿Â½es.
 
 	CheckSpecialScore();	// +1 vie tous les x points.
 
 	DustManage();
 
-	if (gMissionTb[gGameVar.nGenLevel].nMissionNo != 0)	// Mission nï¿½ == 0 => Cas spï¿½ciaux du how to play et des crï¿½dits. Pas de HUD.
+	if (gMissionTb[gGameVar.nGenLevel].nMissionNo != 0)	// Mission nÃ¯Â¿Â½ == 0 => Cas spÃ¯Â¿Â½ciaux du how to play et des crÃ¯Â¿Â½dits. Pas de HUD.
 		HUDDisplay();	// Affichage du HUD.
 
-	// Affichage du dï¿½cor, plans derriï¿½re des sprites.
+	// Affichage du dÃ¯Â¿Â½cor, plans derriÃ¯Â¿Â½re des sprites.
 	for (i = 0; i <= gMap.nHeroPlane; i++) ScrollDisplayPlane(i);
 	// Les sprites sous l'avant plan (quasiment tout).
 	SprDisplayAll_Pass1();
-	// Affichage du dï¿½cor, plans devant les sprites.
+	// Affichage du dÃ¯Â¿Â½cor, plans devant les sprites.
 	for (i = gMap.nHeroPlane + 1; i < gMap.nPlanesNb; i++) ScrollDisplayPlane(i);
 	// Les sprites au dessus de l'avant-plan (hud, ...).
 	SprDisplayAll_Pass2();

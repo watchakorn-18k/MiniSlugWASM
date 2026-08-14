@@ -28,44 +28,49 @@ void HUDDisplay(void)
 	s32	i;
 	s32	nPosX;
 
-	// Cadre ammo/bombs.
-	SprDisplayAbsolute(e_Spr_HUD_ArmsFrameTopLeft, HUD_ARMSFRAME_POSX, HUD_ARMSFRAME_POSY, HUD_SPR_PRIO - 1);
-	SprDisplayAbsolute(e_Spr_HUD_ArmsFrameTopRight, HUD_ARMSFRAME_POSX, HUD_ARMSFRAME_POSY, HUD_SPR_PRIO - 1);
-	SprDisplayAbsolute(e_Spr_HUD_ArmsFrameBottom, HUD_ARMSFRAME_POSX, HUD_ARMSFRAME_POSY, HUD_SPR_PRIO - 1);
+	// Cadre ammo/bombs (Bottom container box).
+	SprDisplayAbsolute(e_Spr_HUD_ArmsFrameBottom, HUD_ARMSFRAME_POSX, 14, HUD_SPR_PRIO - 1);
 
-	// Nombre de balles.
+	// แถวบนสุด (Top Row): กระสุน & ระเบิด
+	Font_Print(HUD_ARMSFRAME_POSX - 25, 1, "กระสุน", FONT_Highlight);
+	Font_Print(HUD_ARMSFRAME_POSX + 5, 1, "ระเบิด", FONT_Highlight);
+
+	// จำนวนกระสุน (Ammo / Handgun Infinite).
 	i = (gShoot.nVehicleType < e_HeroVehicle_SlugBase ? gShoot.nAmmo : gShoot.nVehicleAmmo);
 	if (i >= 0)
 	{
-		MyItoA(i, pTbConv);
-		Font_PrintSpc(HUD_ARMSFRAME_POSX - 24, HUD_ARMSFRAME_POSY + 7, pTbConv + 5, 0, 8);
+		char pAmmoStr[16];
+		snprintf(pAmmoStr, sizeof(pAmmoStr), "%d", i);
+		u32 wAmmo = Font_Print(0, 0, pAmmoStr, FONT_NoDisp);
+		Font_Print(HUD_ARMSFRAME_POSX - 14 - (wAmmo / 2), 10, pAmmoStr, 0);
 	}
 	else
-		SprDisplayAbsolute(e_Spr_FontSmall + 94, HUD_ARMSFRAME_POSX - 24 + 4, HUD_ARMSFRAME_POSY + 7, HUD_SPR_PRIO);	// Infini.
-	// Nombre de bombes.
-	memset(pTbConv, ' ', 8);
-	MyItoA((gShoot.nVehicleType < e_HeroVehicle_SlugBase ? gShoot.nBombAmmo : gShoot.nVehicleBombAmmo), pTbConv);
-	Font_PrintSpc(HUD_ARMSFRAME_POSX + 4, HUD_ARMSFRAME_POSY + 7, pTbConv + 5, 0, 8);
+	{
+		u32 wInf = Font_Print(0, 0, "∞", FONT_NoDisp);
+		Font_Print(HUD_ARMSFRAME_POSX - 14 - (wInf / 2), 10, "∞", 0);
+	}
 
-	// Score.
-	memset(pTbConv, ' ', 8);
-	MyItoA(gShoot.nPlayerScore, pTbConv);
-	Font_PrintSpc(HUD_GAUGE_POSX - 13, HUD_GAUGE_POSY - 7, pTbConv, 0, 8);
+	// จำนวนระเบิด (Bombs).
+	int nBombs = (gShoot.nVehicleType < e_HeroVehicle_SlugBase ? gShoot.nBombAmmo : gShoot.nVehicleBombAmmo);
+	char pBombStr[16];
+	snprintf(pBombStr, sizeof(pBombStr), "%d", nBombs);
+	u32 wBomb = Font_Print(0, 0, pBombStr, FONT_NoDisp);
+	Font_Print(HUD_ARMSFRAME_POSX + 16 - (wBomb / 2), 10, pBombStr, 0);
 
-	// Vies.
-	SprDisplayAbsolute(e_Spr_HUD_HeroHeads, HUD_HEAD_POSX, HUD_HEAD_POSY, HUD_SPR_PRIO);	// Si plusieurs persos, e_Spr_HUD_HeroHeads + <hero n�>.
-	memset(pTbConv, ' ', 8);
-	MyItoA(gShoot.nPlayerLives, pTbConv);
-	pTbPtr = &pTbConv[1];	// Au cas ou, pour le 'x'.
-	while (*pTbPtr == ' ') pTbPtr++;
-	*(--pTbPtr) = 'x';
-	//Font_PrintSpc(HUD_HEAD_POSX + 22, HUD_HEAD_POSY, pTbPtr, 0, 8);
+	// คะแนน (Score).
+	char pScoreStr[32];
+	snprintf(pScoreStr, sizeof(pScoreStr), "%d", gShoot.nPlayerScore);
+	Font_Print(HUD_GAUGE_POSX, 2, pScoreStr, 0);
+
+	// จำนวนชีวิต (Lives).
+	SprDisplayAbsolute(e_Spr_HUD_HeroHeads, HUD_HEAD_POSX, HUD_HEAD_POSY, HUD_SPR_PRIO);
+	char pLivesStr[16];
+	snprintf(pLivesStr, sizeof(pLivesStr), "x%d", gShoot.nPlayerLives);
 	if (gShoot.nHUDPlayerLivesBlink) gShoot.nHUDPlayerLivesBlink--;	// Pour clignotement quand 1UP.
-	Font_PrintSpc(HUD_HEAD_POSX + 22, HUD_HEAD_POSY, pTbPtr, ((gShoot.nHUDPlayerLivesBlink & 8) ? FONT_Highlight : 0), 8);
-
+	Font_Print(HUD_HEAD_POSX + 24, HUD_HEAD_POSY - 2, pLivesStr, ((gShoot.nHUDPlayerLivesBlink & 8) ? FONT_Highlight : 0));
 	// La jauge.
 	SprDisplayAbsolute(e_Spr_HUD_SlugGauge, HUD_GAUGE_POSX, HUD_GAUGE_POSY, HUD_SPR_PRIO);
-	// Dans un slug ? => Barre d'�nergie.
+	// Dans un slug ? => Barre d'énergie.
 	if (gShoot.nVehicleType >= e_HeroVehicle_SlugBase)
 	{
 		// Les points dedans.
@@ -75,7 +80,7 @@ void HUDDisplay(void)
 			SprDisplayAbsolute(e_Spr_HUD_SlugGauge + 0 + (i > 7 ? 8 : i), nPosX, HUD_GAUGE_POSY, HUD_SPR_PRIO + 1);
 	}
 
-	// Nb de prisonniers lib�r�s en bas.
+	// Nb de prisonniers libérés en bas.
 	for (i = 0; i < gShoot.nFreedPrisoners; i++)
 		SprDisplayAbsolute(e_Spr_HUD_Prisoner, HUD_PRISONER_POSX + (i * 7), HUD_PRISONER_POSY, HUD_SPR_PRIO);
 
@@ -93,7 +98,7 @@ void HUDDisplay(void)
 //=============================================================================
 // Affichage du "Mission x Start!".
 
-// Grosse fonte : 25 x 25 avec 1 pix d'ombre en bas et � droite.
+// Grosse fonte : 25 x 25 avec 1 pix d'ombre en bas et à droite.
 
 #define	MSE_TXT_LEN	11
 #define	MSE_LN_NB	2
@@ -110,14 +115,14 @@ struct SMissionStartEffect
 };
 struct SMissionStartEffect	gMSE;
 
-// R�cup�re le nombre de caract�res r�el d'une phrase et note la pos x de chaque car pour effet.
+// Récupère le nombre de caractères réel d'une phrase et note la pos x de chaque car pour effet.
 u32 MSE_sub_CalcTxtPos(char *pStr, s16 *pPosXTb, u32 *pSprTb, u8 *pChrNb)
 {
 	u32	cChr;
 	struct SSprite	*pSpr;
 	s32	nPosX = 0;
 
-	*pChrNb = 0;	// RAZ nb de caract�res.
+	*pChrNb = 0;	// RAZ nb de caractères.
 	while (*pStr)
 	{
 		cChr = *pStr++;
@@ -146,10 +151,10 @@ u32 MSE_sub_CalcTxtPos(char *pStr, s16 *pPosXTb, u32 *pSprTb, u8 *pChrNb)
 		if (cChr)
 		{
 			// Char normal.
-			pSprTb[*pChrNb] = cChr;		// N� du sprite.
+			pSprTb[*pChrNb] = cChr;		// N° du sprite.
 			pPosXTb[*pChrNb] = nPosX;
 			pSpr = SprGetDesc(pSprTb[*pChrNb]);
-			*pChrNb += 1;	// Nb de caract�res++.
+			*pChrNb += 1;	// Nb de caractères++.
 		}
 		else
 		{
@@ -162,7 +167,7 @@ u32 MSE_sub_CalcTxtPos(char *pStr, s16 *pPosXTb, u32 *pSprTb, u8 *pChrNb)
 	return ((u32)nPosX);
 }
 
-// Affichage du mission start : Pr�paration.
+// Affichage du mission start : Préparation.
 void MSE_MissionStartReset(u32 nEnd)
 {
 	char	pMiss[] = "MISSION 00";
@@ -171,7 +176,7 @@ void MSE_MissionStartReset(u32 nEnd)
 
 	gMSE.nEnd = nEnd;	// Sauvegarde de nEnd.
 
-	// N� de mission.
+	// N° de mission.
 	nDiz = gGameVar.nMissionNo / 10;
 	nUnit = gGameVar.nMissionNo % 10;
 	char *pPtr = strchr(pMiss, '0');
@@ -192,14 +197,14 @@ void MSE_MissionStartReset(u32 nEnd)
 			gMSE.pPosXEnd[j][i] += (SCR_Width - pLgPix[j]) / 2;		// Centrage x.
 		}
 	}
-	gMSE.nCnt[0] = 40;//48;	// Zoom in sur [0;31] + petit d�lai avant pour la transition.
+	gMSE.nCnt[0] = 40;//48;	// Zoom in sur [0;31] + petit délai avant pour la transition.
 	gMSE.nCnt[1] = 32+48;//64+48;	// Pause sur l'affichage.
 	gMSE.nCnt[2] = 0;	// Zoom out sur [0;31] et quitte.
 
 }
 
 // Affichage du mission start.
-// Out : 1 = Termin�.
+// Out : 1 = Terminé.
 u32 MSE_MissionStartDisplay(void)
 {
 	s32	i, j;
@@ -223,7 +228,7 @@ u32 MSE_MissionStartDisplay(void)
 		else
 		{
 			if (gMSE.nEnd)
-				nRetVal = 1;	// Cas sp�cial de la fin de mission, on laisse le texte affich�.
+				nRetVal = 1;	// Cas spécial de la fin de mission, on laisse le texte affiché.
 			else
 				if (++gMSE.nCnt[2] >= 32) return (1);	// Zoom out.
 
@@ -258,7 +263,7 @@ u32 MSE_MissionStartDisplay(void)
 
 //=============================================================================
 
-// Affichage du "Continue?" : Pr�paration.
+// Affichage du "Continue?" : Préparation.
 void MSE_ContinueReset(void)
 {
 	u32	nLgPix;
@@ -279,7 +284,7 @@ void MSE_ContinueReset(void)
 
 }
 
-// Renvoie 1 quand le compteur est arriv� � 0.
+// Renvoie 1 quand le compteur est arrivé à 0.
 u32 MSE_sub_ContinueCountDown(void)
 {
 	if (gMSE.nContinueFrm == 0)
@@ -292,7 +297,7 @@ u32 MSE_sub_ContinueCountDown(void)
 	return (0);
 }
 
-// Acc�l�re le count down (Bouton B).
+// Accélère le count down (Bouton B).
 void MSE_ContinueCountDown_Faster(void)
 {
 	gMSE.nContinueFrm = 0;
@@ -325,7 +330,7 @@ u32 MSE_ContinueDisplay(void)
 		}
 	}
 
-	// Quand toutes les lettres sont arriv�es....
+	// Quand toutes les lettres sont arrivées....
 //	if (gMSE.pPosXEnd[1][gMSE.pChrNb[0] - 1] == 0)
 	if (MSE_ContinueTxtInPos())
 	{
@@ -356,7 +361,7 @@ struct SEndMissionStatus
 	u8	nPhase;
 	u8	nFrmCnt;
 	u8	nSinIdx;
-	s32	nOffs;		// D�calage pour arriv�e/d�part.
+	s32	nOffs;		// Décalage pour arrivée/départ.
 };
 struct SEndMissionStatus	gEMS;
 
@@ -375,13 +380,13 @@ enum
 #define	EMS_SIN_MAX	64
 #define	EMS_SIN_SPD	2
 
-// Pr�paration.
+// Préparation.
 void MSE_EndMissionStatusReset(void)
 {
 	gEMS.nNbDisp = 0;
 	gEMS.nPrisonerAnm = AnmSet(gAnm_POW_Idle, -1);
 	gEMS.nPhase = e_EMS_Begin;
-	gEMS.nOffs = (SCR_Height / 2) + ((64+6+6) / 2);//- SCR_Width - (48 * 2);	// D�calage pour arriv�e/d�part.
+	gEMS.nOffs = (SCR_Height / 2) + ((64+6+6) / 2);//- SCR_Width - (48 * 2);	// Décalage pour arrivée/départ.
 	gEMS.nFrmCnt = 0;
 	gEMS.nSinIdx = EMS_SIN_MIN-4;
 
@@ -409,7 +414,7 @@ u32 MSE_EndMissionStatusDisplay(void)
 		}
 		break;
 
-	case e_EMS_Display:		// D�compte.
+	case e_EMS_Display:		// Décompte.
 		if ((++gEMS.nFrmCnt & 3) == 0)
 		{
 			if (gShoot.nFreedPrisoners)
@@ -419,7 +424,7 @@ u32 MSE_EndMissionStatusDisplay(void)
 				gEMS.nNbDisp++;
 			}
 			else
-			if (AnmGetKey(gEMS.nPrisonerAnm) == e_AnmKey_Null)	// Si l'anim de salut est bien termin�e.
+			if (AnmGetKey(gEMS.nPrisonerAnm) == e_AnmKey_Null)	// Si l'anim de salut est bien terminée.
 			{
 				gEMS.nFrmCnt = 63+32+15;
 				gEMS.nPhase = e_EMS_Wait;
@@ -427,7 +432,7 @@ u32 MSE_EndMissionStatusDisplay(void)
 		}
 		break;
 
-	case e_EMS_Wait:	// Petite attente avec l'affichage termin�.
+	case e_EMS_Wait:	// Petite attente avec l'affichage terminé.
 		if (--gEMS.nFrmCnt == 0) gEMS.nPhase = e_EMS_End;
 		break;
 
@@ -449,7 +454,7 @@ u32 MSE_EndMissionStatusDisplay(void)
 	}
 	// "Mission results".
 	Font_Print(nPosX + 64, nPosY + 15, pMissionResults, 0);
-	// Affichage du d�compte.
+	// Affichage du décompte.
 	Font_Print(nPosX + 53, nPosY + 22+16, pRecapturedP, 0);
 	char	pTb[EMS_CONVTB_SZ + 1] = "     ";
 	MyItoA(gEMS.nNbDisp, &pTb[2]);

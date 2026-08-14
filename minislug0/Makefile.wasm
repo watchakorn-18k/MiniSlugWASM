@@ -40,6 +40,9 @@ LDFLAGS = -s USE_SDL=2 \
           --preload-file lev16 \
           --preload-file lev17 \
           --preload-file high.scr \
+          --preload-file Kanit-Bold.ttf \
+          --preload-file IBMPlexSansThai-Bold.ttf \
+          --preload-file IBMPlexSansThai-Medium.ttf \
           --preload-file cmd.txt
 
 # YM Library (needs to be compiled with emcc too)
